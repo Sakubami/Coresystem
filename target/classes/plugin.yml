@@ -1,0 +1,8 @@
+name: HaraxxCore
+version: '${project.version}'
+main: net.haraxx.coresystem.CoreSystem
+api-version: 1.18
+prefix: HaraxxCore
+authors: [ Sakubami, Gero ]
+description: RPG-CoreSystem for the dvntr Server, Copyright dvntr 2022 (C)
+website: Haraxx.net
