@@ -1,5 +1,7 @@
 package net.haraxx.coresystem;
 
+import net.haraxx.coresystem.Configs.ConfigHelper;
+import net.haraxx.coresystem.Configs.PlayerConfig;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class CoreSystem extends JavaPlugin {
@@ -27,6 +29,7 @@ public final class CoreSystem extends JavaPlugin {
         try {
             setInstance(this);
 
+            PlayerConfig.initiatePlayers();
         } catch (Exception e) {
             System.out.println("A fatal error occurred while initialising the api. Exiting...");
         }
