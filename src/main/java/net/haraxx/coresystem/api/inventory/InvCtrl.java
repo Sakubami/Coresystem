@@ -1,6 +1,6 @@
-package net.haraxx.coresystem.api.Inventory;
+package net.haraxx.coresystem.api.inventory;
 
-import net.haraxx.coresystem.api.Item.ItemCtrl;
+import net.haraxx.coresystem.api.item.ItemCtrl;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;

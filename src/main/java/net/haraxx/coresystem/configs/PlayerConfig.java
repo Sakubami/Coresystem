@@ -1,4 +1,4 @@
-package net.haraxx.coresystem.Configs;
+package net.haraxx.coresystem.configs;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -11,7 +11,7 @@ import java.util.*;
 
 public class PlayerConfig {
     private static final Set<OfflinePlayer> players = new HashSet<>();
-    private static final String path3 = "plugins/Core/Players.yml";
+    private static final String path3 = "plugins/HaraxxCore/Players.yml";
 
     public static ArrayList<String> loadPlayers() {
         ArrayList<String> list = new ArrayList<>();
@@ -30,7 +30,7 @@ public class PlayerConfig {
         }
     }
 
-    public void setStatus(Player p, boolean status) {
+    public static void setPlayerStatus(Player p, boolean status) {
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(path3));
         int i = 0;
         for(String list : loadPlayers()) {
@@ -51,7 +51,7 @@ public class PlayerConfig {
         }
     }
 
-    public boolean checkStatus(Player p) {
+    public boolean checkPlayerStatus(Player p) {
         for(String list : loadPlayers()) {
             String[] str = list.split("%");
             if (str[0].contains(p.getUniqueId().toString())) {
@@ -61,15 +61,6 @@ public class PlayerConfig {
         return true;
     }
 
-    public UUID getUUId(String displayname) {
-        for(String list : loadPlayers()) {
-            String[] str = list.split("%");
-            if (str[2].equalsIgnoreCase(displayname)) {
-                return UUID.fromString(str[0]);
-            }
-        }
-        return null;
-    }
 
     public static void initiatePlayers() {
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(path3));

@@ -1,7 +1,7 @@
 package net.haraxx.coresystem;
 
-import net.haraxx.coresystem.Configs.ConfigHelper;
-import net.haraxx.coresystem.Configs.PlayerConfig;
+import net.haraxx.coresystem.configs.PlayerConfig;
+import net.haraxx.coresystem.configs.zoll.LocationConfig;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class CoreSystem extends JavaPlugin {
@@ -16,6 +16,8 @@ public final class CoreSystem extends JavaPlugin {
         instance = plugin;
     }
 
+    private LocationConfig locationConfig;
+
     @Override
     public void onEnable() {
         init();
@@ -28,10 +30,13 @@ public final class CoreSystem extends JavaPlugin {
     private void init() {
         try {
             setInstance(this);
-
+            locationConfig = new LocationConfig();
             PlayerConfig.initiatePlayers();
         } catch (Exception e) {
             System.out.println("A fatal error occurred while initialising the api. Exiting...");
         }
     }
+
+    public LocationConfig getLocationConfig() { return locationConfig; }
+
 }
