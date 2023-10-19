@@ -1,7 +1,7 @@
 package net.haraxx.coresystem;
 
-import net.haraxx.coresystem.configs.PlayerConfig;
-import net.haraxx.coresystem.configs.zoll.LocationConfig;
+import net.haraxx.coresystem.plugins.zoll.PlayerConfig;
+import net.haraxx.coresystem.plugins.zoll.LocationConfig;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class CoreSystem extends JavaPlugin {

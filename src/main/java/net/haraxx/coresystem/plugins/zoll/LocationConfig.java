@@ -1,4 +1,4 @@
-package net.haraxx.coresystem.configs.zoll;
+package net.haraxx.coresystem.plugins.zoll;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
