@@ -3,6 +3,10 @@ version: '${project.version}'
 main: net.haraxx.coresystem.CoreSystem
 api-version: 1.18
 prefix: HaraxxCore
-authors: [ Sakubami, Gero ]
-description: RPG-CoreSystem for the dvntr Server, Copyright dvntr 2022 (C)
+authors: [ Sakubami, Gold.ly ]
+description: RPG-CoreSystem for the Haraxx Server, Copyright Haraxx 2023 (C)
 website: Haraxx.net
+
+commands:
+  core:
+    description: core command
