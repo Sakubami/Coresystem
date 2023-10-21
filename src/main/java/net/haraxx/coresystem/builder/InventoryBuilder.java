@@ -6,7 +6,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class InventoryBuilder {
 
@@ -44,10 +43,7 @@ public class InventoryBuilder {
     }
 
     public InventoryBuilder fillEmpty() {
-        for (int i = 0; i < inventory.getSize(); i++)
-            if (inventory.getItem(i) == null) {
-                inventory.setItem(i, filler);
-            }
+        fillEmpty(filler);
         return this;
     }
 
@@ -101,9 +97,6 @@ public class InventoryBuilder {
     public Inventory build() {
         return inventory;
     }
-
-
-
 
     /*
     public Inventory inventoryPrepare(int size, String title) {
