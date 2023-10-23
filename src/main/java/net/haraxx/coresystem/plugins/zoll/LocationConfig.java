@@ -1,5 +1,6 @@
 package net.haraxx.coresystem.plugins.zoll;
 
+import net.haraxx.coresystem.CoreSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
@@ -39,7 +40,7 @@ public class LocationConfig {
         public void setStatus(UUID status) { this.status = status; }
     }
 
-    private static final String path = "plugins/HaraxxCore/Zoll/Locations.yml";
+    private final String path = "plugins/HaraxxCore/Zoll/Locations.yml";
 
     private ArrayList<LocEntry> locEntries;
 
@@ -49,16 +50,25 @@ public class LocationConfig {
     }
 
     public void deleteLoc(Location formattedLoc) {
-        this.locEntries.removeIf(locEntry -> locEntry.getLocation().equals(formattedLoc));
+        locEntries.removeIf(locEntry -> locEntry.getLocation().equals(formattedLoc));
         saveLocations();
     }
 
     public void addLocation(Location loc, Player p, String owner) {
-       this.locEntries.add(new LocEntry(loc, p.getFacing(), Bukkit.getOfflinePlayer(owner).getUniqueId()));
+       locEntries.add(new LocEntry(loc, p.getFacing(), Bukkit.getOfflinePlayer(owner).getUniqueId()));
+       saveLocations();
+    }
+
+    public ArrayList<Location> getLocations() {
+        ArrayList<Location> list = new ArrayList<>();
+        for (LocEntry loc : locEntries) {
+            list.add(loc.getLocation());
+        }
+        return list;
     }
 
     public void setBusy(Location loc, boolean busy) {
-        for (LocEntry locEntry : this.locEntries) {
+        for (LocEntry locEntry : locEntries) {
             if (locEntry.getLocation().equals(loc)) {
                 locEntry.setBusy(busy);
                 return;
@@ -67,7 +77,7 @@ public class LocationConfig {
     }
 
     public void setStatus(Location loc, UUID uuid) {
-        for (LocEntry locEntry : this.locEntries) {
+        for (LocEntry locEntry : locEntries) {
             if (locEntry.getLocation().equals(loc)) {
                 locEntry.setStatus(uuid);
                 return;
@@ -97,9 +107,9 @@ public class LocationConfig {
         FileConfiguration config = new YamlConfiguration();
 
         for (int i = 0; locEntries.size() > i; i++) {
-            config.set("stations."+i+".location", locToString(this.locEntries.get(i).getLocation()));
-            config.set("stations."+i+".owner", this.locEntries.get(i).getOwner().toString());
-            config.set("stations."+i+".direction", this.locEntries.get(i).getDirection().name());
+            config.set("stations."+i+".location", locToString(locEntries.get(i).getLocation()));
+            config.set("stations."+i+".owner", locEntries.get(i).getOwner().toString());
+            config.set("stations."+i+".direction", locEntries.get(i).getDirection().name());
         } try {
             config.save(new File(path));
         } catch (Exception ignored) { }
@@ -113,14 +123,14 @@ public class LocationConfig {
         return locEntries.stream().filter(locEntry -> locEntry.getLocation().equals(formattedLoc)).findFirst().get().getDirection();
     }
 
-    private String locToString(Location loc) {
+    public String locToString(Location loc) {
         int x = loc.getBlockX();
         int y = loc.getBlockY();
         int z = loc.getBlockZ();
         return x+"/"+y+"/"+z+"/"+loc.getWorld().getName();
     }
 
-    private Location stringToLoc(String str) {
+    public Location stringToLoc(String str) {
         String[] parts = str.split("/");
         return new Location(Bukkit.getServer().getWorld(parts[3]), Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
     }
@@ -130,5 +140,9 @@ public class LocationConfig {
         int y = loc.getBlockY() +1;
         int z = loc.getBlockZ() + p.getFacing().getModZ();
         return x+"/"+y+"/"+z+"/"+loc.getWorld().getName();
+    }
+
+    public static LocationConfig get() {
+        return CoreSystem.getInstance().getLocationConfig();
     }
 }

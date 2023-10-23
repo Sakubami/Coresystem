@@ -1,8 +1,7 @@
 name: HaraxxCore
-version: '${project.version}'
+version: 1.1.1
 main: net.haraxx.coresystem.CoreSystem
 api-version: 1.18
-prefix: HaraxxCore
 authors: [ Sakubami, Gold.ly ]
 description: RPG-CoreSystem for the Haraxx Server, Copyright Haraxx 2023 (C)
 website: Haraxx.net

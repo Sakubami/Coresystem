@@ -1,5 +1,6 @@
 package net.haraxx.coresystem.builder;
 
+import net.haraxx.coresystem.plugins.rpg.abilities.Abilities;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -69,8 +70,11 @@ public class ItemBuilder {
         if (item.hasItemMeta())
             this.displayName = item.getItemMeta().getDisplayName();
         if (item.hasItemMeta()) {
-            this.lore = item.getItemMeta().getLore();
-            this.isProtected = item.getItemMeta().getLore().contains("§0Protected");
+            if (item.getItemMeta().getLore() != null) {
+                this.lore = item.getItemMeta().getLore();
+                this.isProtected = item.getItemMeta().getLore().contains("§0Protected");
+                this.ability = Abilities.getAbilityByItemStack(item);
+            }
         }
         if (item.hasItemMeta())
             this.flags.addAll(item.getItemMeta().getItemFlags());
@@ -90,7 +94,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder ability(String ability) {
-        this.ability = ability;
+        this.ability = "§0" + ability;
         return this;
     }
 
@@ -144,8 +148,27 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder lore(ArrayList<String> lore) {
+    public ItemBuilder setLore(ArrayList<String> lore) {
+        String temporaryNBT = ability + itemClass;
+            if (isProtected)
+                temporaryNBT += "§0Protected";
+        lore.set(lore.size() + 1, temporaryNBT);
         this.lore = Chat.translate(lore);
+        return this;
+    }
+
+    public ItemBuilder addLore(String lore) {
+        ArrayList<String> newLore = new ArrayList<>(this.lore);
+        if (ability != null) {
+            newLore.remove(ability);
+        }
+        System.out.println(ability);
+
+        newLore.add(lore);
+
+        if (ability != null)
+            newLore.add(ability);
+        this.lore = Chat.translate(newLore);
         return this;
     }
 
@@ -169,7 +192,7 @@ public class ItemBuilder {
             lore.add("§0Protected");
         if (itemClass != null)
             lore.add("§0" + itemClass);
-        if (ability != null)
+        if (ability != null && !lore.contains(ability))
             lore.add(ability);
         if (lore.size() > 0)
             meta.setLore(lore);
