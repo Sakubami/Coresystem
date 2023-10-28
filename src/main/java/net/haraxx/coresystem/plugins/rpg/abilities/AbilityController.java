@@ -1,5 +1,6 @@
 package net.haraxx.coresystem.plugins.rpg.abilities;
 
+import net.haraxx.coresystem.builder.Chat;
 import net.haraxx.coresystem.plugins.rpg.item.NBTapi;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -14,7 +15,8 @@ public class AbilityController implements Listener {
         Player p = e.getPlayer();
         ItemStack item = p.getInventory().getItemInMainHand();
         if (e.getAction() == Action.RIGHT_CLICK_AIR)
-            if (item.hasItemMeta())
+            if (item.hasItemMeta() && nbt.getNBTValueByItemStack(item, "ability") != null)
                 Abilities.getAbilitys().get(nbt.getNBTValueByItemStack(item, "ability")).runAbility(p);
+            else p.sendMessage(Chat.format("Diese Waffe hat keine Fähigkeit!"));
     }
 }

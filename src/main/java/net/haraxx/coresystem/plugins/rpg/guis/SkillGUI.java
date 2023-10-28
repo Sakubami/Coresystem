@@ -28,6 +28,8 @@ public class SkillGUI {
         ItemStack item = new ItemBuilder(Material.BARRIER)
                 .enchant(enchants)
                 .durability((short) 1)
+                .setProtected(true)
+                .addNBTTag("protected", "true")
                 .build();
 
         player.openInventory(inv);

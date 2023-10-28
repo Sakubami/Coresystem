@@ -18,7 +18,7 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 
-public class BSK_tomahawk implements AbilityRunner, Listener {
+public class BSK_TOMAHAWK implements AbilityRunner, Listener {
     private ArrayList<Integer> ids = new ArrayList<>();
 
     @Override

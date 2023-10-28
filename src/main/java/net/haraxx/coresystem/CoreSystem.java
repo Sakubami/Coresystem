@@ -3,7 +3,7 @@ package net.haraxx.coresystem;
 import net.haraxx.coresystem.listener.PlaceStuffIdk;
 import net.haraxx.coresystem.plugins.rpg.commands.ItemCommand;
 import net.haraxx.coresystem.plugins.rpg.abilities.Abilities;
-import net.haraxx.coresystem.plugins.rpg.abilities.abilities.BSK_tomahawk;
+import net.haraxx.coresystem.plugins.rpg.abilities.abilities.BSK_TOMAHAWK;
 import net.haraxx.coresystem.plugins.zoll.LocationConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
@@ -42,7 +42,7 @@ public final class CoreSystem extends JavaPlugin {
             Abilities.addAbilities();
 
             //listener
-            Bukkit.getPluginManager().registerEvents(new BSK_tomahawk(), this);
+            Bukkit.getPluginManager().registerEvents(new BSK_TOMAHAWK(), this);
             Bukkit.getPluginManager().registerEvents(new PlaceStuffIdk(), this);
 
             //commands
