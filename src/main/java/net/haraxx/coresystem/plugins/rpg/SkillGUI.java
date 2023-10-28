@@ -23,7 +23,7 @@ public class SkillGUI {
 
         Inventory inv = new InventoryBuilder(6)
                 .buildBottomRow()
-                .setItem(new ItemBuilder(Material.LIGHT_GRAY_STAINED_GLASS_PANE, "abc").amount(234).setProtected().build(),0)
+                .addItem(new ItemBuilder(Material.IRON_AXE).addNBTTag("protected", "true").build())
                 .build();
 
         ItemStack item = new ItemBuilder(Material.BARRIER)

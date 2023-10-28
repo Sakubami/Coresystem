@@ -1,13 +1,16 @@
 package net.haraxx.coresystem.builder;
 
+import net.haraxx.coresystem.CoreSystem;
 import net.haraxx.coresystem.plugins.rpg.abilities.Abilities;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +30,7 @@ public class ItemBuilder {
     private List<String> lore = new ArrayList<>();
     private List<ItemFlag> flags = new ArrayList<>();
     private String localizedName;
+    private ItemMeta NBTmeta;
 
     private String itemClass; //TODO replace with NBT tag later on to remove invisible lore
     private String ability; //TODO replace with NBT tag later on to remove invisible lore
@@ -34,6 +38,8 @@ public class ItemBuilder {
 
     private boolean isGlowing = false;
 
+    protected final NBT nbtData = new NBT();
+    private NamespacedKey key(String key) { return new NamespacedKey(CoreSystem.getInstance(), key); }
 
     public ItemBuilder(Material material) {
         this.item = new ItemStack(material);
@@ -88,18 +94,18 @@ public class ItemBuilder {
         cfg.set(path, builder.build());
     }
 
-    public ItemBuilder setProtected() {
-        this.isProtected = true;
+    public ItemBuilder addNBTTag(String key, String value) {
+        nbtData.addNBTTag(key, value);
         return this;
     }
 
-    public ItemBuilder ability(String ability) {
-        this.ability = "§0" + ability;
+    public ItemBuilder addNBTTagList(HashMap<NamespacedKey, String> value ) {
+        nbtData.addAllNBTTagList(value);
         return this;
     }
 
-    public ItemBuilder itemClass(String itemClass) {
-        this.itemClass = itemClass;
+    public ItemBuilder setProtected(boolean value) {
+        nbtData.addNBTTag(key("protected"), String.valueOf(value));
         return this;
     }
 
@@ -149,26 +155,12 @@ public class ItemBuilder {
     }
 
     public ItemBuilder setLore(ArrayList<String> lore) {
-        String temporaryNBT = ability + itemClass;
-            if (isProtected)
-                temporaryNBT += "§0Protected";
-        lore.set(lore.size() + 1, temporaryNBT);
         this.lore = Chat.translate(lore);
         return this;
     }
 
-    public ItemBuilder addLore(String lore) {
-        ArrayList<String> newLore = new ArrayList<>(this.lore);
-        if (ability != null) {
-            newLore.remove(ability);
-        }
-        System.out.println(ability);
-
-        newLore.add(lore);
-
-        if (ability != null)
-            newLore.add(ability);
-        this.lore = Chat.translate(newLore);
+    public ItemBuilder addToLore(String lore) {
+        this.lore.add(Chat.translate(lore));
         return this;
     }
 
@@ -188,12 +180,6 @@ public class ItemBuilder {
             item.addUnsafeEnchantments(enchantments);
         if (displayName != null)
             meta.setDisplayName(displayName);
-        if (isProtected)
-            lore.add("§0Protected");
-        if (itemClass != null)
-            lore.add("§0" + itemClass);
-        if (ability != null && !lore.contains(ability))
-            lore.add(ability);
         if (lore.size() > 0)
             meta.setLore(lore);
         if (customModelData != 0)
@@ -204,9 +190,48 @@ public class ItemBuilder {
             }
         }
         meta.setLocalizedName(localizedName);
+        meta = nbtData.parseAllNBTTags(meta);
         item.setItemMeta(meta);
         return item;
     }
 
+    public class NBT {
 
+        private final HashMap<NamespacedKey, String> list = new HashMap<>();
+        private NamespacedKey key(String key) { return new NamespacedKey(CoreSystem.getInstance(), key); }
+
+        public void addAllNBTTagList(HashMap<NamespacedKey, String> list) {
+            this.list.putAll(list);
+        }
+
+        public void addNBTTag(NamespacedKey key, String value) {
+            this.list.put(key, value);
+        }
+
+        public ItemMeta parseAllNBTTags(ItemMeta meta) {
+            for (NamespacedKey key : this.list.keySet()) {
+                meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, this.list.get(key));
+            }
+            return meta;
+        }
+
+        public String getNBTValueByItemStack(ItemStack item, String key) {
+            return item.getItemMeta().getPersistentDataContainer().get(key(key), PersistentDataType.STRING);
+        }
+
+        public HashMap<NamespacedKey, String> getNBTTagsByItemStack(ItemStack item) {
+            HashMap<NamespacedKey, String> list = new HashMap<>();
+            for (NamespacedKey keySet: item.getItemMeta().getPersistentDataContainer().getKeys()) {
+                list.put(keySet, item.getItemMeta().getPersistentDataContainer().get(keySet, PersistentDataType.STRING));
+            }
+            return list;
+        }
+
+        public boolean isProtected(ItemStack item) {
+            return Boolean.parseBoolean(this.getNBTValueByItemStack(item, "protected"));
+        }
+
+        public HashMap<NamespacedKey, String> getNBTTags() { return this.list; }
+        public String getNBTValueByTag(String tag) { return this.list.get(tag); }
+    }
 }

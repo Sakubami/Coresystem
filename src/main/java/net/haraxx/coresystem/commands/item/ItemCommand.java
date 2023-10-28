@@ -4,17 +4,13 @@ import net.haraxx.coresystem.builder.Chat;
 import net.haraxx.coresystem.builder.ItemBuilder;
 import net.haraxx.coresystem.plugins.rpg.abilities.Abilities;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ItemCommand implements ModuleCommandExecutor, TabCompleter {
@@ -37,7 +33,7 @@ public class ItemCommand implements ModuleCommandExecutor, TabCompleter {
                 case "item" -> {
                     switch (param) {
                         case "addlore" -> {
-                            ItemStack newItem = new ItemBuilder(item).addLore(param2).build();
+                            ItemStack newItem = new ItemBuilder(item).addToLore(param2).build();
                             p.getInventory().setItemInMainHand(newItem);
                         }
 
@@ -58,8 +54,6 @@ public class ItemCommand implements ModuleCommandExecutor, TabCompleter {
                         }
 
                         case "ability" -> {
-                            ItemStack newItem = new ItemBuilder(item).ability(param2).build();
-                            p.getInventory().setItemInMainHand(newItem);
                         }
                     }
                 }
