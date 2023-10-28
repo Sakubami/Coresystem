@@ -1,7 +1,7 @@
 package net.haraxx.coresystem.plugins.rpg.abilities.abilities;
 
 import net.haraxx.coresystem.CoreSystem;
-import net.haraxx.coresystem.builder.ItemBuilder;
+import net.haraxx.coresystem.plugins.rpg.item.ItemBuilder;
 import net.haraxx.coresystem.plugins.rpg.abilities.AbilityRunner;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -52,8 +52,9 @@ public class BSK_tomahawk implements AbilityRunner, Listener {
         },0,10));
 
         scheduler.runTaskLater(CoreSystem.getInstance(), bukkitTask -> {
-            scheduler.cancelTask(ids.get(1));
-            ids.remove(1);
+            int firstId = ids.get(0);
+            scheduler.cancelTask(firstId);
+            ids.remove(firstId);
             player.sendMessage("cancel");
                 },160);
     }

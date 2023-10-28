@@ -1,8 +1,10 @@
-package net.haraxx.coresystem.commands.item;
+package net.haraxx.coresystem.plugins.rpg.commands;
 
 import net.haraxx.coresystem.builder.Chat;
-import net.haraxx.coresystem.builder.ItemBuilder;
+import net.haraxx.coresystem.plugins.rpg.commands.ModuleCommandExecutor;
+import net.haraxx.coresystem.plugins.rpg.item.ItemBuilder;
 import net.haraxx.coresystem.plugins.rpg.abilities.Abilities;
+import net.haraxx.coresystem.plugins.rpg.item.NBTapi;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -14,6 +16,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemCommand implements ModuleCommandExecutor, TabCompleter {
+    NBTapi nbt = new NBTapi();
 
     static List<String> actions = List.of("item", "test");
     //temporary until new ITEM API is here
@@ -43,7 +46,7 @@ public class ItemCommand implements ModuleCommandExecutor, TabCompleter {
                         }
 
                         case "run" -> {
-                            String ability = Abilities.getAbilityByItemStack(item);
+                            String ability = nbt.getNBTValueByItemStack(item, "ability");
                             if (ability != null)
                                 Abilities.getAbilitys().get(ability).runAbility(p);
                             else p.sendMessage(Chat.format("this item does not have an ability!"));

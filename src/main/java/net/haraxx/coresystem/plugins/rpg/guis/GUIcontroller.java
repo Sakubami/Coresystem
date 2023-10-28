@@ -1,4 +1,4 @@
-package net.haraxx.coresystem.guis;
+package net.haraxx.coresystem.plugins.rpg.guis;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

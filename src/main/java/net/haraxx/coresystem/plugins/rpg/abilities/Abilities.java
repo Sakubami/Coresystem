@@ -12,10 +12,8 @@ public class Abilities implements Listener {
 
     private static final HashMap<String, AbilityRunner> abilitys = new HashMap<>();
 
-    public static void addAbilitys() {
-        abilitys.put("§0BSK_tomahawk", new BSK_tomahawk());
-        /*abilitys.put("§0test", () -> {
-        }); */
+    public static void addAbilities() {
+        abilitys.put("BSK_TOMAHAWK", new BSK_tomahawk());
     }
 
     public static String getAbilityByItemStack(ItemStack item) {

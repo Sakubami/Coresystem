@@ -1,4 +1,4 @@
-package net.haraxx.coresystem.commands.item;
+package net.haraxx.coresystem.plugins.rpg.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

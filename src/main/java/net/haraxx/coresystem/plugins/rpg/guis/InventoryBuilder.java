@@ -1,5 +1,6 @@
-package net.haraxx.coresystem.builder;
+package net.haraxx.coresystem.plugins.rpg.guis;
 
+import net.haraxx.coresystem.plugins.rpg.item.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -10,8 +11,11 @@ import java.util.ArrayList;
 public class InventoryBuilder {
 
     private final Inventory inventory;
-
     private final ItemStack filler = new ItemBuilder(Material.LIGHT_GRAY_STAINED_GLASS_PANE, "§0").build();
+    private int math(int math) {
+        if ((math * 9)> 54) math = 54;
+        return math * 9;
+    }
 
     public InventoryBuilder(int rows) {
         this.inventory = Bukkit.createInventory(null, math(rows));
@@ -19,11 +23,6 @@ public class InventoryBuilder {
 
     public InventoryBuilder(int rows, String displayname) {
         this.inventory = Bukkit.createInventory(null, math(rows), displayname);
-    }
-
-    private int math(int math) {
-        if ((math * 9)> 54) math = 54;
-        return math * 9;
     }
 
     public InventoryBuilder buildBottomRow() {
@@ -65,7 +64,7 @@ public class InventoryBuilder {
         for (int i = (row * 9)- 9; i < (row * 9 )- 1; i++) {
             if (overwrite) {
                 this.inventory.setItem(i, item);
-            } else if (this.inventory.getItem(i) != null) {
+            } else if (this.inventory.getItem(i) == null) {
                 this.inventory.setItem(i, item);
             }
         }
