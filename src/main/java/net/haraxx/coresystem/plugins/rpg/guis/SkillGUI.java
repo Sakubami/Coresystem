@@ -22,7 +22,7 @@ public class SkillGUI {
 
         Inventory inv = new InventoryBuilder(6)
                 .buildBottomRow()
-                .addItem(new ItemBuilder(Material.IRON_AXE).addNBTTag("protected", "true").build())
+                .addItem(new ItemBuilder(Material.IRON_AXE).setProtected(true).build())
                 .build();
 
         ItemStack item = new ItemBuilder(Material.BARRIER)
@@ -30,6 +30,7 @@ public class SkillGUI {
                 .durability((short) 1)
                 .setProtected(true)
                 .addNBTTag("protected", "true")
+                .itemClass("MAGE")
                 .build();
 
         player.openInventory(inv);
