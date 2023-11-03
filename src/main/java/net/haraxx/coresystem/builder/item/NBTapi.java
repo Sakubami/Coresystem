@@ -24,12 +24,15 @@ public class NBTapi {
         return list;
     }
 
+    // do not use outside of itembuilder because it will probably not work properly
+
     public Unsafe getUnsafe() {
         return new Unsafe();
     }
 
     protected class Unsafe {
         private final HashMap<NamespacedKey, String> list = new HashMap<>();
+
         public void extractNBTData(ItemMeta meta) {
             for (NamespacedKey key: meta.getPersistentDataContainer().getKeys()) {
                 list.put(key, meta.getPersistentDataContainer().get(key, PersistentDataType.STRING));

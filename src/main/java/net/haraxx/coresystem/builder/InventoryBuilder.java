@@ -30,7 +30,7 @@ public class InventoryBuilder {
         for (int i = inventory.getSize()-9; i < inventory.getSize(); i++) {
             inventory.setItem(i, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE, "§0").build());
         }
-        inventory.setItem(inventory.getSize()-5, new ItemBuilder(Material.BARRIER, "§cSchließen").addNBTTag("protected", "true").build());
+        inventory.setItem(inventory.getSize()-5, new ItemBuilder(Material.BARRIER, "§cSchließen").setProtected().build());
         return this;
     }
 

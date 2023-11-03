@@ -18,7 +18,6 @@ public class ItemBuilder {
     private ItemMeta meta;
     private Material material = Material.BARRIER;
     private int amount = 1;
-    private short durability = 0;
     private MaterialData data;
     private int customModelData;
     private Map<Enchantment, Integer> enchantments = new HashMap<>();
@@ -62,7 +61,6 @@ public class ItemBuilder {
             this.meta = item.getItemMeta();
         this.material = item.getType();
         this.amount = item.getAmount();
-        this.durability = item.getDurability();
         this.enchantments = item.getEnchantments();
         if (item.hasItemMeta())
             this.displayName = item.getItemMeta().getDisplayName();
@@ -85,16 +83,6 @@ public class ItemBuilder {
         cfg.set(path, builder.build());
     }
 
-    public ItemBuilder addNBTTag(String key, String value) {
-        unsafe.addNBTTag(key(key), value);
-        return this;
-    }
-
-    public ItemBuilder addNBTTagList(HashMap<NamespacedKey, String> list) {
-        unsafe.addAllNBTTagList(list);
-        return this;
-    }
-
     public ItemBuilder setProtected() {
         unsafe.addNBTTag(key("protected"), "true");
         return this;
@@ -102,6 +90,21 @@ public class ItemBuilder {
 
     public ItemBuilder ability(String ability) {
         unsafe.addNBTTag(key("ability"), ability);
+        return this;
+    }
+
+    public ItemBuilder damage(short damage) {
+        unsafe.addNBTTag(key("damage"), String.valueOf(damage));
+        return this;
+    }
+
+    public ItemBuilder damageBonus(short damage) {
+        unsafe.addNBTTag(key("damagebonus"), String.valueOf(damage));
+        return this;
+    }
+
+    public ItemBuilder abilityBonus(short damage) {
+        unsafe.addNBTTag(key("abilitybonus"), String.valueOf(damage));
         return this;
     }
 
@@ -133,11 +136,6 @@ public class ItemBuilder {
 
     public ItemBuilder id(String id) {
         this.localizedName = id;
-        return this;
-    }
-
-    public ItemBuilder durability(short damage) {
-        this.durability = damage;
         return this;
     }
 
@@ -189,7 +187,6 @@ public class ItemBuilder {
     public ItemStack build() {
         item.setType(material);
         item.setAmount(amount);
-        item.setDurability(durability);
         meta = item.getItemMeta();
         if (data != null)
             item.setData(data);
