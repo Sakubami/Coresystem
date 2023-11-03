@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>net.haraxx</groupId>
-    <artifactId>haraxx-coresystem</artifactId>
-    <version>1.1.2-SNAPSHOT</version>
+    <artifactId>HaraxxCore</artifactId>
+    <version>1.1.4</version>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>

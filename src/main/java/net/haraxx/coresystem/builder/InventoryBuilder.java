@@ -1,6 +1,6 @@
-package net.haraxx.coresystem.plugins.rpg.guis;
+package net.haraxx.coresystem.builder;
 
-import net.haraxx.coresystem.plugins.rpg.item.ItemBuilder;
+import net.haraxx.coresystem.builder.item.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -27,9 +27,9 @@ public class InventoryBuilder {
 
     public InventoryBuilder buildBottomRow() {
         for (int i = inventory.getSize()-9; i < inventory.getSize(); i++) {
-            inventory.setItem(i, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE, "§0").build());   //TODO REPLACE ITEM PLS
+            inventory.setItem(i, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE, "§0").build());
         }
-        inventory.setItem(inventory.getSize()-5, new ItemBuilder(Material.BARRIER, "§cSchließen").addNBTTag("protected", "true").build());  //TODO REPLACE ITEM PLS
+        inventory.setItem(inventory.getSize()-5, new ItemBuilder(Material.BARRIER, "§cSchließen").addNBTTag("protected", "true").build());
         return this;
     }
 
@@ -96,32 +96,5 @@ public class InventoryBuilder {
     public Inventory build() {
         return inventory;
     }
-
-    /*
-    public Inventory inventoryPrepare(int size, String title) {
-        Inventory inv = Bukkit.createInventory(null, size, title);
-
-        for (int i = 0; i < inv.getSize(); i++) {
-            inv.setItem(i, ItemCtrl.getItem(Material.LIGHT_GRAY_STAINED_GLASS_PANE,"§0", 103, null , null , null));
-        }
-
-        for (int i = inv.getSize()-9; i < inv.getSize(); i++) {
-            inv.setItem(i, ItemCtrl.getItem(Material.GRAY_STAINED_GLASS_PANE,"§0", 103, null , null , null));
-        }
-        inv.setItem(inv.getSize()-5, ItemCtrl.getItem(Material.RED_STAINED_GLASS_PANE,"§cSchließen", 104, null , null , null));
-        return inv;
-    }
-
-    public Inventory inventoryPrepareEmpty(int size, String title) {
-        Inventory inv = Bukkit.createInventory(null, size, title);
-
-        for (int i = inv.getSize()-9; i < inv.getSize(); i++) {
-            inv.setItem(i, ItemCtrl.getItem(Material.GRAY_STAINED_GLASS_PANE,"§0", 103, null , null , null));
-        }
-        inv.setItem(inv.getSize()-5, ItemCtrl.getItem(Material.RED_STAINED_GLASS_PANE,"§cSchließen", 104, null , null , null));
-        return inv;
-    }
-
-     */
 
 }

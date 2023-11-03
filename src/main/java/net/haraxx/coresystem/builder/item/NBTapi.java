@@ -1,4 +1,4 @@
-package net.haraxx.coresystem.plugins.rpg.item;
+package net.haraxx.coresystem.builder.item;
 
 import net.haraxx.coresystem.CoreSystem;
 import org.bukkit.NamespacedKey;
@@ -6,9 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 
 public class NBTapi {
 
@@ -40,33 +38,15 @@ public class NBTapi {
 
     //
 
-    public String getNBTValueByItemStack(ItemStack item, String key) {
+    public String getNBTTagValue(ItemStack item, String key) {
         return item.getItemMeta().getPersistentDataContainer().get(key(key), PersistentDataType.STRING);
     }
 
-    public HashMap<NamespacedKey, String> getNBTTagsByItemStack(ItemStack item) {
+    public HashMap<NamespacedKey, String> getNBTTags(ItemStack item) {
         HashMap<NamespacedKey, String> list = new HashMap<>();
-        for (NamespacedKey keySet: item.getItemMeta().getPersistentDataContainer().getKeys()) {
-            list.put(keySet, item.getItemMeta().getPersistentDataContainer().get(keySet, PersistentDataType.STRING));
+        for (NamespacedKey key: item.getItemMeta().getPersistentDataContainer().getKeys()) {
+            list.put(key, item.getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.STRING));
         }
         return list;
-    }
-
-    public boolean isProtected(ItemStack item) {
-        if (getNBTValueByItemStack(item, "protected") != null)
-            return Boolean.parseBoolean(getNBTValueByItemStack(item, "protected"));
-        return false;
-    }
-
-    public String getAbility(ItemStack item) {
-        return getNBTValueByItemStack(item, "ability");
-    }
-
-    public String getRarity(ItemStack item) {
-        return getNBTValueByItemStack(item, "rarity");
-    }
-
-    public String getItemClass(ItemStack item) {
-        return getNBTValueByItemStack(item, "class");
     }
 }

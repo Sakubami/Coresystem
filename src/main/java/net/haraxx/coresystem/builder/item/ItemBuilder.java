@@ -1,8 +1,7 @@
-package net.haraxx.coresystem.plugins.rpg.item;
+package net.haraxx.coresystem.builder.item;
 
 import net.haraxx.coresystem.CoreSystem;
 import net.haraxx.coresystem.builder.Chat;
-import net.haraxx.coresystem.plugins.rpg.abilities.Abilities;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -27,12 +26,6 @@ public class ItemBuilder {
     private List<String> lore = new ArrayList<>();
     private List<ItemFlag> flags = new ArrayList<>();
     private String localizedName;
-    private ItemMeta NBTmeta;
-
-    private String itemClass; //TODO replace with NBT tag later on to remove invisible lore
-    private String ability; //TODO replace with NBT tag later on to remove invisible lore
-    private boolean isProtected = false; //TODO replace with NBT tag later on to remove invisible lore
-
     private boolean isGlowing = false;
 
     private final NBTapi nbtData = new NBTapi();
@@ -96,18 +89,13 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder addNBTTagList(HashMap<String, String> value) {
-        HashMap <NamespacedKey, String> list = new HashMap<>();
-        for (String str: value.keySet()) {
-            list.put(key(str), value.get(str));
-        }
+    public ItemBuilder addNBTTagList(HashMap<NamespacedKey, String> list) {
         nbtData.addAllNBTTagList(list);
         return this;
     }
 
-
-    public ItemBuilder setProtected(boolean value) {
-        nbtData.addNBTTag(key("protected"), String.valueOf(value));
+    public ItemBuilder setProtected() {
+        nbtData.addNBTTag(key("protected"), "true");
         return this;
     }
 
@@ -139,6 +127,11 @@ public class ItemBuilder {
 
     public ItemBuilder data(MaterialData data) {
         this.data = data;
+        return this;
+    }
+
+    public ItemBuilder id(String id) {
+        this.localizedName = id;
         return this;
     }
 
@@ -211,6 +204,10 @@ public class ItemBuilder {
             for (ItemFlag f : flags) {
                 meta.addItemFlags(f);
             }
+        }
+        if (isGlowing) {
+            meta.addEnchant(Enchantment.CHANNELING, 1, true);
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         }
         meta.setLocalizedName(localizedName);
         meta = nbtData.parseAllNBTTags(meta);

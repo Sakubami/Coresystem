@@ -1,7 +1,7 @@
 package net.haraxx.coresystem.plugins.rpg.abilities.abilities;
 
 import net.haraxx.coresystem.CoreSystem;
-import net.haraxx.coresystem.plugins.rpg.item.ItemBuilder;
+import net.haraxx.coresystem.builder.item.ItemBuilder;
 import net.haraxx.coresystem.plugins.rpg.abilities.AbilityRunner;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
