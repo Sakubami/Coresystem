@@ -29,6 +29,7 @@ public class ItemBuilder {
     private boolean isGlowing = false;
 
     private final NBTapi nbtData = new NBTapi();
+    private final NBTapi.Unsafe unsafe = nbtData.getUnsafe();
     private NamespacedKey key(String key) { return new NamespacedKey(CoreSystem.getInstance(), key); }
 
     public ItemBuilder(Material material) {
@@ -73,7 +74,7 @@ public class ItemBuilder {
         if (item.hasItemMeta())
             this.flags.addAll(item.getItemMeta().getItemFlags());
         if (item.hasItemMeta())
-            nbtData.extractNBTData(meta);
+            unsafe.extractNBTData(meta);
     }
 
     public ItemBuilder(FileConfiguration cfg, String path) {
@@ -85,38 +86,38 @@ public class ItemBuilder {
     }
 
     public ItemBuilder addNBTTag(String key, String value) {
-        nbtData.addNBTTag(key(key), value);
+        unsafe.addNBTTag(key(key), value);
         return this;
     }
 
     public ItemBuilder addNBTTagList(HashMap<NamespacedKey, String> list) {
-        nbtData.addAllNBTTagList(list);
+        unsafe.addAllNBTTagList(list);
         return this;
     }
 
     public ItemBuilder setProtected() {
-        nbtData.addNBTTag(key("protected"), "true");
+        unsafe.addNBTTag(key("protected"), "true");
         return this;
     }
 
     public ItemBuilder ability(String ability) {
-        nbtData.addNBTTag(key("ability"), ability);
+        unsafe.addNBTTag(key("ability"), ability);
         return this;
     }
 
     public ItemBuilder itemClass(String itemClass) {
         List<String> classes = Arrays.asList("BERSERK", "MAGE", "DEFAULT");
         if (classes.contains(itemClass.toUpperCase())) {
-            nbtData.addNBTTag(key("class"), itemClass);
-        } else nbtData.addNBTTag(key("class"), "DEFAULT");
+            unsafe.addNBTTag(key("class"), itemClass);
+        } else unsafe.addNBTTag(key("class"), "DEFAULT");
         return this;
     }
 
     public ItemBuilder rarity(String rarity) {
         List<String> rarities = Arrays.asList("DIVINE", "MYTHIC", "LEGENDARY", "EPIC", "RARE", "UNCOMMON", "COMMON");
         if (rarities.contains(rarity.toUpperCase())) {
-            nbtData.addNBTTag(key("rarity"), rarity);
-        } else nbtData.addNBTTag(key("rarity"), "COMMON");
+            unsafe.addNBTTag(key("rarity"), rarity);
+        } else unsafe.addNBTTag(key("rarity"), "COMMON");
         return this;
     }
 
@@ -210,7 +211,7 @@ public class ItemBuilder {
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         }
         meta.setLocalizedName(localizedName);
-        meta = nbtData.parseAllNBTTags(meta);
+        meta = unsafe.parseAllNBTTags(meta);
         item.setItemMeta(meta);
         return item;
     }

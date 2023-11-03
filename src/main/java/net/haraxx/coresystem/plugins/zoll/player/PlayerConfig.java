@@ -1,12 +1,5 @@
-package net.haraxx.coresystem.player;
+package net.haraxx.coresystem.plugins.zoll.player;
 
-import net.haraxx.coresystem.plugins.zoll.LocationConfig;
-import org.bukkit.Location;
-import org.bukkit.block.BlockFace;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.UUID;
 

@@ -1,8 +1,10 @@
 package net.haraxx.coresystem.commands.subcommands;
 
 import net.haraxx.coresystem.builder.Chat;
+import net.haraxx.coresystem.builder.item.NBTapi;
 import net.haraxx.coresystem.commands.CommandRunner;
 import net.haraxx.coresystem.builder.item.ItemBuilder;
+import net.haraxx.coresystem.plugins.rpg.player.RPGPlayerConfig;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -14,7 +16,7 @@ import java.util.List;
 
 public class ItemCommand implements CommandRunner {
 
-    private final List<String> actions = List.of("addlore", "name");
+    private final List<String> actions = List.of("addlore", "name", "material", "level");
     //temporary until new ITEM API is here
 
     @Override
@@ -26,24 +28,20 @@ public class ItemCommand implements CommandRunner {
         try {
             switch (args[1]) {
                 case "addlore" -> {
-                    try {
-                        ItemStack newItem = new ItemBuilder(item).addToLore(args[2]).build();
-                        p.getInventory().setItemInMainHand(newItem);
-                    } catch (IndexOutOfBoundsException e) {
-                        p.sendMessage(Chat.format("pls use command properly idiot :v"));
-                    }
+                    ItemStack newItem = new ItemBuilder(item).addToLore(args[2]).build();
+                    p.getInventory().setItemInMainHand(newItem);
                 }
-
                 case "name" -> {
                     ItemStack newItem = new ItemBuilder(item).displayname(Chat.translate(args[2])).build();
                     p.getInventory().setItemInMainHand(newItem);
                 }
 
-                case "run" -> {
-                }
-
                 case "material" -> {
                     p.sendMessage("");
+                }
+
+                case "level" -> {
+                    RPGPlayerConfig.get().setLevel(p, 23);
                 }
             }
         } catch (IndexOutOfBoundsException e) {

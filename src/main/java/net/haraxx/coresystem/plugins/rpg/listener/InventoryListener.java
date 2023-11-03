@@ -10,12 +10,12 @@ import org.bukkit.inventory.ItemStack;
 public class InventoryListener implements Listener {
 
     @EventHandler
-    public void onInventoryInteract(InventoryClickEvent e) {
+    public void protectInventoryItems(InventoryClickEvent e) {
         Player p = e.getWhoClicked().getKiller();
         ItemStack item = e.getCursor();
         NBTapi NBT = new NBTapi();
         if (item != null) {
-            if (Boolean.parseBoolean(NBT.getNBTTagValue(item, "protected"))) {
+            if (NBT.getNBTTag(item, "protected") != null) {
                 e.setCancelled(true);
             }
         }

@@ -1,6 +1,7 @@
 package net.haraxx.coresystem.builder;
 
 import net.haraxx.coresystem.builder.item.ItemBuilder;
+import net.haraxx.coresystem.plugins.rpg.player.RPGPlayerConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;

@@ -10,35 +10,9 @@ import java.util.HashMap;
 
 public class NBTapi {
 
-    private final HashMap<NamespacedKey, String> list = new HashMap<>();
     private NamespacedKey key(String key) { return new NamespacedKey(CoreSystem.getInstance(), key); }
 
-    // dont use outside itembuilder
-
-    public void extractNBTData(ItemMeta meta) {
-        for (NamespacedKey key: meta.getPersistentDataContainer().getKeys()) {
-            list.put(key, meta.getPersistentDataContainer().get(key, PersistentDataType.STRING));
-        }
-    }
-
-    public void addAllNBTTagList(HashMap<NamespacedKey, String> list) {
-        this.list.putAll(list);
-    }
-
-    public void addNBTTag(NamespacedKey key, String value) {
-        this.list.put(key, value);
-    }
-
-    public ItemMeta parseAllNBTTags(ItemMeta meta) {
-        for (NamespacedKey key : this.list.keySet()) {
-            meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, this.list.get(key));
-        }
-        return meta;
-    }
-
-    //
-
-    public String getNBTTagValue(ItemStack item, String key) {
+    public String getNBTTag(ItemStack item, String key) {
         return item.getItemMeta().getPersistentDataContainer().get(key(key), PersistentDataType.STRING);
     }
 
@@ -48,5 +22,33 @@ public class NBTapi {
             list.put(key, item.getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.STRING));
         }
         return list;
+    }
+
+    public Unsafe getUnsafe() {
+        return new Unsafe();
+    }
+
+    protected class Unsafe {
+        private final HashMap<NamespacedKey, String> list = new HashMap<>();
+        public void extractNBTData(ItemMeta meta) {
+            for (NamespacedKey key: meta.getPersistentDataContainer().getKeys()) {
+                list.put(key, meta.getPersistentDataContainer().get(key, PersistentDataType.STRING));
+            }
+        }
+
+        public void addAllNBTTagList(HashMap<NamespacedKey, String> list) {
+            this.list.putAll(list);
+        }
+
+        public void addNBTTag(NamespacedKey key, String value) {
+            this.list.put(key, value);
+        }
+
+        public ItemMeta parseAllNBTTags(ItemMeta meta) {
+            for (NamespacedKey key : this.list.keySet()) {
+                meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, this.list.get(key));
+            }
+            return meta;
+        }
     }
 }
