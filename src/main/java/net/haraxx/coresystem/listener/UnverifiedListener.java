@@ -4,6 +4,7 @@ import net.haraxx.coresystem.permissions.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class UnverifiedListener implements Listener {
@@ -18,10 +19,9 @@ public class UnverifiedListener implements Listener {
     }
 
     @EventHandler
-    public void onItemPickup(AsyncPlayerChatEvent e) {
-        Player p = e.getPlayer();
-        if(!Utils.isVerified(p)) {
-            e.setCancelled(true);
-        }
+    public void onItemPickup(EntityPickupItemEvent e) {
+        if (e.getEntity() instanceof Player p)
+            if(!Utils.isVerified(p))
+                e.setCancelled(true);
     }
 }

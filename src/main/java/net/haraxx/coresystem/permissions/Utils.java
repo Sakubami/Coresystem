@@ -13,6 +13,6 @@ public class Utils {
     }
 
     public static boolean isVerified(Player p) {
-        return !p.hasPermission("group.unverified");
+        return !p.hasPermission("group.Unverified") || getDefaultPerms(p);
     }
 }

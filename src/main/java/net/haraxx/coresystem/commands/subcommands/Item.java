@@ -48,7 +48,7 @@ public class Item implements CommandRunner {
             } catch (IndexOutOfBoundsException e) {
                 p.sendMessage(Chat.format("pls use command properly idiot :v"));
             }
-        }
+        } else  p.sendMessage(Chat.format("du hast nicht die nötigen §6Rechte §7um den §6Command §7auszuführen"));
     }
 
     @Override

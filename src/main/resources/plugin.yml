@@ -1,8 +1,8 @@
 name: HaraxxCore
-version: 1.4.1
+version: 1.4.3
 main: net.haraxx.coresystem.CoreSystem
 api-version: 1.18
-authors: [ Sakubami, Gold.ly ]
+authors: [ sakubami, Gero ]
 description: CoreSystem for the Haraxx Network, Copyright Haraxx 2023 (C)
 website: Haraxx.net
 depend:

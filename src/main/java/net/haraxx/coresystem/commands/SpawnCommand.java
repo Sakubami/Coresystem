@@ -14,11 +14,10 @@ public class SpawnCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (command.getName().equalsIgnoreCase("spawn")) {
             Player player = (Player) commandSender;
-            if (player.getWorld().getName().equalsIgnoreCase("rom"))
-                if (Utils.isVerified(player)) {
-                    player.teleport(WorldSpawnConfig.get().getWorldSpawnLocation());
-                    player.sendMessage(Chat.format("Teleporting..."));
-                }
+            if (Utils.isVerified(player)) {
+                player.teleport(WorldSpawnConfig.get().getWorldSpawnLocation());
+                player.sendMessage(Chat.format("Teleporting..."));
+            }
         }
         return false;
     }

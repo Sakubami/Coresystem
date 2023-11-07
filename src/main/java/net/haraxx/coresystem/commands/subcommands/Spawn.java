@@ -30,7 +30,7 @@ public class Spawn implements CommandRunner {
                     }
                 }
             }
-        }
+        } else  p.sendMessage(Chat.format("du hast nicht die nötigen §6Rechte §7um den §6Command §7auszuführen"));
     }
 
     @Override

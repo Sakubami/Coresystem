@@ -7,6 +7,7 @@ import net.haraxx.coresystem.commands.subcommands.Unverify;
 import net.haraxx.coresystem.commands.subcommands.Verify;
 import net.haraxx.coresystem.listener.PlaceStuffIdk;
 import net.haraxx.coresystem.commands.subcommands.Item;
+import net.haraxx.coresystem.listener.UnverifiedListener;
 import net.haraxx.coresystem.plugins.rpg.player.RPGPlayerConfig;
 import net.haraxx.coresystem.listener.PlayerSpawn;
 import net.haraxx.coresystem.configs.WorldSpawnConfig;
@@ -36,6 +37,7 @@ public final class CoreSystem extends JavaPlugin {
             //listener
             Bukkit.getPluginManager().registerEvents(new PlaceStuffIdk(), this);
             Bukkit.getPluginManager().registerEvents(new PlayerSpawn(), this);
+            Bukkit.getPluginManager().registerEvents(new UnverifiedListener(), this);
 
             //commands
             //init core command
