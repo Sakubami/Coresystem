@@ -1,4 +1,4 @@
-package net.haraxx.coresystem.commands;
+package net.haraxx.coresystem.permissions;
 
 import org.bukkit.entity.Player;
 
@@ -10,5 +10,9 @@ public class Utils {
 
     public static boolean isSupporter(Player p) {
         return p.hasPermission("group.supporter") || p.isOp() || getDefaultPerms(p);
+    }
+
+    public static boolean isVerified(Player p) {
+        return !p.hasPermission("group.unverified");
     }
 }

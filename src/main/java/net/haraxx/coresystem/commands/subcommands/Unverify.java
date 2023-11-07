@@ -2,9 +2,8 @@ package net.haraxx.coresystem.commands.subcommands;
 
 import net.haraxx.coresystem.builder.Chat;
 import net.haraxx.coresystem.commands.CommandRunner;
-import net.haraxx.coresystem.commands.Utils;
-import net.haraxx.coresystem.plugins.spawning.NewPlayerConfig;
-import net.haraxx.coresystem.plugins.spawning.WorldSpawnConfig;
+import net.haraxx.coresystem.permissions.Utils;
+import net.haraxx.coresystem.configs.WorldSpawnConfig;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
@@ -27,9 +26,6 @@ public class Unverify implements CommandRunner {
             if (Bukkit.getPlayer(args[1]) != null) {
                 Player target = Bukkit.getPlayer(args[1]);
                 if (Utils.getDefaultPerms(p)) {
-
-                    NewPlayerConfig.get().addNewPlayer(target);
-
                     User user = api.getUserManager().getUser(target.getUniqueId());
                     user.data().remove(Node.builder("group.default").build());
                     user.data().add(Node.builder("group.unverified").build());

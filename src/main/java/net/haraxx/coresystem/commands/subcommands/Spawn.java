@@ -2,8 +2,8 @@ package net.haraxx.coresystem.commands.subcommands;
 
 import net.haraxx.coresystem.builder.Chat;
 import net.haraxx.coresystem.commands.CommandRunner;
-import net.haraxx.coresystem.commands.Utils;
-import net.haraxx.coresystem.plugins.spawning.WorldSpawnConfig;
+import net.haraxx.coresystem.permissions.Utils;
+import net.haraxx.coresystem.configs.WorldSpawnConfig;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

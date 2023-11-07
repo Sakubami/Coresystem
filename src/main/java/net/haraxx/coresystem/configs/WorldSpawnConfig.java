@@ -1,4 +1,4 @@
-package net.haraxx.coresystem.plugins.spawning;
+package net.haraxx.coresystem.configs;
 
 import net.haraxx.coresystem.CoreSystem;
 import org.bukkit.Location;

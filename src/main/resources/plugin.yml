@@ -1,5 +1,5 @@
 name: HaraxxCore
-version: 1.3.4
+version: 1.3.6
 main: net.haraxx.coresystem.CoreSystem
 api-version: 1.18
 authors: [ Sakubami, Gold.ly ]
@@ -14,3 +14,5 @@ commands:
     aliases:
       - hc
       - hcore
+  spawn:
+    description: sends player to spawn

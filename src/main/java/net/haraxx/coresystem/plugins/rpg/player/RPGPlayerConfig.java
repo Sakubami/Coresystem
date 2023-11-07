@@ -23,16 +23,18 @@ public class RPGPlayerConfig {
         private double health;
         private double defense;
         private double strength;
+        private double critDamage;
 
         //classes
         private int class_RDM;
 
-        public RPGPlayer(UUID uuid, int level, double health, double defense, double strength, int class_RDM) {
+        public RPGPlayer(UUID uuid, int level, double health, double defense, double strength, double critDamage,  int class_RDM) {
             this.uuid = uuid;
             this.level = level;
             this.health = health;
             this.defense = defense;
             this.strength = strength;
+            this.critDamage = critDamage;
             this.class_RDM = class_RDM;
         }
 
@@ -41,12 +43,14 @@ public class RPGPlayerConfig {
         public double getHealth() { return health; }
         public double getDefense() { return defense; }
         public double getStrength() { return strength; }
+        public double getCritDamage() { return critDamage; }
         public int getRDMLevel() { return class_RDM; }
 
         public void setLevel(int level) { this.level = level; }
         public void setHealth(double health) { this.health = health; }
         public void setDefense(double defense) { this.defense = defense; }
         public void setStrength(double strength) { this.strength = strength; }
+        public void setCritDamage(double critDamage) { this.critDamage = critDamage; }
         public void setRDMLevel(int level) { this.class_RDM = level; }
     }
 
@@ -72,9 +76,10 @@ public class RPGPlayerConfig {
             double health = config.getDouble("player."+i+".health");
             double defense = config.getDouble("player."+i+".defense");
             double strength = config.getDouble("player."+i+".strength");
+            double critDamage = config.getDouble("player." + i + ".critDamage");
             int RDMLevel = config.getInt("player."+i+".class_RDM");
 
-            rpgPlayers.add(new RPGPlayer(uuid, level, health, defense, strength, RDMLevel));
+            rpgPlayers.add(new RPGPlayer(uuid, level, health, defense, strength,critDamage, RDMLevel));
         }
     }
 
@@ -88,6 +93,7 @@ public class RPGPlayerConfig {
             config.set("player."+i+".health", rpgPlayers.get(i).getHealth());
             config.set("player."+i+".defense", rpgPlayers.get(i).getDefense());
             config.set("player."+i+".strength", rpgPlayers.get(i).getStrength());
+            config.set("player."+i+".critDamage", rpgPlayers.get(i).getCritDamage());
             config.set("player."+i+".class_RDM", rpgPlayers.get(i).getRDMLevel());
         } try {
             config.save(new File(path));
@@ -95,7 +101,7 @@ public class RPGPlayerConfig {
     }
 
     public void addNewPlayer(Player p) {
-        rpgPlayers.add(new RPGPlayer(p.getUniqueId(), 1, 100, 0, 0, 1));
+        rpgPlayers.add(new RPGPlayer(p.getUniqueId(), 1, 100, 0, 0, 0, 1));
         savePlayers();
     }
 
@@ -124,6 +130,10 @@ public class RPGPlayerConfig {
         getRPGPlayer(player).setStrength(value);
     }
 
+    public void setCritDamage(Player player, double value) {
+        getRPGPlayer(player).setCritDamage(value);
+    }
+
     public void setRDMLevel(Player player, int value) {
         getRPGPlayer(player).setRDMLevel(value);
     }
@@ -143,6 +153,8 @@ public class RPGPlayerConfig {
     public double getStrength(Player player) {
         return getRPGPlayer(player).getStrength();
     }
+
+    public double getCritDamage(Player player) { return getRPGPlayer(player).getCritDamage(); }
 
     public int getRDMLevel(Player player) {
         return getRPGPlayer(player).getRDMLevel();
