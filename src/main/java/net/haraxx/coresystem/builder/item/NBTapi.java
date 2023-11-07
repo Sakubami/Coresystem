@@ -33,13 +33,13 @@ public class NBTapi {
     protected class Unsafe {
         private final HashMap<NamespacedKey, String> list = new HashMap<>();
 
-        public void extractNBTData(ItemMeta meta) {
+        public void readNBTData(ItemMeta meta) {
             for (NamespacedKey key: meta.getPersistentDataContainer().getKeys()) {
                 list.put(key, meta.getPersistentDataContainer().get(key, PersistentDataType.STRING));
             }
         }
 
-        public void addAllNBTTagList(HashMap<NamespacedKey, String> list) {
+        public void addNBTTags(HashMap<NamespacedKey, String> list) {
             this.list.putAll(list);
         }
 
@@ -47,7 +47,7 @@ public class NBTapi {
             this.list.put(key, value);
         }
 
-        public ItemMeta parseAllNBTTags(ItemMeta meta) {
+        public ItemMeta writeNBTData(ItemMeta meta) {
             for (NamespacedKey key : this.list.keySet()) {
                 meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, this.list.get(key));
             }

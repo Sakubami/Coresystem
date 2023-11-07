@@ -5,11 +5,9 @@ import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
-public class SearchPlayerCommand implements CommandRunner {
+public class SearchPlayer implements CommandRunner {
     @Override
-    public void runCommand(CommandSender exe, String[] args) {
-        
-    }
+    public void runCommand(CommandSender exe, String[] args) { }
 
     @Override
     public List<String> tabComplete(String[] args) {

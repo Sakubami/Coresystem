@@ -3,7 +3,7 @@ package net.haraxx.coresystem.plugins.zoll.player;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class PlayerConfig {
+public class ZollPlayerConfig {
 
     private static class PlayerEntry {
         private final String name;
@@ -27,7 +27,7 @@ public class PlayerConfig {
 
     private ArrayList<PlayerEntry> playerEntries;
 
-    public PlayerConfig() {
+    public ZollPlayerConfig() {
         playerEntries = new ArrayList<>();
     }
 
@@ -45,7 +45,7 @@ public class PlayerConfig {
             UUID owner = UUID.fromString(config.getString("stations."+i+".owner"));
             BlockFace dir = BlockFace.valueOf(config.getString("stations."+i+".direction"));
 
-            playerEntries.add(new PlayerConfig.PlayerEntry(loc, dir, owner));
+            playerEntries.add(new ZollPlayerConfig.PlayerEntry(loc, dir, owner));
         }
     }
 

@@ -72,7 +72,7 @@ public class ItemBuilder {
         if (item.hasItemMeta())
             this.flags.addAll(item.getItemMeta().getItemFlags());
         if (item.hasItemMeta())
-            unsafe.extractNBTData(meta);
+            unsafe.readNBTData(meta);
     }
 
     public ItemBuilder(FileConfiguration cfg, String path) {
@@ -208,7 +208,7 @@ public class ItemBuilder {
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         }
         meta.setLocalizedName(localizedName);
-        meta = unsafe.parseAllNBTTags(meta);
+        meta = unsafe.writeNBTData(meta);
         item.setItemMeta(meta);
         return item;
     }
