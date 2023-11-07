@@ -1,5 +1,5 @@
 name: HaraxxCore
-version: 1.3.6
+version: 1.4.1
 main: net.haraxx.coresystem.CoreSystem
 api-version: 1.18
 authors: [ Sakubami, Gold.ly ]
