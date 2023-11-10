@@ -1,11 +1,11 @@
 name: HaraxxCore
-version: 1.4.3
+version: 1.4.6
 main: net.haraxx.coresystem.CoreSystem
 api-version: 1.18
 authors: [ sakubami, Gero ]
 description: CoreSystem for the Haraxx Network, Copyright Haraxx 2023 (C)
 website: Haraxx.net
-depend:
+softdepend:
   - LuckPerms
 
 commands:
