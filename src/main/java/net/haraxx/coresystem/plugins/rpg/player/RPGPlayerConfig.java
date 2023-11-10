@@ -69,7 +69,7 @@ public class RPGPlayerConfig {
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(path));
 
         for (int i = 0; true; i++) {
-            if (!config.contains("stations." + i)) break;
+            if (!config.contains("player." + i)) break;
 
             UUID uuid = UUID.fromString(config.getString("player."+i+".uuid"));
             int level = config.getInt("player."+i+".level");
@@ -100,6 +100,27 @@ public class RPGPlayerConfig {
         } catch (Exception ignored) { }
     }
 
+    public void updatePlayer(Player p) {
+
+        FileConfiguration loadedConfig = YamlConfiguration.loadConfiguration(new File(path));
+        FileConfiguration config = new YamlConfiguration();
+
+        for (int i = 0; rpgPlayers.size() > i; i++) {
+
+            if (UUID.fromString(loadedConfig.getString("player."+i+".uuid")).equals(getRPGPlayer(p).getUUID())) {
+                config.set("player."+i+".uuid", rpgPlayers.get(i).getUUID());
+                config.set("player."+i+".level", rpgPlayers.get(i).getLevel());
+                config.set("player."+i+".health", rpgPlayers.get(i).getHealth());
+                config.set("player."+i+".defense", rpgPlayers.get(i).getDefense());
+                config.set("player."+i+".strength", rpgPlayers.get(i).getStrength());
+                config.set("player."+i+".critDamage", rpgPlayers.get(i).getCritDamage());
+                config.set("player."+i+".class_RDM", rpgPlayers.get(i).getRDMLevel());
+            } try {
+                config.save(new File(path));
+            } catch (Exception ignored) { }
+        }
+    }
+
     public void addNewPlayer(Player p) {
         rpgPlayers.add(new RPGPlayer(p.getUniqueId(), 1, 100, 0, 0, 0, 1));
         savePlayers();
@@ -116,26 +137,32 @@ public class RPGPlayerConfig {
 
     public void setLevel(Player player, int value) {
         getRPGPlayer(player).setLevel(value);
+        updatePlayer(player);
     }
 
     public void setHealth(Player player, double value) {
         getRPGPlayer(player).setHealth(value);
+        updatePlayer(player);
     }
 
     public void setDefense(Player player, double value) {
         getRPGPlayer(player).setDefense(value);
+        updatePlayer(player);
     }
 
     public void setStrength(Player player, double value) {
         getRPGPlayer(player).setStrength(value);
+        updatePlayer(player);
     }
 
     public void setCritDamage(Player player, double value) {
         getRPGPlayer(player).setCritDamage(value);
+        updatePlayer(player);
     }
 
     public void setRDMLevel(Player player, int value) {
         getRPGPlayer(player).setRDMLevel(value);
+        updatePlayer(player);
     }
 
     public int getLevel(Player player) {

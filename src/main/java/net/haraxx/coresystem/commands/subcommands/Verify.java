@@ -10,6 +10,7 @@ import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -24,11 +25,11 @@ public class Verify implements CommandRunner {
         if (args.length == 2) {
             if (Bukkit.getPlayer(args[1]) != null) {
                 Player target = Bukkit.getPlayer(args[1]);
-                if (Utils.getDefaultPerms(p)) {
+                if (Utils.isSupporter(p)) {
                     User user = api.getUserManager().getUser(target.getUniqueId());
+                    user.data().remove(Node.builder("group.unverified").build());
                     user.data().add(Node.builder("group.default").build());
                     user.data().add(Node.builder("group.i").build());
-                    user.data().remove(Node.builder("group.unverified").build());
                     api.getUserManager().saveUser(user);
 
                     target.teleport(WorldSpawnConfig.get().getWorldSpawnLocation());

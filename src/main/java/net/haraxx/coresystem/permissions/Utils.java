@@ -9,10 +9,18 @@ public class Utils {
     }
 
     public static boolean isSupporter(Player p) {
-        return p.hasPermission("group.supporter") || p.isOp() || getDefaultPerms(p);
+        return p.hasPermission("group.supporter") || getDefaultPerms(p);
     }
 
     public static boolean isVerified(Player p) {
-        return !p.hasPermission("group.Unverified") || getDefaultPerms(p);
+        if (p.isOp())
+            return true;
+       return !p.hasPermission("group.unverified");
+    }
+
+    public static boolean isNew(Player p) {
+        if (p.isOp())
+            return false;
+        return p.hasPermission("group.unverified");
     }
 }

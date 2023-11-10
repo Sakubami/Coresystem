@@ -12,7 +12,7 @@ public class UnverifiedListener implements Listener {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
         Player p = e.getPlayer();
-        if(!Utils.isVerified(p)) {
+        if(Utils.isNew(p)) {
             p.sendTitle("§4Unverifiziert", "§7Lies die §6Schilder!", 2,30 ,2);
             e.setCancelled(true);
         }
@@ -21,7 +21,7 @@ public class UnverifiedListener implements Listener {
     @EventHandler
     public void onItemPickup(EntityPickupItemEvent e) {
         if (e.getEntity() instanceof Player p)
-            if(!Utils.isVerified(p))
+            if(Utils.isNew(p))
                 e.setCancelled(true);
     }
 }
