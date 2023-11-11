@@ -41,11 +41,12 @@ public final class CoreSystem extends JavaPlugin {
 
             //register core subcommands
             CoreCommand coreCoreCommand = new CoreCommand();
-            coreCoreCommand.registerCoreSubCommand("item", new Item());
-            coreCoreCommand.registerCoreSubCommand("spawn", new Spawn());
-            coreCoreCommand.registerCoreSubCommand("verify", new Verify());
-            coreCoreCommand.registerCoreSubCommand("unverify", new Unverify());
-            coreCoreCommand.registerCoreSubCommand("rpg", new RPG());
+            coreCoreCommand.registerCoreSubCommand("item", new CMD_ITEM());
+            coreCoreCommand.registerCoreSubCommand("spawn", new CMD_SPAWN());
+            coreCoreCommand.registerCoreSubCommand("verify", new CMD_VERIFY());
+            coreCoreCommand.registerCoreSubCommand("unverify", new CMD_UNVERIFY());
+            coreCoreCommand.registerCoreSubCommand("rpg", new CMD_RPG());
+            coreCoreCommand.registerCoreSubCommand("player", new CMD_PLAYER());
 
             //register final command
             rawCoreCommand.setExecutor(coreCoreCommand);
@@ -60,7 +61,7 @@ public final class CoreSystem extends JavaPlugin {
             worldSpawnConfig = new WorldSpawnConfig();
 
             //saving stuff
-            RPGPlayerConfig.get().autoSave();
+            //RPGPlayerConfig.get().autoSave();
 
             this.getLogger().addHandler( new LogTracker().onlyExceptions() );
         } catch (Exception i) {

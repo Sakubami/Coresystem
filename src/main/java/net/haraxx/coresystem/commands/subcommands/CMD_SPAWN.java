@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import java.util.Collections;
 import java.util.List;
 
-public class Spawn implements CommandRunner {
+public class CMD_SPAWN implements CommandRunner {
 
     private final List<String> actions = List.of("setfirstspawn", "setwoldspawn");
 

@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
-public class SearchPlayer implements CommandRunner {
+public class CMD_SEARCHPLAYER implements CommandRunner {
     @Override
     public void runCommand(CommandSender exe, String[] args) { }
 

@@ -10,12 +10,11 @@ import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class Verify implements CommandRunner {
+public class CMD_VERIFY implements CommandRunner {
 
     LuckPerms api = LuckPermsProvider.get();
 

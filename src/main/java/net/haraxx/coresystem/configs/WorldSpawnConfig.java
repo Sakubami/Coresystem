@@ -20,17 +20,14 @@ public class WorldSpawnConfig {
 
     public void loadLocation() {
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(path));
-        if (config.getString("firstSpawn") != null) {
+        spawnLocation = new Location(Bukkit.getServer().getWorld("Rom"), 3246, 114, -9981);
+        worldSpawnLocation = new Location(Bukkit.getServer().getWorld("Rom"), 3246, 114, -9981);
+
+        if (config.getString("firstSpawn") != null)
             spawnLocation = stringToLoc(config.getString("firstSpawn"));
+        if (config.getString("worldSpawn") != null)
             worldSpawnLocation = stringToLoc(config.getString("worldSpawn"));
-            System.out.println("FOUND LOCATIONS");
-        } else {
-            spawnLocation = new Location(Bukkit.getServer().getWorld("test1"), 47, -50, 80);
-            worldSpawnLocation = new Location( Bukkit.getServer().getWorld( "test1" ), 3246, 114,  -9981);
-            System.out.println("DIDNT FOUND LOCATIONS");
-            System.out.println(spawnLocation);
-            saveLocations();
-        }
+        saveLocations();
     }
 
     public void saveLocations() {

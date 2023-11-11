@@ -30,7 +30,7 @@ public class PlayerSpawn implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        RPGPlayerConfig.get().addNewPlayer(p);
+        // RPGPlayerConfig.get().addNewPlayer(p);
 
         //ONLY ENABLE IF LOGINLOCATION IS BROKEN
         /*

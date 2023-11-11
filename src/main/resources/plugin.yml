@@ -1,5 +1,5 @@
 name: HaraxxCore
-version: 1.4.7.1
+version: '${project.version}'
 main: net.haraxx.coresystem.CoreSystem
 api-version: 1.18
 authors: [ sakubami, Gero ]

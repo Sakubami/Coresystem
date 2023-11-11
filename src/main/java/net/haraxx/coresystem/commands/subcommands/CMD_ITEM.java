@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 import java.util.stream.IntStream;
 
-public class Item implements CommandRunner {
+public class CMD_ITEM implements CommandRunner {
 
     LuckPerms api = LuckPermsProvider.get();
 

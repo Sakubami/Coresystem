@@ -6,7 +6,7 @@
 
     <groupId>net.haraxx</groupId>
     <artifactId>HaraxxCore</artifactId>
-    <version>1.4.7.1</version>
+    <version>1.4.9.0</version>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>

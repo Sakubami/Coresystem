@@ -1,6 +1,5 @@
 package net.haraxx.coresystem.commands.subcommands;
 
-import net.haraxx.coresystem.builder.Chat;
 import net.haraxx.coresystem.builder.item.ItemBuilder;
 import net.haraxx.coresystem.commands.CommandRunner;
 import net.haraxx.coresystem.permissions.Utils;
@@ -9,13 +8,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class RPG implements CommandRunner {
+public class CMD_RPG implements CommandRunner {
 
     private final List<String> actions = List.of("player", "item");
     private final List<String> actionsPlayer = List.of("info");

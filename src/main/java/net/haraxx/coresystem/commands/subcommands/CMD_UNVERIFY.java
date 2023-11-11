@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class Unverify implements CommandRunner {
+public class CMD_UNVERIFY implements CommandRunner {
 
     LuckPerms api = LuckPermsProvider.get();
 
