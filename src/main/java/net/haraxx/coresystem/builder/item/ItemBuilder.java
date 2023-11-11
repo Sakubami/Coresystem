@@ -26,9 +26,10 @@ public class ItemBuilder {
     private List<ItemFlag> flags = new ArrayList<>();
     private String localizedName;
     private boolean isGlowing = false;
+    private final NBT nbt = new NBT();
+    //private final NBTapi nbtData = new NBTapi();
 
-    private final NBTapi nbtData = new NBTapi();
-    private final NBTapi.Unsafe unsafe = nbtData.getUnsafe();
+    //private final NBTapi.Unsafe unsafe = nbtData.getUnsafe();
     private NamespacedKey key(String key) { return new NamespacedKey(CoreSystem.getInstance(), key); }
 
     public ItemBuilder(Material material) {
@@ -72,7 +73,7 @@ public class ItemBuilder {
         if (item.hasItemMeta())
             this.flags.addAll(item.getItemMeta().getItemFlags());
         if (item.hasItemMeta())
-            unsafe.readNBTData(meta);
+            nbt.from(meta::getPersistentDataContainer);
     }
 
     public ItemBuilder(FileConfiguration cfg, String path) {
@@ -84,11 +85,11 @@ public class ItemBuilder {
     }
 
     public ItemBuilder setProtected() {
-        unsafe.addNBTTag(key("protected"), "true");
-        return this;
+        //unsafe.addNBTTag(key("protected"), "true");
+        return nbt( "protected", "true" );
     }
 
-    public ItemBuilder ability(String ability) {
+    /*public ItemBuilder ability(String ability) {
         unsafe.addNBTTag(key("ability"), ability);
         return this;
     }
@@ -121,6 +122,16 @@ public class ItemBuilder {
         if (rarities.contains(rarity.toUpperCase())) {
             unsafe.addNBTTag(key("rarity"), rarity);
         } else unsafe.addNBTTag(key("rarity"), "COMMON");
+        return this;
+    }*/
+
+    public <T> ItemBuilder nbt(String tag, Class<T> clazz, T value) {
+        nbt.setTag( tag, clazz, value );
+        return this;
+    }
+
+    public ItemBuilder nbt(String tag, String value) {
+        nbt.setTag( tag, String.class, value );
         return this;
     }
 
@@ -169,7 +180,7 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder setLore(ArrayList<String> lore) {
+    public ItemBuilder setLore(List<String> lore) {
         this.lore = Chat.translate(lore);
         return this;
     }
@@ -208,7 +219,7 @@ public class ItemBuilder {
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         }
         meta.setLocalizedName(localizedName);
-        meta = unsafe.writeNBTData(meta);
+        nbt.apply(meta::getPersistentDataContainer);
         item.setItemMeta(meta);
         return item;
     }

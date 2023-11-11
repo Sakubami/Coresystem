@@ -2,7 +2,7 @@ package net.haraxx.coresystem.builder;
 
 import org.bukkit.ChatColor;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Chat {
 
@@ -14,7 +14,7 @@ public class Chat {
         return ChatColor.translateAlternateColorCodes('&', input);
     }
 
-    public static ArrayList<String> translate(ArrayList<String> input) {
+    public static List<String> translate( List<String> input) {
         for (String line : input) {
             ChatColor.translateAlternateColorCodes('&', line);
         }
