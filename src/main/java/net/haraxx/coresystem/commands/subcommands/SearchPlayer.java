@@ -10,7 +10,7 @@ public class SearchPlayer implements CommandRunner {
     public void runCommand(CommandSender exe, String[] args) { }
 
     @Override
-    public List<String> tabComplete(String[] args) {
+    public List<String> tabComplete(CommandSender sender, String[] args) {
         return null;
     }
 }

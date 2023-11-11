@@ -179,6 +179,11 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder editLore(int index, String lore) {
+        this.lore.set(index, Chat.translate(lore));
+        return this;
+    }
+
     public ItemBuilder setGlowing() {
         this.isGlowing = true;
         return this;

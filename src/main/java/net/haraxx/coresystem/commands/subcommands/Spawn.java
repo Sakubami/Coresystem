@@ -34,7 +34,7 @@ public class Spawn implements CommandRunner {
     }
 
     @Override
-    public List<String> tabComplete(String[] args) {
+    public List<String> tabComplete(CommandSender sender, String[] args) {
         if (args.length == 2) {
             return actions.stream().filter(action -> action.startsWith(args[1])).toList();
         }

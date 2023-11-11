@@ -2,11 +2,8 @@ package net.haraxx.coresystem;
 
 import net.haraxx.coresystem.commands.CoreCommand;
 import net.haraxx.coresystem.commands.SpawnCommand;
-import net.haraxx.coresystem.commands.subcommands.Spawn;
-import net.haraxx.coresystem.commands.subcommands.Unverify;
-import net.haraxx.coresystem.commands.subcommands.Verify;
+import net.haraxx.coresystem.commands.subcommands.*;
 import net.haraxx.coresystem.listener.PlaceStuffIdk;
-import net.haraxx.coresystem.commands.subcommands.Item;
 import net.haraxx.coresystem.listener.UnverifiedListener;
 import net.haraxx.coresystem.plugins.rpg.player.RPGPlayerConfig;
 import net.haraxx.coresystem.listener.PlayerSpawn;
@@ -32,7 +29,6 @@ public final class CoreSystem extends JavaPlugin {
             instance = this;
 
             //initiate Internal stuff
-            //init player
 
             //listener
             Bukkit.getPluginManager().registerEvents(new PlaceStuffIdk(), this);
@@ -49,6 +45,7 @@ public final class CoreSystem extends JavaPlugin {
             coreCoreCommand.registerCoreSubCommand("spawn", new Spawn());
             coreCoreCommand.registerCoreSubCommand("verify", new Verify());
             coreCoreCommand.registerCoreSubCommand("unverify", new Unverify());
+            coreCoreCommand.registerCoreSubCommand("rpg", new RPG());
 
             //register final command
             rawCoreCommand.setExecutor(coreCoreCommand);
@@ -62,6 +59,10 @@ public final class CoreSystem extends JavaPlugin {
             rpgPlayerConfig = new RPGPlayerConfig();
             worldSpawnConfig = new WorldSpawnConfig();
 
+            //saving stuff
+            RPGPlayerConfig.get().autoSave();
+
+            this.getLogger().addHandler( new LogTracker().onlyExceptions() );
         } catch (Exception i) {
             i.printStackTrace();
         }

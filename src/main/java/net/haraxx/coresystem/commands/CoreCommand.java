@@ -43,7 +43,7 @@ public class CoreCommand implements CommandExecutor, TabCompleter {
             if (args.length > 1) {
                 CommandRunner commandRunner = commands.get(args[0].toLowerCase());
                 if (commandRunner != null)
-                    return commandRunner.tabComplete(args);
+                    return commandRunner.tabComplete(sender, args);
             } else if (args.length == 1) {
                 return commands.keySet().stream().filter(str -> str.startsWith(args[0].toLowerCase())).toList();
             }

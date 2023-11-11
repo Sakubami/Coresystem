@@ -3,17 +3,23 @@ package net.haraxx.coresystem.listener;
 import net.haraxx.coresystem.CoreSystem;
 import net.haraxx.coresystem.builder.Chat;
 import net.haraxx.coresystem.configs.WorldSpawnConfig;
+import net.haraxx.coresystem.plugins.rpg.player.RPGPlayerConfig;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+
+import java.io.File;
 
 public class PlayerSpawn implements Listener {
 
@@ -24,6 +30,7 @@ public class PlayerSpawn implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
+        RPGPlayerConfig.get().addNewPlayer(p);
 
         //ONLY ENABLE IF LOGINLOCATION IS BROKEN
         /*
@@ -54,11 +61,12 @@ public class PlayerSpawn implements Listener {
         }
     }
 
-    //ONLY ENABLE IF LOGINLOCATION IS BROKEN
-    /*
+// ONLY ENABLE IF DISCONNECTING IS BROKEN
+        /*
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
+
         FileConfiguration config = new YamlConfiguration();
 
         config.set("location", p.getLocation());
@@ -66,6 +74,7 @@ public class PlayerSpawn implements Listener {
         try {
         config.save(new File(path(p.getUniqueId().toString())));
         } catch (Exception ignored) { }
+
     }
 */
 

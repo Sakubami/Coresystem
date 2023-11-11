@@ -40,7 +40,7 @@ public class Verify implements CommandRunner {
     }
 
     @Override
-    public List<String> tabComplete(String[] args) {
+    public List<String> tabComplete(CommandSender sender, String[] args) {
         return null;
     }
 }
