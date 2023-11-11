@@ -8,8 +8,8 @@ package net.haraxx.coresystem.item;
 public interface ItemEnchantment
 {
 
-    int getLevel();
+    int level();
 
-    ItemEnchantmentType getType();
+    ItemEnchantmentType type();
 
 }

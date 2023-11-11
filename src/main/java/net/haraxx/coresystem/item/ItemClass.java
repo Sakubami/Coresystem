@@ -8,8 +8,19 @@ package net.haraxx.coresystem.item;
 public enum ItemClass
 {
 
-    DEFAULT,
-    BERSERK,
-    MAGE;
+    DEFAULT("Alle Klassen"),
+    BERSERK("Nur Beserker"),
+    MAGE("Nur Magier");
 
+    private final String displayName;
+
+    ItemClass( String displayName )
+    {
+        this.displayName = displayName;
+    }
+
+    public String getDisplayName()
+    {
+        return displayName;
+    }
 }

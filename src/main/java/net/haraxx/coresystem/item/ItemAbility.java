@@ -8,6 +8,17 @@ package net.haraxx.coresystem.item;
 public enum ItemAbility
 {
 
-    NONE
+    NONE("Keine");
 
+    private final String displayName;
+
+    ItemAbility( String displayName )
+    {
+        this.displayName = displayName;
+    }
+
+    public String getDisplayName()
+    {
+        return displayName;
+    }
 }

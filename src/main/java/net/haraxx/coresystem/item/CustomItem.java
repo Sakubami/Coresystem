@@ -15,7 +15,7 @@ public interface CustomItem
 {
 
     /**
-     * Creates an {@link ItemStack} containing all information of this {@link CustomItem}
+     * Creates a new {@link ItemStack} containing all information of this {@link CustomItem}
      *
      * @return a bukkit {@link ItemStack}
      *
@@ -30,7 +30,7 @@ public interface CustomItem
      * @return the name of this {@link CustomItem}
      */
     @Nonnull
-    String getName();
+    String name();
 
     /**
      * The custom description of this {@link CustomItem}
@@ -38,7 +38,7 @@ public interface CustomItem
      * @return the description of this {@link CustomItem}. null, if this item does not have a description
      */
     @Nullable
-    String getDescription();
+    String description();
 
     /**
      * The protection should restrain the item from being removed from its slots
@@ -55,15 +55,18 @@ public interface CustomItem
      * @see ItemRarity
      */
     @Nonnull
-    ItemRarity getRarity();
+    ItemRarity rarity();
 
     /**
      * Whether the item has an ability. <br>
-     * The result of this method should be equivalent to <code>{@link #getAbility()} == {@link ItemAbility#NONE}</code>
+     * The result of this method should be equivalent to <code>{@link #ability()} == {@link ItemAbility#NONE}</code>
      *
      * @return true, if and only if this item has an ability. false otherwise
      */
-    boolean hasAbility();
+    default boolean hasAbility()
+    {
+        return ability() == ItemAbility.NONE;
+    }
 
     /**
      * The item's ability. if this item does not have an ability, it should return {@link ItemAbility#NONE}
@@ -73,7 +76,7 @@ public interface CustomItem
      * @see ItemAbility
      */
     @Nonnull
-    ItemAbility getAbility();
+    ItemAbility ability();
 
     /**
      * The {@link ItemClass} of this {@link CustomItem}. The itemClass restricts the usability by the players chosen rpg class.
@@ -83,7 +86,15 @@ public interface CustomItem
      * @see ItemClass
      */
     @Nonnull
-    ItemClass getItemClass();
+    ItemClass itemClass();
+
+    /**
+     * The minimum required class level to use this {@link CustomItem}. <br>
+     * A minimum required level of 0 indicates, that there is no requirement.
+     *
+     * @return the minimum required class level; 0 or greater
+     */
+    int classLevelRequirement();
 
     /**
      * Checks the presence of an {@link ItemEnchantment}.
@@ -95,13 +106,30 @@ public interface CustomItem
     boolean hasEnchantment( ItemEnchantmentType type );
 
     /**
-     * Gets all enchantments on this item. <br>
+     * Gets all {@link ItemEnchantment}s on this {@link CustomItem}. <br>
      * This method returns {@link Collections#emptyList()} if there are no enchantments
      *
      * @return all {@link ItemEnchantment}
      */
     @Nonnull
-    Set<ItemEnchantment> getEnchantments();
+    Set<ItemEnchantment> enchantments();
+
+    /**
+     * Checks the presence of an {@link ItemPassive}.
+     *
+     * @param type the {@link ItemPassiveType} of a potential {@link ItemPassive}
+     *
+     * @return true, if and only if this item has an {@link ItemPassive} of the given {@link ItemPassiveType}
+     */
+    boolean hasPassive( ItemPassiveType type );
+
+    /**
+     * Gets all {@link ItemPassive}s of this {@link CustomItem}. <br>
+     * This method returns {@link Collections#emptyList()} if there are no passives
+     *
+     * @return all {@link ItemPassive}s
+     */
+    Set<ItemPassive> passives();
 
     /**
      * Checks the presence of an {@link ItemAttribute}. <br>
@@ -111,7 +139,10 @@ public interface CustomItem
      *
      * @return true, if and only if this item has the {@link ItemAttribute}
      */
-    boolean hasAttribute( ItemAttribute attribute );
+    default boolean hasAttribute( ItemAttribute attribute )
+    {
+        return attributes().containsKey( attribute );
+    }
 
     /**
      * Gets the value associated with {@link ItemAttribute} of this item
@@ -120,7 +151,10 @@ public interface CustomItem
      *
      * @return the value of the attribute of this item. if the attribute is not set, it should return 0
      */
-    double getAttribute( ItemAttribute attribute );
+    default double getAttribute( ItemAttribute attribute )
+    {
+        return attributes().getOrDefault( attribute, 0.0 );
+    }
 
     /**
      * Gets all attributes associated with this item in a {@link HashMap}
@@ -128,6 +162,6 @@ public interface CustomItem
      * @return all attributes of this item
      */
     @Nonnull
-    HashMap<ItemAttribute, Double> getAttributes();
+    Map<ItemAttribute, Double> attributes();
 
 }
