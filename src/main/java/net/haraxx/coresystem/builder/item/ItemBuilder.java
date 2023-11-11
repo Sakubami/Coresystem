@@ -26,9 +26,7 @@ public class ItemBuilder {
     private List<ItemFlag> flags = new ArrayList<>();
     private String localizedName;
     private boolean isGlowing = false;
-
-    private final NBTapi nbtData = new NBTapi();
-    private final NBTapi.Unsafe unsafe = nbtData.getUnsafe();
+    private final NBT nbt = new NBT();
     private NamespacedKey key(String key) { return new NamespacedKey(CoreSystem.getInstance(), key); }
 
     public ItemBuilder(Material material) {
@@ -72,7 +70,7 @@ public class ItemBuilder {
         if (item.hasItemMeta())
             this.flags.addAll(item.getItemMeta().getItemFlags());
         if (item.hasItemMeta())
-            unsafe.readNBTData(meta);
+            nbt.from(meta::getPersistentDataContainer);
     }
 
     public ItemBuilder(FileConfiguration cfg, String path) {
@@ -83,44 +81,13 @@ public class ItemBuilder {
         cfg.set(path, builder.build());
     }
 
-    public ItemBuilder setProtected() {
-        unsafe.addNBTTag(key("protected"), "true");
+    public <T> ItemBuilder nbt(String tag, Class<T> clazz, T value) {
+        nbt.setTag( tag, clazz, value );
         return this;
     }
 
-    public ItemBuilder ability(String ability) {
-        unsafe.addNBTTag(key("ability"), ability);
-        return this;
-    }
-
-    public ItemBuilder damage(short damage) {
-        unsafe.addNBTTag(key("damage"), String.valueOf(damage));
-        return this;
-    }
-
-    public ItemBuilder damageBonus(short damage) {
-        unsafe.addNBTTag(key("damagebonus"), String.valueOf(damage));
-        return this;
-    }
-
-    public ItemBuilder abilityBonus(short damage) {
-        unsafe.addNBTTag(key("abilitybonus"), String.valueOf(damage));
-        return this;
-    }
-
-    public ItemBuilder itemClass(String itemClass) {
-        List<String> classes = Arrays.asList("BERSERK", "MAGE", "DEFAULT");
-        if (classes.contains(itemClass.toUpperCase())) {
-            unsafe.addNBTTag(key("class"), itemClass);
-        } else unsafe.addNBTTag(key("class"), "DEFAULT");
-        return this;
-    }
-
-    public ItemBuilder rarity(String rarity) {
-        List<String> rarities = Arrays.asList("DIVINE", "MYTHIC", "LEGENDARY", "EPIC", "RARE", "UNCOMMON", "COMMON");
-        if (rarities.contains(rarity.toUpperCase())) {
-            unsafe.addNBTTag(key("rarity"), rarity);
-        } else unsafe.addNBTTag(key("rarity"), "COMMON");
+    public ItemBuilder nbt(String tag, String value) {
+        nbt.setTag( tag, String.class, value );
         return this;
     }
 
@@ -169,7 +136,7 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder setLore(ArrayList<String> lore) {
+    public ItemBuilder setLore(List<String> lore) {
         this.lore = Chat.translate(lore);
         return this;
     }
@@ -213,7 +180,7 @@ public class ItemBuilder {
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         }
         meta.setLocalizedName(localizedName);
-        meta = unsafe.writeNBTData(meta);
+        nbt.apply(meta::getPersistentDataContainer);
         item.setItemMeta(meta);
         return item;
     }

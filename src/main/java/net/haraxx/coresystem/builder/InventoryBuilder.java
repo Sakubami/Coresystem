@@ -1,7 +1,6 @@
 package net.haraxx.coresystem.builder;
 
 import net.haraxx.coresystem.builder.item.ItemBuilder;
-import net.haraxx.coresystem.plugins.rpg.player.RPGPlayerConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -30,7 +29,7 @@ public class InventoryBuilder {
         for (int i = inventory.getSize()-9; i < inventory.getSize(); i++) {
             inventory.setItem(i, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE, "§0").build());
         }
-        inventory.setItem(inventory.getSize()-5, new ItemBuilder(Material.BARRIER, "§cSchließen").setProtected().build());
+        inventory.setItem(inventory.getSize()-5, new ItemBuilder(Material.BARRIER, "§cSchließen").nbt( "protected", "true" ).build());
         return this;
     }
 
