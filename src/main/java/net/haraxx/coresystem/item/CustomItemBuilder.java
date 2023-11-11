@@ -1,9 +1,13 @@
 package net.haraxx.coresystem.item;
 
 import net.haraxx.coresystem.builder.item.ItemBuilder;
+import net.haraxx.coresystem.builder.item.NBT;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.RoundingMode;
@@ -23,6 +27,7 @@ public class CustomItemBuilder
 {
 
     private static final String TEXT_ABILITY = "Fähigkeit:";
+    private static final String TEXT_LEVEL = "Level";
     private static final String TEXT_ABILITY_HINT = "RMT";
 
     private static final int TEXT_WIDTH_LIMIT = 30;
@@ -40,14 +45,15 @@ public class CustomItemBuilder
     private static final String NBT_PREFIX = "custom_item:";
 
     private static final String NBT_NAME = NBT_PREFIX + "name";
-    private static final String NBT_DESCRIPTION = NBT_PREFIX + "description";
+    private static final String NBT_ATTRIBUTES = NBT_PREFIX + "attributes";
     private static final String NBT_PROTECTION = NBT_PREFIX + "protect";
-    private static final String NBT_RARITY = NBT_PREFIX + "rarity";
+    private static final String NBT_ENCHANTMENTS = NBT_PREFIX + "enchantments";
+    private static final String NBT_PASSIVES = NBT_PREFIX + "passives";
+    private static final String NBT_ABILITY = NBT_PREFIX + "primary-ability";
+    private static final String NBT_DESCRIPTION = NBT_PREFIX + "description";
     private static final String NBT_CLASS = NBT_PREFIX + "class";
     private static final String NBT_CLASS_LEVEL_REQUIREMENT = NBT_PREFIX + "class-level-requirement";
-    private static final String NBT_ABILITY = NBT_PREFIX + "primary-ability";
-    private static final String NBT_ATTRIBUTES = NBT_PREFIX + "attributes";
-    private static final String NBT_ENCHANTMENTS = NBT_PREFIX + "enchantments";
+    private static final String NBT_RARITY = NBT_PREFIX + "rarity";
 
     //color coding
     private static final ChatColor CL_ATTRIBUTE_NAME = ChatColor.GRAY;
@@ -202,7 +208,6 @@ public class CustomItemBuilder
 
     public CustomItem build( Material material )
     {
-
         LoreBuilder loreBuilder = new LoreBuilder( TEXT_WIDTH_LIMIT );
         //offensive attributes first
         loreBuilder.add( attributes.entrySet().stream().filter( entry -> !entry.getKey().isStat() && entry.getValue() != 0 ),
@@ -224,22 +229,53 @@ public class CustomItemBuilder
             loreBuilder.add( CL_ABILITY + TEXT_ABILITY + " " + ability.getDisplayName() + " " + CL_ABILITY_HINT + TEXT_ABILITY_HINT );
         //add description lore
         loreBuilder.add( description, true, true );
-        //class restriction info
-        loreBuilder.add( CL_CLASS_RESTRICTION + itemClass.getDisplayName() );
-        List<String> lore = loreBuilder.build();
-        Supplier<ItemStack> itemStackSupplier = () ->
-        {
-            //create builder
-            ItemBuilder itemBuilder = new ItemBuilder( material )
-                    .displayname( rarity.getColor() + itemName )
-                    .setLore( lore );
-            //TODO add additional nbt stuff!!!!!
-            return itemBuilder.build();
-        };
+        //class restriction info and level requirement
+        loreBuilder.add( CL_CLASS_RESTRICTION + itemClass.getDisplayName() + ( minimumRequiredClassLevel > 0 ? "(" + TEXT_LEVEL + " " + minimumRequiredClassLevel + ")" : "" ) );
+        //item rarity
+        loreBuilder.add( rarity.getColor() + rarity.name() );
+        Supplier<ItemStack> itemStackSupplier = getItemStackSupplier( material, loreBuilder );
+
+        //extract sets
         Set<ItemEnchantment> itemEnchantments = enchantments.entrySet().stream().map( entry -> new ItemEnchantmentBase( entry.getKey(), entry.getValue() ) ).collect( Collectors.toSet() );
         Set<ItemPassive> itemPassives = passives.entrySet().stream().map( entry -> new ItemPassiveBase( entry.getKey(), entry.getValue() ) ).collect( Collectors.toSet() );
         return new CustomItemBase( itemName, description, itemProtection, rarity, ability, itemClass, minimumRequiredClassLevel,
                 EnumSet.copyOf( enchantments.keySet() ), itemEnchantments, EnumSet.copyOf( passives.keySet() ), itemPassives, Collections.unmodifiableMap( attributes ), itemStackSupplier );
+    }
+
+    @NotNull
+    private Supplier<ItemStack> getItemStackSupplier( Material material, LoreBuilder loreBuilder )
+    {
+        List<String> lore = loreBuilder.build();
+        return () ->
+        {
+            //create builder
+            ItemBuilder itemBuilder = new ItemBuilder( material )
+                    .displayname( rarity.getColor() + itemName )
+                    .setLore( lore )
+                    .nbt( NBT_NAME, itemName )
+                    .nbt( NBT_ABILITY, ability.name() )
+                    .nbt( NBT_CLASS, itemClass.name() )
+                    .nbt( NBT_RARITY, rarity.name() )
+                    .nbt( NBT_PROTECTION, Boolean.toString( itemProtection ) )
+                    .nbt( NBT_CLASS_LEVEL_REQUIREMENT, Integer.class, minimumRequiredClassLevel );
+            if ( description != null )
+                itemBuilder.nbt( NBT_DESCRIPTION, description );
+            ItemStack stack = itemBuilder.build();
+            //post build edits - meta should be non-null, since it's an already built item
+            ItemMeta meta = stack.getItemMeta();
+            PersistentDataContainer pdc = Objects.requireNonNull( meta ).getPersistentDataContainer();
+            PersistentDataContainer enchantsContainer = pdc.getAdapterContext().newPersistentDataContainer();
+            PersistentDataContainer passivesContainer = pdc.getAdapterContext().newPersistentDataContainer();
+            PersistentDataContainer attributesContainer = pdc.getAdapterContext().newPersistentDataContainer();
+            enchantments.forEach( (type, level) -> enchantsContainer.set( NBT.key( type.name() ), PersistentDataType.INTEGER, level ) );
+            passives.forEach( (passive, value) -> passivesContainer.set( NBT.key( passive.name() ), PersistentDataType.DOUBLE, value ) );
+            attributes.forEach( (attr, value) -> attributesContainer.set( NBT.key( attr.name() ), PersistentDataType.DOUBLE, value ) );
+            pdc.set( NBT.key( NBT_ENCHANTMENTS ), PersistentDataType.TAG_CONTAINER, enchantsContainer );
+            pdc.set( NBT.key( NBT_PASSIVES ), PersistentDataType.TAG_CONTAINER, passivesContainer );
+            pdc.set( NBT.key( NBT_ATTRIBUTES ), PersistentDataType.TAG_CONTAINER, attributesContainer );
+            stack.setItemMeta( meta );
+            return stack;
+        };
     }
 
     private static class LoreBuilder

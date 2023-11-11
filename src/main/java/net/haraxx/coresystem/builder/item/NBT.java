@@ -46,7 +46,7 @@ public class NBT
         this.valueMap = new HashMap<>();
     }
 
-    private NamespacedKey key( String namespace )
+    public static NamespacedKey key( String namespace )
     {
         return new NamespacedKey( CoreSystem.getInstance(), namespace );
     }
