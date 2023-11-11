@@ -27,9 +27,6 @@ public class ItemBuilder {
     private String localizedName;
     private boolean isGlowing = false;
     private final NBT nbt = new NBT();
-    //private final NBTapi nbtData = new NBTapi();
-
-    //private final NBTapi.Unsafe unsafe = nbtData.getUnsafe();
     private NamespacedKey key(String key) { return new NamespacedKey(CoreSystem.getInstance(), key); }
 
     public ItemBuilder(Material material) {
@@ -83,47 +80,6 @@ public class ItemBuilder {
     public static void toConfig(FileConfiguration cfg, String path, ItemBuilder builder) {
         cfg.set(path, builder.build());
     }
-
-    public ItemBuilder setProtected() {
-        //unsafe.addNBTTag(key("protected"), "true");
-        return nbt( "protected", "true" );
-    }
-
-    /*public ItemBuilder ability(String ability) {
-        unsafe.addNBTTag(key("ability"), ability);
-        return this;
-    }
-
-    public ItemBuilder damage(short damage) {
-        unsafe.addNBTTag(key("damage"), String.valueOf(damage));
-        return this;
-    }
-
-    public ItemBuilder damageBonus(short damage) {
-        unsafe.addNBTTag(key("damagebonus"), String.valueOf(damage));
-        return this;
-    }
-
-    public ItemBuilder abilityBonus(short damage) {
-        unsafe.addNBTTag(key("abilitybonus"), String.valueOf(damage));
-        return this;
-    }
-
-    public ItemBuilder itemClass(String itemClass) {
-        List<String> classes = Arrays.asList("BERSERK", "MAGE", "DEFAULT");
-        if (classes.contains(itemClass.toUpperCase())) {
-            unsafe.addNBTTag(key("class"), itemClass);
-        } else unsafe.addNBTTag(key("class"), "DEFAULT");
-        return this;
-    }
-
-    public ItemBuilder rarity(String rarity) {
-        List<String> rarities = Arrays.asList("DIVINE", "MYTHIC", "LEGENDARY", "EPIC", "RARE", "UNCOMMON", "COMMON");
-        if (rarities.contains(rarity.toUpperCase())) {
-            unsafe.addNBTTag(key("rarity"), rarity);
-        } else unsafe.addNBTTag(key("rarity"), "COMMON");
-        return this;
-    }*/
 
     public <T> ItemBuilder nbt(String tag, Class<T> clazz, T value) {
         nbt.setTag( tag, clazz, value );
