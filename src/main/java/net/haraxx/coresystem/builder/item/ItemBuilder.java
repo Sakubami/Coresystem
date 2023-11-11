@@ -2,8 +2,7 @@ package net.haraxx.coresystem.builder.item;
 
 import net.haraxx.coresystem.CoreSystem;
 import net.haraxx.coresystem.builder.Chat;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -56,7 +55,7 @@ public class ItemBuilder {
     public ItemBuilder(ItemStack item) {
         this.item = item;
         if (item.hasItemMeta())
-            this.meta = item.getItemMeta();
+            this.meta = item.hasItemMeta() ? item.getItemMeta() : Bukkit.getItemFactory().getItemMeta(item.getType());
         this.material = item.getType();
         this.amount = item.getAmount();
         this.enchantments = item.getEnchantments();
