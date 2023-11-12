@@ -52,6 +52,19 @@ public final class CommandGroup implements ICommand
         this.parentSignature = "";
     }
 
+    public CommandGroup( PluginCommand command )
+    {
+        Objects.requireNonNull( command, "the given plugin-command is null" );
+        this.name = command.getName();
+        this.aliases = command.getAliases().toArray( new String[0] );
+        this.description = new ArrayList<>();
+        this.description.add( command.getDescription() );
+        this.permission = command.getPermission();
+        this.subCommands = new ArrayList<>();
+        this.commandNames = new HashSet<>();
+        this.parentSignature = "";
+    }
+
     public CommandGroup setAliases( String... aliases )
     {
         this.aliases = aliases;
@@ -80,7 +93,7 @@ public final class CommandGroup implements ICommand
         return this;
     }
 
-    public boolean registerCommand()
+    public boolean register()
     {
         PluginCommand pluginCommand = Bukkit.getPluginCommand( name );
         if ( pluginCommand == null ) return false;

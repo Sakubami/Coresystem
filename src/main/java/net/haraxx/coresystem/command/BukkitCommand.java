@@ -7,7 +7,7 @@ import java.util.*;
  * @version 12.11.2023
  * @since 12.11.2023
  */
-public abstract class SubCommand implements ICommand
+public abstract class BukkitCommand implements ICommand
 {
 
     private final String name;
@@ -17,7 +17,7 @@ public abstract class SubCommand implements ICommand
     private List<String> signature;
     private ArgumentRange range;
 
-    public SubCommand( String name, String... aliases )
+    public BukkitCommand( String name, String... aliases )
     {
         this.name = name;
         this.aliases = aliases;
