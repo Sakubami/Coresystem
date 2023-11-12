@@ -3,9 +3,11 @@ package net.haraxx.coresystem.message;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.*;
-import net.md_5.bungee.api.chat.hover.content.Content;
+import net.md_5.bungee.api.chat.hover.content.*;
 import org.bukkit.command.CommandSender;
+import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +23,23 @@ public class MessageBuilder
     private final List<TextComponent> lines;
     private TextComponent currentLine;
 
-    public MessageBuilder()
+    public static MessageBuilder create()
+    {
+        return new MessageBuilder();
+    }
+
+    public static MessageBuilder of( Messages messages )
+    {
+        return new MessageBuilder( messages );
+    }
+
+    private MessageBuilder()
     {
         this.lines = new ArrayList<>();
         this.currentLine = new TextComponent();
     }
 
-    public MessageBuilder( Messages messages )
+    private MessageBuilder( Messages messages )
     {
         this.lines = messages.lines;
         this.currentLine = new TextComponent();
@@ -171,6 +183,18 @@ public class MessageBuilder
         {
             component.setClickEvent( new ClickEvent( action, value ) );
             return this;
+        }
+
+        public MessageElementBuilder hoverItem( ItemStack stack )
+        {
+            Item item = new Item( stack.getType().getKey().toString(), stack.getAmount(),
+                    stack.getItemMeta() != null ? ItemTag.ofNbt( stack.getItemMeta().getAsString() ) : null );
+            return hover( HoverEvent.Action.SHOW_ITEM, item );
+        }
+
+        public MessageElementBuilder hoverEntity( org.bukkit.entity.Entity entity, @Nullable BaseComponent customName )
+        {
+            return hover( HoverEvent.Action.SHOW_ENTITY, new Entity( entity.getType().getKey().toString(), entity.getUniqueId().toString(), customName ) );
         }
 
         public MessageElementBuilder hover( HoverEvent.Action action, Content... contents )
