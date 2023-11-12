@@ -1,6 +1,6 @@
-package net.haraxx.coresystem.command;
+package net.haraxx.coresystem.api.command;
 
-import net.haraxx.coresystem.message.MessageBuilder;
+import net.haraxx.coresystem.api.message.MessageBuilder;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.*;
@@ -101,7 +101,7 @@ public final class CommandGroup implements ICommand
             this.onCommand( s, a );
             return true;
         } );
-        pluginCommand.setTabCompleter( ( s, c, l, a ) -> filterAndSort( a[a.length - 1], this.tabOptions( s, a ) ) );
+        pluginCommand.setTabCompleter( ( s, c, l, a ) -> filterAndSort( a[a.length - 1], this.tabOptions( s, a ).tabOptions() ) );
         return true;
     }
 
@@ -303,16 +303,16 @@ public final class CommandGroup implements ICommand
     }
 
     @Override
-    public List<String> tabOptions( CommandSender sender, String[] args )
+    public TabCompletion tabOptions( CommandSender sender, String[] args )
     {
         if ( args.length == 1 )
-            return new ArrayList<>( commandNames );
+            return () -> new ArrayList<>( commandNames );
         else if ( args.length > 1 )
         {
             ICommand command = getCommand( args[0] );
             if ( command != null ) return command.tabOptions( sender, cutArgs( args ) );
         }
-        return Collections.emptyList();
+        return TabCompletion.NONE;
     }
 
 }

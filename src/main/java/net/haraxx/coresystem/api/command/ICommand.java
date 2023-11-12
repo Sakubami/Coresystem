@@ -1,4 +1,4 @@
-package net.haraxx.coresystem.command;
+package net.haraxx.coresystem.api.command;
 
 import org.bukkit.command.CommandSender;
 
@@ -26,6 +26,6 @@ public interface ICommand
 
     void onCommand( CommandSender sender, String[] args );
 
-    List<String> tabOptions( CommandSender sender, String[] args );
+    TabCompletion tabOptions( CommandSender sender, String[] args );
 
 }

@@ -1,12 +1,10 @@
-package net.haraxx.coresystem.commands;
+package net.haraxx.coresystem.commands.old;
 
 import net.haraxx.coresystem.builder.Chat;
-import net.haraxx.coresystem.permissions.Utils;
 import net.haraxx.coresystem.configs.WorldSpawnConfig;
+import net.haraxx.coresystem.permissions.Utils;
 import org.bukkit.Location;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 

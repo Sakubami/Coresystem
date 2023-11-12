@@ -1,4 +1,4 @@
-package net.haraxx.coresystem.command;
+package net.haraxx.coresystem.api.command;
 
 /**
  * @author Juyas

@@ -1,16 +1,11 @@
-package net.haraxx.coresystem.commands;
+package net.haraxx.coresystem.commands.old;
 
 import net.haraxx.coresystem.builder.Chat;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class CoreCommand implements CommandExecutor, TabCompleter {
 

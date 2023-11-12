@@ -1,4 +1,4 @@
-package net.haraxx.coresystem.message;
+package net.haraxx.coresystem.api.message;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
