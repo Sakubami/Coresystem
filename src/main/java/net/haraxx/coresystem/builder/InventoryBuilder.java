@@ -12,9 +12,10 @@ public class InventoryBuilder {
 
     private final Inventory inventory;
     private final ItemStack filler = new ItemBuilder(Material.LIGHT_GRAY_STAINED_GLASS_PANE, "§0").build();
-    private int math(int math) {
-        if ((math * 9)> 54) math = 54;
-        return math * 9;
+    private int math(int rows) {
+        rows *= 9;
+        if (rows> 54) rows = 54;
+        return rows;
     }
 
     public InventoryBuilder(int rows) {
@@ -23,6 +24,11 @@ public class InventoryBuilder {
 
     public InventoryBuilder(int rows, String displayname) {
         this.inventory = Bukkit.createInventory(null, math(rows), displayname);
+    }
+
+    public InventoryBuilder setFunction(int slot, String function) {
+        inventory.getItem(slot).getItemMeta().setLocalizedName(function);
+        return this;
     }
 
     public InventoryBuilder buildBottomRow() {

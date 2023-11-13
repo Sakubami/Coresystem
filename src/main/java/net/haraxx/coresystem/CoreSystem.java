@@ -19,7 +19,6 @@ public final class CoreSystem extends JavaPlugin {
 
     private static CoreSystem instance;
 
-    private LocationConfig locationConfig;
     private RPGPlayerConfig rpgPlayerConfig;
     private WorldSpawnConfig worldSpawnConfig;
 
@@ -31,7 +30,6 @@ public final class CoreSystem extends JavaPlugin {
             //initiate Internal stuff
 
             //listener
-            Bukkit.getPluginManager().registerEvents(new PlaceStuffIdk(), this);
             Bukkit.getPluginManager().registerEvents(new PlayerSpawn(), this);
             Bukkit.getPluginManager().registerEvents(new UnverifiedListener(), this);
 
@@ -45,8 +43,8 @@ public final class CoreSystem extends JavaPlugin {
             coreCoreCommand.registerCoreSubCommand("spawn", new CMD_SPAWN());
             coreCoreCommand.registerCoreSubCommand("verify", new CMD_VERIFY());
             coreCoreCommand.registerCoreSubCommand("unverify", new CMD_UNVERIFY());
-            coreCoreCommand.registerCoreSubCommand("rpg", new CMD_RPG());
             coreCoreCommand.registerCoreSubCommand("player", new CMD_PLAYER());
+            coreCoreCommand.registerCoreSubCommand("rpg", new CMD_RPG());
 
             //register final command
             rawCoreCommand.setExecutor(coreCoreCommand);
@@ -56,8 +54,6 @@ public final class CoreSystem extends JavaPlugin {
             spawnCommand.setExecutor(new SpawnCommand());
 
             //init configs
-            locationConfig = new LocationConfig();
-            rpgPlayerConfig = new RPGPlayerConfig();
             worldSpawnConfig = new WorldSpawnConfig();
 
             //saving stuff
@@ -71,14 +67,11 @@ public final class CoreSystem extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        System.out.println(" » disabling [ Core ]");
     }
 
     public static CoreSystem getInstance() {
         return instance;
     }
 
-    public LocationConfig getLocationConfig() { return locationConfig; }
-    public RPGPlayerConfig getRPGPlayerConfig() { return rpgPlayerConfig; }
     public WorldSpawnConfig getWorldSpawnLocation() { return worldSpawnConfig; }
 }

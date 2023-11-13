@@ -4,6 +4,10 @@ import net.haraxx.coresystem.builder.Chat;
 import net.haraxx.coresystem.commands.CommandRunner;
 import net.haraxx.coresystem.configs.WorldSpawnConfig;
 import net.haraxx.coresystem.permissions.Utils;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.Node;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
@@ -13,6 +17,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class CMD_PLAYER implements CommandRunner {
+
+    LuckPerms api = LuckPermsProvider.get();
 
     @Override
     public void runCommand(CommandSender exe, String[] args) {
@@ -40,6 +46,7 @@ public class CMD_PLAYER implements CommandRunner {
                             }
                         }
                     }
+
                     if (args.length == 4) {
                         Player target = Bukkit.getPlayer(args[3]);
                         if (target != null) {
@@ -64,6 +71,31 @@ public class CMD_PLAYER implements CommandRunner {
                         } else { p.sendMessage(Chat.format("Spieler mit dem namen §6" + args[1] + " §7konnte nicht gefunden werden"));}
                     }
                 }
+
+                case "smurf" -> {
+                    if (args.length == 4) {
+                        Player target = Bukkit.getPlayer(args[3]);
+                        if (target != null) {
+                            User user = api.getUserManager().getUser(target.getUniqueId());
+                            user.data().remove(Node.builder("group.default").build());
+                            user.data().remove(Node.builder("group.unverified").build());
+                            user.data().remove(Node.builder("group.i").build());
+                            user.data().add(Node.builder("group.twink").build());
+                            api.getUserManager().saveUser(user);
+                        }
+                    }
+                }
+
+                case "es" -> {
+                    if (args.length == 4) {
+                        Player target = Bukkit.getPlayer(args[3]);
+                        if (target != null) {
+                            User user = api.getUserManager().getUser(target.getUniqueId());
+                            user.data().add(Node.builder("essentials.*").build());
+                            api.getUserManager().saveUser(user);
+                        }
+                    }
+                }
             }
         } else  p.sendMessage(Chat.format("du hast nicht die nötigen §6Rechte §7um den §6Command §7auszuführen"));
     }
@@ -71,19 +103,15 @@ public class CMD_PLAYER implements CommandRunner {
     @Override
     public List<String> tabComplete(CommandSender exe, String[] args) {
         if (args.length == 2) {
-            return List.of("gm");
+            return List.of("smurf");
         }
 
         if (args.length == 3) {
             switch (args[1]) {
-                case "gm" -> {
-                    return List.of("0", "1", "2", "3");
+                case "smurf", "es" -> {
+                    return null;
                 }
             }
-        }
-
-        if (args.length == 4) {
-            return null;
         }
 
         return Collections.emptyList();

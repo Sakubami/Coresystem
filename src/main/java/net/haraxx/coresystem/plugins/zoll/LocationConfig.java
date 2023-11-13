@@ -143,6 +143,6 @@ public class LocationConfig {
     }
 
     public static LocationConfig get() {
-        return CoreSystem.getInstance().getLocationConfig();
+        return null;
     }
 }
