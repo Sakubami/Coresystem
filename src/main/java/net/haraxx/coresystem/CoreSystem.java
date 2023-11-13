@@ -33,32 +33,8 @@ public final class CoreSystem extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new PlayerSpawn(), this);
             Bukkit.getPluginManager().registerEvents(new UnverifiedListener(), this);
 
-            //commands
-            //init core command
-            PluginCommand rawCoreCommand = Objects.requireNonNull(getCommand("haraxx"));
-
-            //register core subcommands
-            CoreCommand coreCoreCommand = new CoreCommand();
-            coreCoreCommand.registerCoreSubCommand("item", new CMD_ITEM());
-            coreCoreCommand.registerCoreSubCommand("spawn", new CMD_SPAWN());
-            coreCoreCommand.registerCoreSubCommand("verify", new CMD_VERIFY());
-            coreCoreCommand.registerCoreSubCommand("unverify", new CMD_UNVERIFY());
-            coreCoreCommand.registerCoreSubCommand("player", new CMD_PLAYER());
-            coreCoreCommand.registerCoreSubCommand("rpg", new CMD_RPG());
-
-            //register final command
-            rawCoreCommand.setExecutor(coreCoreCommand);
-            rawCoreCommand.setTabCompleter(coreCoreCommand);
-
-            PluginCommand spawnCommand = Objects.requireNonNull(getCommand("spawn"));
-            spawnCommand.setExecutor(new SpawnCommand());
-
             //init configs
             worldSpawnConfig = new WorldSpawnConfig();
-
-            //saving stuff
-            //RPGPlayerConfig.get().autoSave();
-
             this.getLogger().addHandler( new LogTracker().onlyExceptions() );
         } catch (Exception i) {
             i.printStackTrace();
