@@ -1,6 +1,5 @@
-package net.haraxx.coresystem.commands;
+package net.haraxx.coresystem.commands.old;
 
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;

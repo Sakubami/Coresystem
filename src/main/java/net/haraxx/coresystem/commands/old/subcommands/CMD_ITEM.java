@@ -1,8 +1,8 @@
-package net.haraxx.coresystem.commands.subcommands;
+package net.haraxx.coresystem.commands.old.subcommands;
 
 import net.haraxx.coresystem.builder.Chat;
-import net.haraxx.coresystem.commands.CommandRunner;
 import net.haraxx.coresystem.builder.item.ItemBuilder;
+import net.haraxx.coresystem.commands.old.CommandRunner;
 import net.haraxx.coresystem.permissions.Utils;
 import net.haraxx.coresystem.plugins.rpg.player.RPGPlayerConfig;
 import net.luckperms.api.LuckPerms;
