@@ -86,7 +86,7 @@ public final class CommandGroup implements ICommand
     public CommandGroup addSubCommand( ICommand subCommand )
     {
         if ( subCommand instanceof CommandGroup )
-            ( (CommandGroup) subCommand ).setParentSignature( this.parentSignature + " " + name );
+            ( (CommandGroup) subCommand ).setParentSignature( getCommandSignature() );
         this.subCommands.add( subCommand );
         this.commandNames.add( subCommand.name() );
         this.commandNames.addAll( Arrays.asList( subCommand.aliases() ) );
@@ -161,8 +161,9 @@ public final class CommandGroup implements ICommand
     {
         if ( args.length == 0 ) return new String[0];
         if ( args.length == 1 ) return new String[0];
-        String[] cutArgs = new String[args.length - 1];
-        System.arraycopy( args, 0, cutArgs, 1, args.length - 1 );
+        int newLength = args.length - 1;
+        String[] cutArgs = new String[newLength];
+        System.arraycopy( args, 1, cutArgs, 0, newLength );
         return cutArgs;
     }
 
@@ -172,6 +173,7 @@ public final class CommandGroup implements ICommand
         TextComponent headerSpacing = new TextComponent( "==========" );
         headerSpacing.setColor( ChatColor.GRAY );
         msg.add( headerSpacing.duplicate() )
+                .raw( " " )
                 .beginElement( HELP_HEADER_START )
                 .color( ChatColor.DARK_AQUA )
                 .endElement()
@@ -186,7 +188,7 @@ public final class CommandGroup implements ICommand
         else msg.beginElement( "<<" )
                 .color( ChatColor.YELLOW )
                 .hover( HoverEvent.Action.SHOW_TEXT, new Text( TextComponent.fromLegacyText( MessageFormat.format( HELP_PREV_PAGE, ( page - 1 ) ), ChatColor.GRAY ) ) )
-                .click( ClickEvent.Action.RUN_COMMAND, "/" + ( parentSignature.isEmpty() ? "" : parentSignature + " " ) + name + " " + HELP_KEYWORD + " " + ( page - 1 ) )
+                .click( ClickEvent.Action.RUN_COMMAND, "/" + getCommandSignature() + name + " " + HELP_KEYWORD + " " + ( page - 1 ) )
                 .endElement();
         msg.raw( " " )
                 .beginElement( HELP_PAGE + " " + page )
@@ -198,11 +200,18 @@ public final class CommandGroup implements ICommand
         else msg.beginElement( ">>" )
                 .color( ChatColor.YELLOW )
                 .hover( HoverEvent.Action.SHOW_TEXT, new Text( TextComponent.fromLegacyText( MessageFormat.format( HELP_NEXT_PAGE, ( page - 1 ) ), ChatColor.GRAY ) ) )
-                .click( ClickEvent.Action.RUN_COMMAND, "/" + ( parentSignature.isEmpty() ? "" : parentSignature + " " ) + name + " " + HELP_KEYWORD + " " + ( page + 1 ) )
+                .click( ClickEvent.Action.RUN_COMMAND, "/" + getCommandSignature() + " " + HELP_KEYWORD + " " + ( page + 1 ) )
                 .endElement();
         msg.raw( " " )
                 .add( headerSpacing );
         return msg.build();
+    }
+
+    private String getCommandSignature()
+    {
+        if ( parentSignature.isEmpty() || parentSignature.isBlank() )
+            return name;
+        else return parentSignature + " " + name;
     }
 
     public void displayHelp( CommandSender sender, int page )
@@ -212,7 +221,7 @@ public final class CommandGroup implements ICommand
         page = Math.max( 1, Math.min( page, pages ) );
         int last = ITEMS_PER_HELP_PAGE * page;
         int first = last - ITEMS_PER_HELP_PAGE;
-        last = Math.max( last, subCommands.size() );
+        last = Math.min( last, subCommands.size() );
         buildHeader( page, page == 1, page == pages ).send( sender );
         for ( int i = first; i < last; i++ )
         {
@@ -226,7 +235,7 @@ public final class CommandGroup implements ICommand
                 if ( cmd.range().inRange( s ) ) builder.append( '(' ).append( arg ).append( ')' );
                 else builder.append( '[' ).append( arg ).append( ']' );
             }
-            String line = "/" + parentSignature + " " + builder;
+            String line = "/" + getCommandSignature() + " " + builder;
             MessageBuilder.create()
                     .beginElement( line )
                     .color( ChatColor.BLUE )
@@ -254,7 +263,11 @@ public final class CommandGroup implements ICommand
             sender.sendMessage( MESSAGE_MISSING_PERMISSIONS );
             return;
         }
-        if ( args.length == 0 ) displayHelp( sender, 1 );
+        if ( args.length == 0 )
+        {
+            displayHelp( sender, 1 );
+            return;
+        }
         if ( args[0].equalsIgnoreCase( HELP_KEYWORD ) )
         {
             int page = 1;
