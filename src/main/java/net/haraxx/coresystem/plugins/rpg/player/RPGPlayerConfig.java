@@ -221,6 +221,6 @@ public class RPGPlayerConfig {
     }
 
     public static RPGPlayerConfig get() {
-        return CoreSystem.getInstance().getRPGPlayerConfig();
+        return null;
     }
 }
