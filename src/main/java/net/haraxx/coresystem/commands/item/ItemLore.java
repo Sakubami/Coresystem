@@ -1,7 +1,6 @@
 package net.haraxx.coresystem.commands.item;
 
-import net.haraxx.coresystem.api.command.PlayerCommand;
-import net.haraxx.coresystem.api.command.TabCompletion;
+import net.haraxx.coresystem.api.command.*;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -21,6 +20,10 @@ public class ItemLore extends PlayerCommand
     public ItemLore()
     {
         super( "lore", "desc" );
+        setMinArgs( 2 );
+        setSignature( "index", "text" );
+        setDescription( "Set an items lore" );
+        setArgumentRange( ArgumentRange.openMax( 2 ) );
     }
 
     @Override

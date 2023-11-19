@@ -1,7 +1,6 @@
 package net.haraxx.coresystem.commands.item;
 
-import net.haraxx.coresystem.api.command.PlayerCommand;
-import net.haraxx.coresystem.api.command.TabCompletion;
+import net.haraxx.coresystem.api.command.*;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -21,6 +20,9 @@ public class ItemName extends PlayerCommand
     public ItemName()
     {
         super( "name", "title" );
+        setSignature( "name" );
+        setDescription( "Set an items name" );
+        setArgumentRange( ArgumentRange.openMax( 1 ) );
     }
 
     @Override

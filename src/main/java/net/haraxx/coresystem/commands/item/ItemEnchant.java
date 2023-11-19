@@ -23,6 +23,9 @@ public class ItemEnchant extends PlayerCommand
     public ItemEnchant()
     {
         super( "enchant", "ench" );
+        setMinArgs( 1 );
+        setSignature( "enchant", "level" );
+        setDescription( "Apply an enchantment to an item.", "This will overwrite any existing enchantment of the same type" );
     }
 
     @Override

@@ -19,8 +19,8 @@ public class ItemGet extends PlayerCommand
     public ItemGet()
     {
         super( "get", "give", "create", "new" );
-        setDescription( "Erhalte ein neuen ItemStack mit dem gegebenen Material und Menge" );
-        setSignature( "material", "menge" );
+        setDescription( "Get an item with material and amount" );
+        setSignature( "material", "amount" );
         setMinArgs( 1 );
     }
 
@@ -30,7 +30,7 @@ public class ItemGet extends PlayerCommand
         Material material = Try.silent( () -> Material.matchMaterial( args[0] ) );
         int amount = Try.silent( () -> Integer.parseInt( args[1] ), 1 );
         if ( material == null )
-            player.sendMessage( "§cMaterial nicht erkannt: \"" + args[0] + "\"" );
+            player.sendMessage( "§cMaterial not found: \"" + args[0] + "\"" );
         else player.getInventory().addItem( new ItemStack( material, amount ) );
     }
 
