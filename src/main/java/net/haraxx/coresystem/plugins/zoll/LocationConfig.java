@@ -1,6 +1,5 @@
 package net.haraxx.coresystem.plugins.zoll;
 
-import net.haraxx.coresystem.CoreSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
