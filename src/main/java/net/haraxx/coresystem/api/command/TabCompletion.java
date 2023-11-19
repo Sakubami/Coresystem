@@ -2,6 +2,7 @@ package net.haraxx.coresystem.api.command;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -18,6 +19,8 @@ public interface TabCompletion
     TabCompletion PLAYERS = () -> Bukkit.getOnlinePlayers().stream().map( Player::getName ).toList();
     TabCompletion MATERIAL = () -> Arrays.stream( Material.values() ).map( Material::name ).toList();
     TabCompletion MATERIAL_KEYS = () -> Arrays.stream( Material.values() ).map( mat -> mat.getKey().toString() ).toList();
+    TabCompletion ENCHANTMENTS = () -> Arrays.stream( Enchantment.values() ).map( Enchantment::getName ).toList();
+    TabCompletion ENCHANTMENT_KEYS = () -> Arrays.stream( Enchantment.values() ).map( ench -> ench.getKey().toString() ).toList();
 
     List<String> tabOptions();
 
