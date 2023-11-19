@@ -15,6 +15,9 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 import java.util.stream.IntStream;
 
+//fully replaced with the new command system
+//TODO remove
+@Deprecated(forRemoval = true)
 public class CMD_ITEM implements CommandRunner {
 
     LuckPerms api = LuckPermsProvider.get();
