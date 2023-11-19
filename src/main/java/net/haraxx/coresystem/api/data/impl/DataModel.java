@@ -1,5 +1,6 @@
-package net.haraxx.coresystem.api.data;
+package net.haraxx.coresystem.api.data.impl;
 
+import net.haraxx.coresystem.api.data.model.ModelProperty;
 import net.haraxx.coresystem.api.data.model.PrimaryKey;
 
 import java.util.HashMap;

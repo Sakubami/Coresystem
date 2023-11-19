@@ -1,4 +1,4 @@
-package net.haraxx.coresystem.api.data;
+package net.haraxx.coresystem.api.data.model;
 
 import java.util.Optional;
 
@@ -11,6 +11,8 @@ public interface Value<T>
 {
 
     Optional<T> get();
+
+    String getAsString();
 
     void update( T value );
 

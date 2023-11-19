@@ -1,5 +1,6 @@
-package net.haraxx.coresystem.api.data;
+package net.haraxx.coresystem.api.data.impl;
 
+import net.haraxx.coresystem.api.data.model.CachedValue;
 import net.haraxx.coresystem.api.data.model.PrimaryKey;
 
 import java.time.LocalDateTime;
@@ -15,11 +16,11 @@ public class DatabaseCachedValue<T> implements CachedValue<T>
 {
 
     private final String modelName;
-    private final PrimaryKey<?> modelPrimaryKey;
+    private final PrimaryKey modelPrimaryKey;
     private T value;
     private LocalDateTime lastUpdated;
 
-    public DatabaseCachedValue( String modelName, PrimaryKey<?> modelPrimaryKey )
+    public DatabaseCachedValue( String modelName, PrimaryKey modelPrimaryKey )
     {
         this.modelName = modelName;
         this.modelPrimaryKey = modelPrimaryKey;
@@ -44,6 +45,12 @@ public class DatabaseCachedValue<T> implements CachedValue<T>
     {
         //TODO
         //request process
+    }
+
+    @Override
+    public String getAsString()
+    {
+        return get().map( Object::toString ).orElse( "" );
     }
 
     @Override

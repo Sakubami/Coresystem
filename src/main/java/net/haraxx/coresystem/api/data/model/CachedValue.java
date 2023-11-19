@@ -1,4 +1,4 @@
-package net.haraxx.coresystem.api.data;
+package net.haraxx.coresystem.api.data.model;
 
 import java.time.LocalDateTime;
 import java.util.function.Consumer;

@@ -1,6 +1,6 @@
 package net.haraxx.coresystem.api.data.model;
 
-import net.haraxx.coresystem.api.data.ColumnSettings;
+import net.haraxx.coresystem.api.data.impl.ColumnSettings;
 
 import java.lang.annotation.*;
 

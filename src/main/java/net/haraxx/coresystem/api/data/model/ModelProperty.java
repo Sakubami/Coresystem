@@ -1,4 +1,6 @@
-package net.haraxx.coresystem.api.data;
+package net.haraxx.coresystem.api.data.model;
+
+import net.haraxx.coresystem.api.data.impl.ColumnSettings;
 
 /**
  * @author Juyas
