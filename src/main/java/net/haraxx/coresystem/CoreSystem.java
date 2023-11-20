@@ -2,8 +2,11 @@ package net.haraxx.coresystem;
 
 import net.haraxx.coresystem.api.command.CommandGroup;
 import net.haraxx.coresystem.commands.essentials.PlayerGamemode;
+import net.haraxx.coresystem.commands.essentials.Spawn;
 import net.haraxx.coresystem.commands.item.*;
 import net.haraxx.coresystem.commands.old.SpawnCommand;
+import net.haraxx.coresystem.commands.verification.UnverifyPlayer;
+import net.haraxx.coresystem.commands.verification.VerifyPlayer;
 import net.haraxx.coresystem.configs.WorldSpawnConfig;
 import net.haraxx.coresystem.listener.*;
 import net.haraxx.coresystem.plugins.rpg.player.RPGPlayerConfig;
@@ -45,6 +48,9 @@ public final class CoreSystem extends JavaPlugin
 
             mainCommand.addSubCommand( itemCommands );
             mainCommand.addSubCommand( new PlayerGamemode() );
+            mainCommand.addSubCommand( new Spawn() );
+            mainCommand.addSubCommand( new VerifyPlayer() );
+            mainCommand.addSubCommand( new UnverifyPlayer() );
 
             //add actual commands
             itemCommands.addSubCommand( new ItemGet() );

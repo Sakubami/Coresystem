@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import java.util.Collections;
 import java.util.List;
 
+@Deprecated
 public class CMD_SPAWN implements CommandRunner {
 
     private final List<String> actions = List.of("setfirstspawn", "setwoldspawn");

@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import java.util.Collections;
 import java.util.List;
 
+@Deprecated //TODO der smurf command und der es command sind noch nicht übertragen
 public class CMD_PLAYER implements CommandRunner {
 
     LuckPerms api = LuckPermsProvider.get();

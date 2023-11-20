@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import java.util.Collections;
 import java.util.List;
 
+@Deprecated
 public class CMD_RPG implements CommandRunner {
 
     private final List<String> actions = List.of("player", "item");

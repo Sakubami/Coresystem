@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
+@Deprecated
 public class CMD_VERIFY implements CommandRunner {
 
     LuckPerms api = LuckPermsProvider.get();

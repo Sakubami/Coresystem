@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
+@Deprecated //was tut das hier überhaupt??
 public class CMD_SEARCHPLAYER implements CommandRunner {
     @Override
     public void runCommand(CommandSender exe, String[] args) { }
