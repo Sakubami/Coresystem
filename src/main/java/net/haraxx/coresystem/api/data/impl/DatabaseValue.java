@@ -27,7 +27,7 @@ public final class DatabaseValue<T> implements Value<T>
     }
 
     @Override
-    public void update( T value )
+    public void set( T value )
     {
         this.value = value;
     }

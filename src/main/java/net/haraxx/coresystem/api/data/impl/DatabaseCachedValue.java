@@ -3,7 +3,6 @@ package net.haraxx.coresystem.api.data.impl;
 import net.haraxx.coresystem.api.data.model.CachedValue;
 import net.haraxx.coresystem.api.data.model.PrimaryKey;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -17,15 +16,16 @@ public class DatabaseCachedValue<T> implements CachedValue<T>
 
     private final String modelName;
     private final PrimaryKey modelPrimaryKey;
-    private T value;
-    private LocalDateTime lastUpdated;
+    private volatile T value;
+    private long lastUpdated;
+    private boolean changedSinceLastUpdate;
 
     public DatabaseCachedValue( String modelName, PrimaryKey modelPrimaryKey )
     {
         this.modelName = modelName;
         this.modelPrimaryKey = modelPrimaryKey;
         this.value = null;
-        lastUpdated = null;
+        lastUpdated = 0;
     }
 
     @Override
@@ -35,15 +35,27 @@ public class DatabaseCachedValue<T> implements CachedValue<T>
     }
 
     @Override
-    public void update( T value )
+    public void update()
     {
+        if ( !this.changedSinceLastUpdate ) return;
         //TODO
+    }
+
+    @Override
+    public void set( T value )
+    {
+        synchronized(this.modelName)
+        {
+            this.value = value;
+            this.lastUpdated = System.currentTimeMillis();
+            this.changedSinceLastUpdate = true;
+        }
     }
 
     @Override
     public void get( Consumer<T> future )
     {
-        //TODO
+        //TODO get with refreshed cache
         //request process
     }
 
@@ -54,19 +66,19 @@ public class DatabaseCachedValue<T> implements CachedValue<T>
     }
 
     @Override
-    public void updateCache()
+    public void cache()
     {
-        //TODO
+        //TODO load cache
     }
 
     @Override
     public boolean isCached()
     {
-        return false;
+        return value != null;
     }
 
     @Override
-    public LocalDateTime lastUpdated()
+    public long lastUpdated()
     {
         return lastUpdated;
     }

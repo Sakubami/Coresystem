@@ -1,6 +1,5 @@
 package net.haraxx.coresystem.api.data.model;
 
-import java.time.LocalDateTime;
 import java.util.function.Consumer;
 
 /**
@@ -13,10 +12,12 @@ public interface CachedValue<T> extends Value<T>
 
     void get( Consumer<T> future );
 
-    void updateCache();
+    void update();
+
+    void cache();
 
     boolean isCached();
 
-    LocalDateTime lastUpdated();
+    long lastUpdated();
 
 }

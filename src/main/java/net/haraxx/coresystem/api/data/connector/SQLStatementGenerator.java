@@ -9,7 +9,7 @@ import net.haraxx.coresystem.api.data.model.PrimaryKey;
  * @version 16.11.2023
  * @since 16.11.2023
  */
-public class SQLStatementGenerator implements StatementGenerator
+public class SQLStatementGenerator
 {
 
     private static final String CREATE = "CREATE TABLE";
@@ -25,7 +25,6 @@ public class SQLStatementGenerator implements StatementGenerator
     private static final String PRIMARY_KEY = "PRIMARY KEY";
     private static final String AUTO_INCREMENT = "AUTO_INCREMENT";
 
-    @Override
     public String createTable( String model, PrimaryKey key, ColumnSettings... properties )
     {
         StringBuilder builder = new StringBuilder();
@@ -42,7 +41,6 @@ public class SQLStatementGenerator implements StatementGenerator
         return builder.toString();
     }
 
-    @Override
     public String request( String model, PrimaryKey key, ModelProperty<?>... properties )
     {
         StringBuilder builder = new StringBuilder();
@@ -59,7 +57,6 @@ public class SQLStatementGenerator implements StatementGenerator
         return builder.toString();
     }
 
-    @Override
     public <T> String requestKey( PrimaryKey key, String model, ModelProperty<T> property )
     {
         StringBuilder builder = new StringBuilder();
@@ -74,7 +71,6 @@ public class SQLStatementGenerator implements StatementGenerator
         return builder.toString();
     }
 
-    @Override
     public String update( ModelProperty<?> property, String model, PrimaryKey key )
     {
         StringBuilder builder = new StringBuilder();
@@ -88,7 +84,6 @@ public class SQLStatementGenerator implements StatementGenerator
         return builder.toString();
     }
 
-    @Override
     public String put( String model, PrimaryKey key, ModelProperty<?>... values )
     {
         StringBuilder builder = new StringBuilder();

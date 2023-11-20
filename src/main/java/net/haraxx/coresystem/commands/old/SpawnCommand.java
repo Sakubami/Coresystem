@@ -6,11 +6,10 @@ import net.haraxx.coresystem.permissions.Utils;
 import org.bukkit.Location;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 public class SpawnCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+    public boolean onCommand( CommandSender commandSender,  Command command,  String s,  String[] strings) {
         if (command.getName().equalsIgnoreCase("spawn")) {
             Player player = (Player) commandSender;
             if (Utils.isVerified(player)) {

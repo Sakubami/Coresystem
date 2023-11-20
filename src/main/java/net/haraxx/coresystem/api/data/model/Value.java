@@ -14,6 +14,6 @@ public interface Value<T>
 
     String getAsString();
 
-    void update( T value );
+    void set( T value );
 
 }

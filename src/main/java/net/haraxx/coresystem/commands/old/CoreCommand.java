@@ -2,8 +2,6 @@ package net.haraxx.coresystem.commands.old;
 
 import net.haraxx.coresystem.builder.Chat;
 import org.bukkit.command.*;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -16,7 +14,7 @@ public class CoreCommand implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
+    public boolean onCommand( CommandSender sender,  Command cmd,  String s, String[] args) {
         if (cmd.getName().equalsIgnoreCase("haraxx")) {
             if (args.length != 0) {
                 if (commands.get(args[0]) != null) {
@@ -31,9 +29,8 @@ public class CoreCommand implements CommandExecutor, TabCompleter {
         return false;
     }
 
-    @Nullable
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
+    public List<String> onTabComplete( CommandSender sender,  Command cmd, String s, String[] args) {
         if (cmd.getName().equalsIgnoreCase("haraxx")) {
             if (args.length > 1) {
                 CommandRunner commandRunner = commands.get(args[0].toLowerCase());
