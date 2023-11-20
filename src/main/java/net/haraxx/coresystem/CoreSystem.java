@@ -1,6 +1,7 @@
 package net.haraxx.coresystem;
 
 import net.haraxx.coresystem.api.command.CommandGroup;
+import net.haraxx.coresystem.commands.essentials.PlayerGamemode;
 import net.haraxx.coresystem.commands.item.*;
 import net.haraxx.coresystem.commands.old.SpawnCommand;
 import net.haraxx.coresystem.configs.WorldSpawnConfig;
@@ -43,6 +44,7 @@ public final class CoreSystem extends JavaPlugin
             CommandGroup itemCommands = new CommandGroup( "item" );
 
             mainCommand.addSubCommand( itemCommands );
+            mainCommand.addSubCommand( new PlayerGamemode() );
 
             //add actual commands
             itemCommands.addSubCommand( new ItemGet() );
