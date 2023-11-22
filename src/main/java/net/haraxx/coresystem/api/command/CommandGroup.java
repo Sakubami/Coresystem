@@ -172,7 +172,7 @@ public final class CommandGroup implements ICommand
         MessageBuilder msg = MessageBuilder.create();
         TextComponent headerSpacing = new TextComponent( "==========" );
         headerSpacing.setColor( ChatColor.GRAY );
-        msg.add( headerSpacing.duplicate() )
+        msg.extra( headerSpacing.duplicate() )
                 .raw( " " )
                 .beginElement( HELP_HEADER_START )
                 .color( ChatColor.DARK_AQUA )
@@ -203,7 +203,7 @@ public final class CommandGroup implements ICommand
                 .click( ClickEvent.Action.RUN_COMMAND, "/" + getCommandSignature() + " " + HELP_KEYWORD + " " + ( page + 1 ) )
                 .endElement();
         msg.raw( " " )
-                .add( headerSpacing );
+                .extra( headerSpacing );
         return msg.build();
     }
 
