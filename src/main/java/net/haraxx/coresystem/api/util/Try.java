@@ -1,5 +1,9 @@
 package net.haraxx.coresystem.api.util;
 
+import net.haraxx.coresystem.CoreSystem;
+
+import java.util.logging.Level;
+
 /**
  * @author Juyas
  * @version 10.11.2023
@@ -51,7 +55,7 @@ public class Try
         return defaultValue;
     }
 
-    public static void log( SafeRunnable runnable )
+    public static void trace( SafeRunnable runnable )
     {
         try
         {
@@ -63,7 +67,7 @@ public class Try
         }
     }
 
-    public static <T> T log( SafeSupplier<T> supplier )
+    public static <T> T trace( SafeSupplier<T> supplier )
     {
         try
         {
@@ -72,6 +76,56 @@ public class Try
         catch ( Exception e )
         {
             e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void log( SafeRunnable runnable, Level logLevel, String message )
+    {
+        try
+        {
+            runnable.run();
+        }
+        catch ( Exception e )
+        {
+            CoreSystem.getInstance().getLogger().log( logLevel, message, e );
+        }
+    }
+
+    public static <T> T log( SafeSupplier<T> supplier, Level logLevel, String message )
+    {
+        try
+        {
+            return supplier.get();
+        }
+        catch ( Exception e )
+        {
+            CoreSystem.getInstance().getLogger().log( logLevel, message, e );
+        }
+        return null;
+    }
+
+    public static void logRaw( SafeRunnable runnable )
+    {
+        try
+        {
+            runnable.run();
+        }
+        catch ( Exception e )
+        {
+            CoreSystem.getInstance().getLogger().log( Level.WARNING, e.getMessage(), e );
+        }
+    }
+
+    public static <T> T logRaw( SafeSupplier<T> supplier )
+    {
+        try
+        {
+            return supplier.get();
+        }
+        catch ( Exception e )
+        {
+            CoreSystem.getInstance().getLogger().log( Level.WARNING, e.getMessage(), e );
         }
         return null;
     }
