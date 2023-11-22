@@ -1,12 +1,12 @@
 package net.haraxx.coresystem.api.data.model;
 
-import net.haraxx.coresystem.api.data.impl.ColumnSettings;
+import net.haraxx.coresystem.api.data.base.ColumnSettings;
 
 import java.lang.annotation.*;
 
 /**
  * @author Juyas
- * @version 16.11.2023
+ * @version 22.11.2023
  * @since 16.11.2023
  */
 @Target(ElementType.RECORD_COMPONENT)

@@ -4,11 +4,13 @@ import java.util.Optional;
 
 /**
  * @author Juyas
- * @version 16.11.2023
+ * @version 22.11.2023
  * @since 16.11.2023
  */
 public interface Value<T>
 {
+
+    Class<T> type();
 
     Optional<T> get();
 

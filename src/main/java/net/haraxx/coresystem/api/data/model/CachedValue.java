@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 
 /**
  * @author Juyas
- * @version 14.11.2023
+ * @version 22.11.2023
  * @since 14.11.2023
  */
 public interface CachedValue<T> extends Value<T>

@@ -1,10 +1,10 @@
 package net.haraxx.coresystem.api.data.model;
 
-import net.haraxx.coresystem.api.data.impl.ColumnSettings;
+import net.haraxx.coresystem.api.data.base.ColumnSettings;
 
 /**
  * @author Juyas
- * @version 14.11.2023
+ * @version 22.11.2023
  * @since 14.11.2023
  */
 public interface ModelProperty<T>

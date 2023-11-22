@@ -1,4 +1,4 @@
-package net.haraxx.coresystem.api.data.impl;
+package net.haraxx.coresystem.api.data.base;
 
 import net.haraxx.coresystem.api.data.model.Value;
 
@@ -6,13 +6,25 @@ import java.util.Optional;
 
 /**
  * @author Juyas
- * @version 19.11.2023
+ * @version 22.11.2023
  * @since 19.11.2023
  */
-public final class DatabaseValue<T> implements Value<T>
+final class DatabaseValue<T> implements Value<T>
 {
 
     private T value;
+    private final Class<T> type;
+
+    DatabaseValue( Class<T> type )
+    {
+        this.type = type;
+    }
+
+    @Override
+    public Class<T> type()
+    {
+        return type;
+    }
 
     @Override
     public Optional<T> get()

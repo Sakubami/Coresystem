@@ -1,4 +1,4 @@
-package net.haraxx.coresystem.api.data.connector;
+package net.haraxx.coresystem.api.data.query;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -7,7 +7,7 @@ import java.util.Properties;
 
 /**
  * @author Juyas
- * @version 20.11.2023
+ * @version 22.11.2023
  * @since 20.11.2023
  */
 public final class SQLConnectionPool

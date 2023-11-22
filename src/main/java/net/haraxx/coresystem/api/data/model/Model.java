@@ -4,7 +4,7 @@ import java.lang.annotation.*;
 
 /**
  * @author Juyas
- * @version 14.11.2023
+ * @version 22.11.2023
  * @since 14.11.2023
  */
 @Target(ElementType.TYPE)
@@ -12,6 +12,8 @@ import java.lang.annotation.*;
 public @interface Model
 {
 
-    String value();
+    String schema();
+
+    String table();
 
 }

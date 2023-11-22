@@ -1,26 +1,28 @@
-package net.haraxx.coresystem.api.data.connector;
+package net.haraxx.coresystem.api.data.query;
 
+import net.haraxx.coresystem.CoreSystem;
 import net.haraxx.coresystem.api.util.Try;
 
 import java.sql.*;
 import java.util.Queue;
 import java.util.concurrent.*;
+import java.util.logging.Level;
 
 /**
  * @author Juyas
- * @version 20.11.2023
+ * @version 22.11.2023
  * @since 20.11.2023
  */
-public class SQLQueryHandler
+public final class SQLQueryHandler
 {
 
-    private static final long PERIOD = 1000L; //1 second period
+    private static final long FREQUENCY = 1000L; //1 second period
 
     private final ScheduledExecutorService service;
     private final SQLConnectionPool connectionPool;
     private final SQLQueryExecutor sqlQueryExecutor;
 
-    public SQLQueryHandler( SQLConnectionPool connectionPool )
+    SQLQueryHandler( SQLConnectionPool connectionPool )
     {
         this.service = Executors.newSingleThreadScheduledExecutor();
         this.connectionPool = connectionPool;
@@ -40,12 +42,12 @@ public class SQLQueryHandler
         return null;
     }
 
-    public ScheduledFuture<?> schedule()
+    ScheduledFuture<?> schedule()
     {
-        return service.scheduleAtFixedRate( this.sqlQueryExecutor, 0L, PERIOD, TimeUnit.MILLISECONDS );
+        return service.scheduleAtFixedRate( this.sqlQueryExecutor, 0L, FREQUENCY, TimeUnit.MILLISECONDS );
     }
 
-    public void shutdown()
+    void shutdown()
     {
         this.service.shutdown();
         connectionPool.getHikariDataSource().close();
@@ -78,7 +80,7 @@ public class SQLQueryHandler
 
     private record SQLRequest<T>(String statement, SQLConsumer<T> processResult) {}
 
-    class SQLQueryExecutor implements Runnable
+    private class SQLQueryExecutor implements Runnable
     {
 
         private final Queue<SQLRequest<Boolean>> queryQueue = new LinkedBlockingQueue<>();
@@ -100,16 +102,17 @@ public class SQLQueryHandler
             while ( !queryQueue.isEmpty() )
             {
                 Statement statement = null;
+                String sqlStatement = "";
                 try
                 {
                     SQLRequest<Boolean> sqlRequest = queryQueue.poll();
                     statement = connection.createStatement();
-                    boolean executed = statement.execute( sqlRequest.statement() );
+                    boolean executed = statement.execute( sqlStatement = sqlRequest.statement() );
                     sqlRequest.processResult.accept( executed );
                 }
-                catch ( Exception ignored )
+                catch ( Exception e )
                 {
-                    //TODO logging
+                    CoreSystem.getInstance().getLogger().log( Level.WARNING, "error while executing sql query: \"" + sqlStatement + "\"", e );
                 }
                 finally
                 {
@@ -124,16 +127,17 @@ public class SQLQueryHandler
             while ( !updateQueue.isEmpty() )
             {
                 Statement statement = null;
+                String sqlStatement = "";
                 try
                 {
                     SQLRequest<Integer> sqlRequest = updateQueue.poll();
                     statement = connection.createStatement();
-                    int updated = statement.executeUpdate( sqlRequest.statement() );
+                    int updated = statement.executeUpdate( sqlStatement = sqlRequest.statement() );
                     sqlRequest.processResult.accept( updated );
                 }
-                catch ( Exception ignored )
+                catch ( Exception e )
                 {
-                    //TODO logging
+                    CoreSystem.getInstance().getLogger().log( Level.WARNING, "error while executing sql update query: \"" + sqlStatement + "\"", e );
                 }
                 finally
                 {
@@ -149,23 +153,22 @@ public class SQLQueryHandler
             {
                 Statement statement = null;
                 ResultSet resultSet = null;
+                String sqlStatement = "";
                 try
                 {
                     SQLRequest<ResultSet> sqlRequest = selectionQueue.poll();
                     statement = connection.createStatement();
-                    resultSet = statement.executeQuery( sqlRequest.statement() );
+                    resultSet = statement.executeQuery( sqlStatement = sqlRequest.statement() );
                     sqlRequest.processResult.accept( resultSet );
                 }
-                catch ( Exception ignored )
+                catch ( Exception e )
                 {
-                    //TODO logging
+                    CoreSystem.getInstance().getLogger().log( Level.WARNING, "error while executing sql update query: \"" + sqlStatement + "\"", e );
                 }
                 finally
                 {
-                    ResultSet finalResultSet = resultSet;
-                    Try.silent( () -> finalResultSet.close() );
-                    Statement finalStatement = statement;
-                    Try.silent( () -> finalStatement.close() );
+                    Try.silent( resultSet::close );
+                    Try.silent( statement::close );
                 }
             }
         }
