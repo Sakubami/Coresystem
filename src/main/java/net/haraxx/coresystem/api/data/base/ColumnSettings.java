@@ -3,8 +3,11 @@ package net.haraxx.coresystem.api.data.base;
 import net.haraxx.coresystem.api.data.model.DatabaseColumn;
 
 /**
+ * Provides meta data for a property in a model.
+ *
  * @author Juyas
  * @version 22.11.2023
+ * @see DatabaseColumn
  * @since 16.11.2023
  */
 public record ColumnSettings(String columnName, String sqlType, boolean nonNull, boolean unique)

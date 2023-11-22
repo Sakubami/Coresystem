@@ -16,7 +16,7 @@ import java.util.logging.Level;
 public final class SQLQueryHandler
 {
 
-    private static final long FREQUENCY = 1000L; //1 second period
+    public static final long FREQUENCY = 1000L; //1-second period for queries to be pushed
 
     private final ScheduledExecutorService service;
     private final SQLConnectionPool connectionPool;
@@ -37,9 +37,9 @@ public final class SQLQueryHandler
         }
         catch ( SQLException e )
         {
-            //TODO logging
+            CoreSystem.getInstance().getLogger().log( Level.SEVERE, "Could not establish database connection", e );
+            return null;
         }
-        return null;
     }
 
     ScheduledFuture<?> schedule()
@@ -53,26 +53,54 @@ public final class SQLQueryHandler
         connectionPool.getHikariDataSource().close();
     }
 
+    /**
+     * Commits a query statement to the connection pool to be pushed to the database within {@link #FREQUENCY} milliseconds.
+     *
+     * @param statement the sql statement
+     */
     public void query( String statement )
     {
         query( statement, res -> {} );
     }
 
+    /**
+     * Commits a query statement to the connection pool to be pushed to the database within {@link #FREQUENCY} milliseconds.
+     *
+     * @param statement      the sql statement
+     * @param resultConsumer provides a boolean result value as soon as the query has been executed
+     */
     public void query( String statement, SQLConsumer<Boolean> resultConsumer )
     {
         sqlQueryExecutor.offerQuery( new SQLRequest<>( statement, resultConsumer ) );
     }
 
+    /**
+     * Commits an update statement to the connection pool to be pushed to the database within {@link #FREQUENCY} milliseconds.
+     *
+     * @param statement the sql statement
+     */
     public void queryUpdate( String statement )
     {
         queryUpdate( statement, res -> {} );
     }
 
+    /**
+     * Commits an update statement to the connection pool to be pushed to the database within {@link #FREQUENCY} milliseconds.
+     *
+     * @param statement      the sql statement
+     * @param resultConsumer provides an integer result value as soon as the query has been executed
+     */
     public void queryUpdate( String statement, SQLConsumer<Integer> resultConsumer )
     {
         sqlQueryExecutor.offerQueryUpdate( new SQLRequest<>( statement, resultConsumer ) );
     }
 
+    /**
+     * Commits a selection statement to the connection pool to be pushed to the database within {@link #FREQUENCY} milliseconds.
+     *
+     * @param statement      the sql statement
+     * @param resultConsumer provides {@link ResultSet} as soon as the query has been executed
+     */
     public void querySelection( String statement, SQLConsumer<ResultSet> resultConsumer )
     {
         sqlQueryExecutor.offerQuerySelection( new SQLRequest<>( statement, resultConsumer ) );
@@ -91,10 +119,11 @@ public final class SQLQueryHandler
         public void run()
         {
             Connection connection = getConnection();
+            if ( connection == null ) return;
             workQuery( connection );
             workUpdates( connection );
             workSelections( connection );
-            Try.silent( () -> connection.close() );
+            Try.silent( connection::close );
         }
 
         private void workQuery( Connection connection )

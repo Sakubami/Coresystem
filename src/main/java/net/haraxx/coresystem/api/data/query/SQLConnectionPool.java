@@ -10,22 +10,22 @@ import java.util.Properties;
  * @version 22.11.2023
  * @since 20.11.2023
  */
-public final class SQLConnectionPool
+final class SQLConnectionPool
 {
 
     private final HikariDataSource hikariDataSource;
 
-    private SQLConnectionPool( HikariConfig config )
+    SQLConnectionPool( HikariConfig config )
     {
         this.hikariDataSource = new HikariDataSource( config );
     }
 
-    public SQLConnectionPool( Properties properties )
+    SQLConnectionPool( Properties properties )
     {
         this( new HikariConfig( properties ) );
     }
 
-    public SQLConnectionPool( String jdbcUrl, String user, String password, int minimumIdle, int maxPoolSize )
+    SQLConnectionPool( String jdbcUrl, String user, String password, int minimumIdle, int maxPoolSize )
     {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl( jdbcUrl );
@@ -37,7 +37,7 @@ public final class SQLConnectionPool
         this.hikariDataSource = new HikariDataSource( config );
     }
 
-    public HikariDataSource getHikariDataSource()
+    HikariDataSource getHikariDataSource()
     {
         return hikariDataSource;
     }
