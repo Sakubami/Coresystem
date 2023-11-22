@@ -9,7 +9,7 @@ import java.lang.annotation.*;
  * @version 22.11.2023
  * @since 16.11.2023
  */
-@Target(ElementType.RECORD_COMPONENT)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DatabaseColumn
 {

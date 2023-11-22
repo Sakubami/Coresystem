@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 public @interface Model
 {
 
-    String schema();
+    String schema() default "haraxx";
 
     String table();
 
