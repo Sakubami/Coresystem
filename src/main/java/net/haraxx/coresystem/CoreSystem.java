@@ -1,6 +1,7 @@
 package net.haraxx.coresystem;
 
 import net.haraxx.coresystem.api.command.CommandGroup;
+import net.haraxx.coresystem.api.util.Try;
 import net.haraxx.coresystem.commands.essentials.PlayerGamemode;
 import net.haraxx.coresystem.commands.essentials.Spawn;
 import net.haraxx.coresystem.commands.item.*;
@@ -16,6 +17,7 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
+import java.util.logging.Level;
 
 public final class CoreSystem extends JavaPlugin
 {
@@ -29,71 +31,56 @@ public final class CoreSystem extends JavaPlugin
     @Override
     public void onEnable()
     {
+        instance = this;
+        Try.silent( () -> this.getLogger().addHandler( new LogTracker().onlyExceptions() ) );
         try
         {
-            instance = this;
-
-            //initiate Internal stuff
-
             //listener
             Bukkit.getPluginManager().registerEvents( new PlaceStuffIdk(), this );
             Bukkit.getPluginManager().registerEvents( new PlayerSpawn(), this );
             Bukkit.getPluginManager().registerEvents( new UnverifiedListener(), this );
 
             //commands
-
-            //create command groups
-            CommandGroup mainCommand = new CommandGroup( getCommand( "haraxx" ) );
-            CommandGroup itemCommands = new CommandGroup( "item" );
-
-            mainCommand.addSubCommand( itemCommands );
-            mainCommand.addSubCommand( new PlayerGamemode() );
-            mainCommand.addSubCommand( new Spawn() );
-            mainCommand.addSubCommand( new VerifyPlayer() );
-            mainCommand.addSubCommand( new UnverifyPlayer() );
-
-            //add actual commands
-            itemCommands.addSubCommand( new ItemGet() );
-            itemCommands.addSubCommand( new ItemName() );
-            itemCommands.addSubCommand( new ItemLore() );
-            itemCommands.addSubCommand( new ItemEnchant() );
-
-            //register main command group(s)
-            mainCommand.register();
-
-            //init core command
-//            PluginCommand rawCoreCommand = Objects.requireNonNull(getCommand("haraxx"));
-
-            //register core subcommands
-//            CoreCommand coreCoreCommand = new CoreCommand();
-//            coreCoreCommand.registerCoreSubCommand("item", new CMD_ITEM());
-//            coreCoreCommand.registerCoreSubCommand("spawn", new CMD_SPAWN());
-//            coreCoreCommand.registerCoreSubCommand("verify", new CMD_VERIFY());
-//            coreCoreCommand.registerCoreSubCommand("unverify", new CMD_UNVERIFY());
-//            coreCoreCommand.registerCoreSubCommand("rpg", new CMD_RPG());
-//            coreCoreCommand.registerCoreSubCommand("player", new CMD_PLAYER());
-
-            //register final command
-//            rawCoreCommand.setExecutor(coreCoreCommand);
-//            rawCoreCommand.setTabCompleter(coreCoreCommand);
-
-            PluginCommand spawnCommand = Objects.requireNonNull( getCommand( "spawn" ) );
-            spawnCommand.setExecutor( new SpawnCommand() );
+            registerCommands();
 
             //init configs
             locationConfig = new LocationConfig();
             rpgPlayerConfig = new RPGPlayerConfig();
             worldSpawnConfig = new WorldSpawnConfig();
-
-            //saving stuff
-            //RPGPlayerConfig.get().autoSave();
-
-            this.getLogger().addHandler( new LogTracker().onlyExceptions() );
         }
-        catch ( Exception i )
+        catch ( Exception e )
         {
-            i.printStackTrace();
+            getLogger().log( Level.WARNING, "error while enabling CoreSystem", e );
         }
+    }
+
+    private void registerCommands()
+    {
+        //TODO replace with new command system
+        PluginCommand spawnCommand = Objects.requireNonNull( getCommand( "spawn" ) );
+        spawnCommand.setExecutor( new SpawnCommand() );
+
+        //create command groups
+        CommandGroup mainCommand = new CommandGroup( getCommand( "haraxx" ) );
+        CommandGroup itemCommands = new CommandGroup( "item" );
+
+        //haraxx item
+        mainCommand.addSubCommand( itemCommands );
+        itemCommands.addSubCommand( new ItemGet() );
+        itemCommands.addSubCommand( new ItemName() );
+        itemCommands.addSubCommand( new ItemLore() );
+        itemCommands.addSubCommand( new ItemEnchant() );
+        //haraxx gm
+        mainCommand.addSubCommand( new PlayerGamemode() );
+        //haraxx spawn
+        mainCommand.addSubCommand( new Spawn() );
+        //haraxx verify
+        mainCommand.addSubCommand( new VerifyPlayer() );
+        //haraxx unverify
+        mainCommand.addSubCommand( new UnverifyPlayer() );
+
+        //register main command group(s)
+        Try.logRaw( mainCommand::register );
     }
 
     @Override
