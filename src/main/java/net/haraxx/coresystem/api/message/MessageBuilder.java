@@ -4,8 +4,11 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.*;
 import net.md_5.bungee.api.chat.hover.content.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -20,7 +23,7 @@ import java.util.List;
 public class MessageBuilder
 {
 
-    private final List<TextComponent> lines;
+    private final List<BaseComponent> lines;
     private TextComponent currentLine;
 
     public static MessageBuilder create()
@@ -50,12 +53,17 @@ public class MessageBuilder
         return new MessageElementBuilder( text );
     }
 
-    public MessageBuilder legacy( String legacyText )
+    public MessageElementBuilder beginElementLegacy( String text )
     {
-        return add( TextComponent.fromLegacyText( legacyText ) );
+        return new MessageElementBuilder( text, true );
     }
 
-    public MessageBuilder add( BaseComponent... components )
+    public MessageBuilder legacy( String legacyText )
+    {
+        return extra( TextComponent.fromLegacyText( legacyText ) );
+    }
+
+    public MessageBuilder extra( BaseComponent... components )
     {
         for ( BaseComponent bc : components )
         {
@@ -66,7 +74,7 @@ public class MessageBuilder
 
     public MessageBuilder raw( String text )
     {
-        currentLine.addExtra( text );
+        currentLine.addExtra( ChatColor.stripColor( text ) );
         return this;
     }
 
@@ -87,9 +95,9 @@ public class MessageBuilder
     public static final class Messages
     {
 
-        private final List<TextComponent> lines;
+        private final List<BaseComponent> lines;
 
-        private Messages( List<TextComponent> lines )
+        private Messages( List<BaseComponent> lines )
         {
             this.lines = lines;
         }
@@ -103,6 +111,29 @@ public class MessageBuilder
         {
             lines.forEach( sender.spigot()::sendMessage );
         }
+
+        public BookMeta printBook()
+        {
+            BookMeta meta = (BookMeta) Bukkit.getItemFactory().getItemMeta( Material.BOOK );
+            meta.spigot().setPages( asArray() );
+            return meta;
+        }
+
+        public BaseComponent[] asArray()
+        {
+            return lines.toArray( new BaseComponent[0] );
+        }
+
+        public String toLegacyText()
+        {
+            return TextComponent.toLegacyText( asArray() );
+        }
+
+        public String toPlainText()
+        {
+            return TextComponent.toPlainText( asArray() );
+        }
+
     }
 
     public final class MessageElementBuilder
@@ -112,12 +143,19 @@ public class MessageBuilder
 
         private MessageElementBuilder( String string )
         {
-            this.component = new TextComponent( string );
+            this( string, false );
+        }
+
+        private MessageElementBuilder( String string, boolean legacy )
+        {
+            if ( !legacy )
+                this.component = new TextComponent( ChatColor.stripColor( string ) );
+            else this.component = new TextComponent( TextComponent.fromLegacyText( string ) );
         }
 
         public MessageBuilder endElement()
         {
-            MessageBuilder.this.add( component );
+            MessageBuilder.this.extra( component );
             return MessageBuilder.this;
         }
 
@@ -179,6 +217,11 @@ public class MessageBuilder
             return color( ChatColor.of( color ) );
         }
 
+        public MessageElementBuilder color( String legacyColor )
+        {
+            return color( ChatColor.of( legacyColor ) );
+        }
+
         public MessageElementBuilder click( ClickEvent.Action action, String value )
         {
             component.setClickEvent( new ClickEvent( action, value ) );
@@ -195,6 +238,16 @@ public class MessageBuilder
         public MessageElementBuilder hoverEntity( org.bukkit.entity.Entity entity, @Nullable BaseComponent customName )
         {
             return hover( HoverEvent.Action.SHOW_ENTITY, new Entity( entity.getType().getKey().toString(), entity.getUniqueId().toString(), customName ) );
+        }
+
+        public MessageElementBuilder hoverText( String legacyText )
+        {
+            return hover( HoverEvent.Action.SHOW_TEXT, new Text( TextComponent.fromLegacyText( legacyText ) ) );
+        }
+
+        public MessageElementBuilder hoverText( BaseComponent... text )
+        {
+            return hover( HoverEvent.Action.SHOW_TEXT, new Text( text ) );
         }
 
         public MessageElementBuilder hover( HoverEvent.Action action, Content... contents )
