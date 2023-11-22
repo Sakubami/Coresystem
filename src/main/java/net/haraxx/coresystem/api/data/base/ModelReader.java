@@ -4,6 +4,7 @@ import net.haraxx.coresystem.api.data.model.*;
 
 import java.lang.reflect.*;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * @author Juyas
@@ -15,55 +16,65 @@ final class ModelReader
 
     static <T extends ModelBase> T buildModel( Class<T> clazz ) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, NoSuchFieldException
     {
-        //TODO more solid argument checking, exceptions and control flow handling
-        if ( !clazz.isRecord() || !clazz.isAnnotationPresent( Model.class ) ) return null;
+        //the model annotation is required for any model to be loaded, since it contains crucial data
+        if ( !Objects.requireNonNull( clazz ).isAnnotationPresent( Model.class ) ) return null;
         Model model = clazz.getDeclaredAnnotation( Model.class );
-        //prepare data reading
+        //all declared fields are considered model properties
         Field[] fields = clazz.getDeclaredFields();
-        Class<?>[] constructorParamGenerics = new Class[fields.length];
+        //space to save property information
+        Class<?>[] propertyGenerics = new Class[fields.length];
         ColumnSettings[] columnarData = new ColumnSettings[fields.length];
+        //a single primary key is allowed and a single key is required simultaneously
         int primaryKey = -1;
-        //read and check field data
+        //resolve all fields and validate them
         for ( int i = 0; i < fields.length; i++ )
         {
             Field field = fields[i];
-            //check for model property types - all of them require the annotation
-            Class<?> type = field.getType();
-            //only modelproperties allowed
-            if ( !ModelProperty.class.isAssignableFrom( type ) ) return null;
-            //note down the primary key
-            if ( PrimaryKey.class.isAssignableFrom( type ) )
+            Class<?> propertyType = field.getType();
+            //all model properties need to be explicitly implementing ModelProperty
+            if ( !ModelProperty.class.isAssignableFrom( propertyType ) ) return null;
+            //detect the PrimaryKey
+            if ( PrimaryKey.class.isAssignableFrom( propertyType ) )
             {
-                //only one primary key valid
+                //if there is already a primary - multiple primary keys are not allowed
                 if ( primaryKey != -1 ) return null;
                 primaryKey = i;
             }
-            //only primary keys and columns
-            else if ( !Column.class.isAssignableFrom( type ) ) return null;
-            //column description is mandatory
+            //if it's not a PrimaryKey, it is required to be a Column
+            else if ( !Column.class.isAssignableFrom( propertyType ) ) return null;
+            //DatabaseColumn annotation is required for all properties - including the PrimaryKey
             if ( !field.isAnnotationPresent( DatabaseColumn.class ) ) return null;
+            //if all conditions are checked, read the data
             columnarData[i] = ColumnSettings.of( field.getDeclaredAnnotation( DatabaseColumn.class ) );
-            constructorParamGenerics[i] = ( (ParameterizedType) type.getGenericSuperclass() ).getActualTypeArguments()[0].getClass();
+            propertyGenerics[i] = ( (ParameterizedType) propertyType.getGenericSuperclass() ).getActualTypeArguments()[0].getClass();
         }
-        //primary key required
+        //if there is no PrimaryKey, it's an invalid model
         if ( primaryKey == -1 ) return null;
+        //retrieve the empty class constructor - it will get the compiler default constructor if there is a defined one
         Constructor<T> constructor = clazz.getConstructor();
         constructor.setAccessible( true );
+        //construct a new instance of the model
         T generatedModel = constructor.newInstance();
+
+        // ---------- BUILD AND APPLY THE DATAMODEL ----------
         HashMap<String, Column<?>> properties = new HashMap<>();
-        //build primary key and place it into the generated model
+        //build PrimaryKey first and place it into the generated model
         PrimaryKey primKey = new PrimaryKeyImpl( columnarData[primaryKey] );
         fields[primaryKey].set( generatedModel, primKey );
+
+        //build all properties - skip the primary key
         for ( int i = 0; i < fields.length; i++ )
         {
-            //build all properties - skip the primary key
             if ( i == primaryKey ) continue;
-            DataColumn<?> column = DataColumn.of( constructorParamGenerics[i], columnarData[i], model, primKey );
+            DataColumn<?> column = DataColumn.of( propertyGenerics[i], columnarData[i], model, primKey );
             properties.put( columnarData[i].columnName(), column );
         }
+        //create model
+        DataModel dataModel = new DataModel( model.schema(), model.table(), primKey, properties );
+        //directly write model into the generated class
         Field modelField = ModelBase.class.getDeclaredField( "model" );
         modelField.setAccessible( true );
-        modelField.set( generatedModel, new DataModel( model.schema(), model.table(), primKey, properties ) );
+        modelField.set( generatedModel, dataModel );
         return generatedModel;
     }
 
