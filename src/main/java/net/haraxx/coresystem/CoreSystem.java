@@ -33,30 +33,32 @@ public final class CoreSystem extends JavaPlugin
     {
         instance = this;
         Try.silent( () -> this.getLogger().addHandler( new LogTracker().onlyExceptions() ) );
-        try
-        {
-            //listener
-            Bukkit.getPluginManager().registerEvents( new PlaceStuffIdk(), this );
-            Bukkit.getPluginManager().registerEvents( new PlayerSpawn(), this );
-            Bukkit.getPluginManager().registerEvents( new UnverifiedListener(), this );
 
-            //commands
-            registerCommands();
+        //TODO load properties for database
+        //DatabaseHandler.getInstance().load( properties );
 
-            //init configs
-            locationConfig = new LocationConfig();
-            rpgPlayerConfig = new RPGPlayerConfig();
-            worldSpawnConfig = new WorldSpawnConfig();
-        }
-        catch ( Exception e )
-        {
-            getLogger().log( Level.WARNING, "error while enabling CoreSystem", e );
-        }
+        Try.log( this::registerListeners, Level.WARNING, "error in listeners in CoreSystem" );
+        Try.log( this::registerCommands, Level.WARNING, "error in commands in CoreSystem" );
+        Try.log( this::initConfigs, Level.WARNING, "error loading configurations in CoreSystem" );
+    }
+
+    private void initConfigs()
+    {
+        locationConfig = new LocationConfig();
+        rpgPlayerConfig = new RPGPlayerConfig();
+        worldSpawnConfig = new WorldSpawnConfig();
+    }
+
+    private void registerListeners()
+    {
+        Bukkit.getPluginManager().registerEvents( new PlaceStuffIdk(), this );
+        Bukkit.getPluginManager().registerEvents( new PlayerSpawn(), this );
+        Bukkit.getPluginManager().registerEvents( new UnverifiedListener(), this );
     }
 
     private void registerCommands()
     {
-        //TODO replace with new command system
+        //TODO replace /spawn with new command system
         PluginCommand spawnCommand = Objects.requireNonNull( getCommand( "spawn" ) );
         spawnCommand.setExecutor( new SpawnCommand() );
 
@@ -64,19 +66,19 @@ public final class CoreSystem extends JavaPlugin
         CommandGroup mainCommand = new CommandGroup( getCommand( "haraxx" ) );
         CommandGroup itemCommands = new CommandGroup( "item" );
 
-        //haraxx item
+        // - /haraxx item
         mainCommand.addSubCommand( itemCommands );
         itemCommands.addSubCommand( new ItemGet() );
         itemCommands.addSubCommand( new ItemName() );
         itemCommands.addSubCommand( new ItemLore() );
         itemCommands.addSubCommand( new ItemEnchant() );
-        //haraxx gm
+        // - /haraxx gm
         mainCommand.addSubCommand( new PlayerGamemode() );
-        //haraxx spawn
+        // - /haraxx spawn
         mainCommand.addSubCommand( new Spawn() );
-        //haraxx verify
+        // - /haraxx verify
         mainCommand.addSubCommand( new VerifyPlayer() );
-        //haraxx unverify
+        // - /haraxx unverify
         mainCommand.addSubCommand( new UnverifyPlayer() );
 
         //register main command group(s)
@@ -86,6 +88,8 @@ public final class CoreSystem extends JavaPlugin
     @Override
     public void onDisable()
     {
+        //TODO dont forget to shut it down, once its getting booted up
+        //DatabaseHandler.getInstance().shutdown( false );
         System.out.println( " » disabling [ Core ]" );
     }
 

@@ -13,7 +13,7 @@ public class ModelReaderTest
 {
 
     @Model(schema = "demo", table = "model1")
-    public static class DemoModel1 extends ModelBase
+    private static class DemoModel1 extends ModelBase
     {
 
         @DatabaseColumn(name = "id", sqlType = "INT")
@@ -26,7 +26,7 @@ public class ModelReaderTest
     }
 
     @Model(schema = "demo", table = "")
-    public static class DemoModelFail1 extends ModelBase
+    private static class DemoModelFail1 extends ModelBase
     {
 
         @DatabaseColumn(name = "id", sqlType = "INT")
@@ -39,7 +39,7 @@ public class ModelReaderTest
     }
 
     @Model(schema = "demo", table = "fail2")
-    public static class DemoModelFail2 extends ModelBase
+    private static class DemoModelFail2 extends ModelBase
     {
 
         @DatabaseColumn(name = "id", sqlType = "INT")
@@ -52,7 +52,7 @@ public class ModelReaderTest
     }
 
     @Model(schema = "demo", table = "fail3")
-    public static class DemoModelFail3 extends ModelBase
+    private static class DemoModelFail3 extends ModelBase
     {
 
         private PrimaryKey key;
@@ -63,7 +63,7 @@ public class ModelReaderTest
 
     }
 
-    public static class DemoModelFail4 extends ModelBase
+    private static class DemoModelFail4 extends ModelBase
     {
 
         @DatabaseColumn(name = "id", sqlType = "INT")
@@ -76,7 +76,7 @@ public class ModelReaderTest
     }
 
     @Model(schema = "demo", table = "fail5")
-    public static class DemoModelFail5 extends ModelBase
+    private static class DemoModelFail5 extends ModelBase
     {
 
         @DatabaseColumn(name = "id", sqlType = "INT")
@@ -89,7 +89,7 @@ public class ModelReaderTest
     }
 
     @Model(schema = "demo", table = "fail6")
-    public static class DemoModelFail6 extends ModelBase
+    private static class DemoModelFail6 extends ModelBase
     {
 
         private DemoModelFail6( String init )

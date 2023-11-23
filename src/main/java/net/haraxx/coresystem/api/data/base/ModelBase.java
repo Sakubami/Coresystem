@@ -32,6 +32,17 @@ public abstract class ModelBase
     }
 
     /**
+     * Attempts to create the schema and table for this model. <br>
+     * You should call this once before any other database related function, though preferable not more than once.
+     * It should be safe to be called even if the schema and table already exist, though it will create unnecessary processes in the sql queue.
+     */
+    public final void init()
+    {
+        DatabaseHandler.getInstance().createSchema( model.modelSchema() );
+        DatabaseHandler.getInstance().createTable( model );
+    }
+
+    /**
      * Attempts to load the primary key of this model by using another field (preferable a unique one).
      *
      * @param field the field, which has to be set beforehand, to identify the database entry

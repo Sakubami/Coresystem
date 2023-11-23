@@ -16,7 +16,7 @@ public class SQLStatementGeneratorTest
 {
 
     @Model(schema = "demo", table = "model1")
-    public static class DemoModel1 extends ModelBase
+    private static class DemoModel1 extends ModelBase
     {
 
         @DatabaseColumn(name = "id", sqlType = "INT")

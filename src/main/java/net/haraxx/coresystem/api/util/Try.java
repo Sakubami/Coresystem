@@ -5,8 +5,10 @@ import net.haraxx.coresystem.CoreSystem;
 import java.util.logging.Level;
 
 /**
+ * A bunch of helpful tools for safe calls without exceptions utilizing lambda expressions.
+ *
  * @author Juyas
- * @version 10.11.2023
+ * @version 23.11.2023
  * @since 10.11.2023
  */
 @SuppressWarnings("CallToPrintStackTrace")
