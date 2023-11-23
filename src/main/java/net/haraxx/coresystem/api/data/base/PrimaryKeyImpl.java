@@ -17,13 +17,13 @@ final class PrimaryKeyImpl implements PrimaryKey
     PrimaryKeyImpl( ColumnSettings settings )
     {
         this.settings = settings;
-        this.value = new DatabaseValue<>(Long.class);
+        this.value = new DatabaseValue<>( Long.class );
     }
 
     @Override
     public Class<Long> javaType()
     {
-        return Long.TYPE;
+        return Long.class;
     }
 
     @Override

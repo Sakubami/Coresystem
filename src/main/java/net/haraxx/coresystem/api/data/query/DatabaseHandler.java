@@ -67,7 +67,7 @@ public final class DatabaseHandler
 
     public void createTable( DataModel model )
     {
-        createTable( model.primaryKey(), model.modelSchema(), model.modelName(), model.columns().values().toArray( new Column[0] ) );
+        createTable( model.primaryKey(), model.modelSchema(), model.modelName(), model.columns().toArray( new Column[0] ) );
     }
 
     public void createTable( PrimaryKey key, String modelSchema, String model, Column<?>... properties )
@@ -106,7 +106,7 @@ public final class DatabaseHandler
 
     public void insertModelAndUpdateKey( DataModel model )
     {
-        insertModelAndUpdateKey( model.primaryKey(), model.modelSchema(), model.modelName(), model.columns().values().toArray( new Column[0] ) );
+        insertModelAndUpdateKey( model.primaryKey(), model.modelSchema(), model.modelName(), model.columns().toArray( new Column[0] ) );
     }
 
     public void insertModelAndUpdateKey( PrimaryKey key, String modelSchema, String model, Column<?>... properties )
@@ -122,7 +122,7 @@ public final class DatabaseHandler
 
     public void loadFieldsByKey( DataModel model )
     {
-        loadFieldsByKey( model.primaryKey(), model.modelSchema(), model.modelName(), model.columns().values().toArray( new Column[0] ) );
+        loadFieldsByKey( model.primaryKey(), model.modelSchema(), model.modelName(), model.columns().toArray( new Column[0] ) );
     }
 
     public void loadFieldsByKey( PrimaryKey key, String modelSchema, String model, Column<?>... properties )

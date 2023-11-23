@@ -40,7 +40,7 @@ public abstract class ModelBase
      */
     public final boolean loadKey( String field )
     {
-        Column<?> property = model.columns().get( field );
+        Column<?> property = model.getColumn( field );
         if ( property == null ) return false;
         if ( !property.value().isCached() ) return false;
         DatabaseHandler.getInstance().loadKeyByField( model.primaryKey(), model.modelSchema(), model.modelName(), property );
@@ -79,7 +79,7 @@ public abstract class ModelBase
      */
     public final boolean insert()
     {
-        for ( Column<?> column : model.columns().values() )
+        for ( Column<?> column : model.columns() )
         {
             //non-null values should always be non-null before saving
             if ( column.settings().nonNull() && !column.value().isCached() ) return false;

@@ -123,10 +123,10 @@ public class ModelReaderTest
         Assert.assertEquals( "id", model.primaryKey().settings().columnName() );
         Assert.assertEquals( "INT", model.primaryKey().settings().sqlType() );
 
-        Assert.assertTrue( model.columns().containsKey( "score" ) );
-        Assert.assertEquals( "INT", model.columns().get( "score" ).settings().sqlType() );
-        Assert.assertTrue( model.columns().containsKey( "desc" ) );
-        Assert.assertEquals( "VARCHAR(255)", model.columns().get( "desc" ).settings().sqlType() );
+        Assert.assertNotNull( model.getColumn( "score" ) );
+        Assert.assertEquals( "INT", model.getColumn( "score" ).settings().sqlType() );
+        Assert.assertNotNull( model.getColumn( "desc" ) );
+        Assert.assertEquals( "VARCHAR(255)", model.getColumn( "desc" ).settings().sqlType() );
 
         Assert.assertNotNull( model1.key );
         Assert.assertNotNull( model1.anyNumber );
@@ -139,6 +139,10 @@ public class ModelReaderTest
         Assert.assertFalse( model1.key.value().get().isPresent() );
         Assert.assertFalse( model1.anyNumber.value().isCached() );
         Assert.assertFalse( model1.description.value().isCached() );
+
+        Assert.assertEquals( Long.class, model1.key.javaType() );
+        Assert.assertEquals( Integer.class, model1.anyNumber.javaType() );
+        Assert.assertEquals( String.class, model1.description.javaType() );
 
     }
 

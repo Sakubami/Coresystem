@@ -3,8 +3,7 @@ package net.haraxx.coresystem.api.data.base;
 import net.haraxx.coresystem.api.data.model.*;
 
 import java.lang.reflect.*;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 
 import static net.haraxx.coresystem.api.data.base.ModelConstraintsDissatisfiedException.ModelConstraint.*;
 
@@ -62,7 +61,11 @@ final class ModelReader
                 throw new ModelConstraintsDissatisfiedException( COLUMN_DESCRIPTORS, model.schema() + "." + model.table(),
                         "caused by field \"" + field.getName() + "\" of type \"" + propertyType.getSimpleName() + "\"" );
             columnarData[i] = settings;
-            propertyGenerics[i] = ( (ParameterizedType) propertyType.getGenericInterfaces()[0] ).getActualTypeArguments()[0].getClass();
+            if ( primaryKey == i )
+                propertyGenerics[i] = Long.class;
+            else
+                propertyGenerics[i] = (Class<?>) ( (ParameterizedType) field.getGenericType() ).getActualTypeArguments()[0];
+
         }
         //if there is no PrimaryKey, it's an invalid model
         if ( primaryKey == -1 )
@@ -76,7 +79,7 @@ final class ModelReader
         T generatedModel = constructor.newInstance();
 
         // ---------- BUILD AND APPLY THE DATAMODEL ----------
-        HashMap<String, Column<?>> properties = new HashMap<>();
+        List<Column<?>> properties = new ArrayList<>( fields.length - 1 );
         //build PrimaryKey first and place it into the generated model
         PrimaryKey primKey = new PrimaryKeyImpl( columnarData[primaryKey] );
         fields[primaryKey].set( generatedModel, primKey );
@@ -87,7 +90,7 @@ final class ModelReader
             if ( i == primaryKey ) continue;
             DataColumn<?> column = DataColumn.of( propertyGenerics[i], columnarData[i], model, primKey );
             fields[i].set( generatedModel, column );
-            properties.put( columnarData[i].columnName(), column );
+            properties.add( column );
         }
         //create model
         DataModel dataModel = new DataModel( model.schema(), model.table(), primKey, properties );
