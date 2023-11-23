@@ -3,6 +3,8 @@ package net.haraxx.coresystem.api.data.query;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Properties;
 
 /**
@@ -10,7 +12,7 @@ import java.util.Properties;
  * @version 22.11.2023
  * @since 20.11.2023
  */
-final class SQLConnectionPool
+final class SQLConnectionPool implements ConnectionPool
 {
 
     private final HikariDataSource hikariDataSource;
@@ -37,9 +39,16 @@ final class SQLConnectionPool
         this.hikariDataSource = new HikariDataSource( config );
     }
 
-    HikariDataSource getHikariDataSource()
+    @Override
+    public void close()
     {
-        return hikariDataSource;
+        hikariDataSource.close();
+    }
+
+    @Override
+    public Connection getConnection() throws SQLException
+    {
+        return hikariDataSource.getConnection();
     }
 
 }

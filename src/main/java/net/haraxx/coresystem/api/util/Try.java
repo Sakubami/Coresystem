@@ -69,6 +69,11 @@ public class Try
 
     public static <T> T trace( SafeSupplier<T> supplier )
     {
+        return trace( supplier, null );
+    }
+
+    public static <T> T trace( SafeSupplier<T> supplier, T defaultValue )
+    {
         try
         {
             return supplier.get();
@@ -77,7 +82,7 @@ public class Try
         {
             e.printStackTrace();
         }
-        return null;
+        return defaultValue;
     }
 
     public static void log( SafeRunnable runnable, Level logLevel, String message )
@@ -94,6 +99,11 @@ public class Try
 
     public static <T> T log( SafeSupplier<T> supplier, Level logLevel, String message )
     {
+        return log( supplier, logLevel, message, null );
+    }
+
+    public static <T> T log( SafeSupplier<T> supplier, Level logLevel, String message, T defaultValue )
+    {
         try
         {
             return supplier.get();
@@ -102,7 +112,7 @@ public class Try
         {
             CoreSystem.getInstance().getLogger().log( logLevel, message, e );
         }
-        return null;
+        return defaultValue;
     }
 
     public static void logRaw( SafeRunnable runnable )
@@ -119,6 +129,11 @@ public class Try
 
     public static <T> T logRaw( SafeSupplier<T> supplier )
     {
+        return logRaw( supplier, null );
+    }
+
+    public static <T> T logRaw( SafeSupplier<T> supplier, T defaultValue )
+    {
         try
         {
             return supplier.get();
@@ -127,7 +142,7 @@ public class Try
         {
             CoreSystem.getInstance().getLogger().log( Level.WARNING, e.getMessage(), e );
         }
-        return null;
+        return defaultValue;
     }
 
     public static Exception process( SafeRunnable runnable )
@@ -145,13 +160,18 @@ public class Try
 
     public static <T> Result<T> process( SafeSupplier<T> supplier )
     {
+        return process( supplier, null );
+    }
+
+    public static <T> Result<T> process( SafeSupplier<T> supplier, T defaultValue )
+    {
         try
         {
             return new Result<>( supplier.get(), null );
         }
         catch ( Exception e )
         {
-            return new Result<>( null, e );
+            return new Result<>( defaultValue, e );
         }
     }
 

@@ -34,17 +34,17 @@ public class SQLStatementGeneratorTest
 
     private static UUID uuid = UUID.randomUUID();
 
-    private static final String EXPECTED_SCHEMA = "IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = N'demo') CREATE SCHEMA demo;";
-    private static final String EXPECTED_TABLE = "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE " +
+    public static final String EXPECTED_SCHEMA = "IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = N'demo') CREATE SCHEMA demo;";
+    public static final String EXPECTED_TABLE = "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE " +
             "TABLE_SCHEMA = N'demo' AND TABLE_NAME = N'model1') CREATE TABLE demo.model1 (id INT PRIMARY KEY AUTO_INCREMENT," +
             "score INT NOT NULL,desc VARCHAR(255),ratio FLOAT NOT NULL,uniqueId CHAR(36) UNIQUE NOT NULL);";
-    private static final String EXPECTED_DELETE = "DELETE FROM demo.model1 WHERE id=3;";
-    private static final String EXPECTED_REQUEST_ALL = "SELECT score,desc,ratio,uniqueId FROM demo.model1 WHERE id=3;";
-    private static final String EXPECTED_REQUEST_SCORE = "SELECT score FROM demo.model1 WHERE id=3;";
-    private static final String EXPECTED_KEY_REQUEST = "SELECT id FROM demo.model1 WHERE uniqueId=N'" + uuid + "';";
-    private static final String EXPECTED_PRECISE_KEY_REQUEST = "SELECT id FROM demo.model1 WHERE score=55 AND desc=N'Some description text.' AND ratio=2.5 AND uniqueId=N'" + uuid + "';";
-    private static final String EXPECTED_UPDATE_SCORE = "UPDATE demo.model1 SET score=55 WHERE id=3;";
-    private static final String EXPECTED_INSERT_ALL = "INSERT INTO demo.model1 (score,desc,ratio,uniqueId) VALUES (55,N'Some description text.',2.5,N'" + uuid + "');";
+    static final String EXPECTED_DELETE = "DELETE FROM demo.model1 WHERE id=3;";
+    static final String EXPECTED_REQUEST_ALL = "SELECT score,desc,ratio,uniqueId FROM demo.model1 WHERE id=3;";
+    static final String EXPECTED_REQUEST_SCORE = "SELECT score FROM demo.model1 WHERE id=3;";
+    static final String EXPECTED_KEY_REQUEST = "SELECT id FROM demo.model1 WHERE uniqueId=N'" + uuid + "';";
+    static final String EXPECTED_PRECISE_KEY_REQUEST = "SELECT id FROM demo.model1 WHERE score=55 AND desc=N'Some description text.' AND ratio=2.5 AND uniqueId=N'" + uuid + "';";
+    static final String EXPECTED_UPDATE_SCORE = "UPDATE demo.model1 SET score=55 WHERE id=3;";
+    static final String EXPECTED_INSERT_ALL = "INSERT INTO demo.model1 (score,desc,ratio,uniqueId) VALUES (55,N'Some description text.',2.5,N'" + uuid + "');";
 
     private DemoModel1 data;
     private SQLStatementGenerator generator;
