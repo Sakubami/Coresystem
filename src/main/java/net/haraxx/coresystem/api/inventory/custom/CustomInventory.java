@@ -1,4 +1,4 @@
-package net.haraxx.coresystem.api.inventory;
+package net.haraxx.coresystem.api.inventory.custom;
 
 import net.haraxx.coresystem.CoreSystem;
 import org.bukkit.Bukkit;

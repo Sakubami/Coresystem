@@ -1,4 +1,4 @@
-package net.haraxx.coresystem.api.inventory;
+package net.haraxx.coresystem.api.inventory.custom;
 
 /**
  * @author Juyas

@@ -1,4 +1,4 @@
-package net.haraxx.coresystem.builder.item;
+package net.haraxx.coresystem.api.item;
 
 import net.haraxx.coresystem.CoreSystem;
 import org.bukkit.NamespacedKey;

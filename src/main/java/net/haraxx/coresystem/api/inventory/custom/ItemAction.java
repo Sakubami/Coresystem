@@ -1,4 +1,4 @@
-package net.haraxx.coresystem.api.inventory;
+package net.haraxx.coresystem.api.inventory.custom;
 
 import org.bukkit.event.inventory.ClickType;
 

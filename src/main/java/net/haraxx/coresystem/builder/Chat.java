@@ -4,6 +4,8 @@ import org.bukkit.ChatColor;
 
 import java.util.List;
 
+//TODO replace with better api
+@Deprecated
 public class Chat {
 
     public static String format(String input) {
