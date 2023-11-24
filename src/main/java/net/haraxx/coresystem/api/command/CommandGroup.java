@@ -15,8 +15,12 @@ import java.util.List;
 import java.util.*;
 
 /**
+ * Represents a group of commands. Used to create subcommands without additional argument parsing and improved control flow handling.
+ *
  * @author Juyas
- * @version 12.11.2023
+ * @version 24.11.2023
+ * @see ICommand
+ * @see BukkitCommand
  * @since 12.11.2023
  */
 public final class CommandGroup implements ICommand
@@ -101,14 +105,15 @@ public final class CommandGroup implements ICommand
             this.onCommand( s, a );
             return true;
         } );
-        pluginCommand.setTabCompleter( ( s, c, l, a ) -> filterAndSort( a[a.length - 1], this.tabOptions( s, a ).tabOptions() ) );
+        pluginCommand.setTabCompleter( ( s, c, l, a ) -> filterAndSort( a[a.length - 1], this.tabOptions( s, a, a ).tabOptions() ) );
         return true;
     }
 
     private List<String> filterAndSort( String arg, List<String> options )
     {
         String argument = arg.toLowerCase();
-        return options.stream().filter( option -> option.toLowerCase().startsWith( argument ) ).sorted().toList();
+        return options.stream().filter( option -> option.toLowerCase().startsWith( argument ) )
+                .distinct().sorted().toList();
     }
 
     private void setParentSignature( String parentSignature )
@@ -159,6 +164,7 @@ public final class CommandGroup implements ICommand
 
     private String[] cutArgs( String[] args )
     {
+        //cut off the first argument
         if ( args.length == 0 ) return new String[0];
         if ( args.length == 1 ) return new String[0];
         int newLength = args.length - 1;
@@ -316,14 +322,14 @@ public final class CommandGroup implements ICommand
     }
 
     @Override
-    public TabCompletion tabOptions( CommandSender sender, String[] args )
+    public TabCompletion tabOptions( CommandSender sender, String[] args, String[] rawArgs )
     {
         if ( args.length == 1 )
             return () -> new ArrayList<>( commandNames );
         else if ( args.length > 1 )
         {
             ICommand command = getCommand( args[0] );
-            if ( command != null ) return command.tabOptions( sender, cutArgs( args ) );
+            if ( command != null ) return command.tabOptions( sender, cutArgs( args ), rawArgs );
         }
         return TabCompletion.NONE;
     }
