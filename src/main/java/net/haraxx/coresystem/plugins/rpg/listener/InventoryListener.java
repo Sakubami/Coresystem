@@ -4,6 +4,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
+//TODO rpg plugin is outsourced
+@Deprecated
 public class InventoryListener implements Listener {
 
     @EventHandler

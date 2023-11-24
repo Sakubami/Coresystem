@@ -2,16 +2,16 @@ package net.haraxx.coresystem.plugins.rpg.player;
 
 import net.haraxx.coresystem.CoreSystem;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.UUID;
 
+//TODO rpg plugin is outsourced
+@Deprecated(forRemoval = true)
 public class RPGPlayerConfig {
 
     private static class RPGPlayer {
