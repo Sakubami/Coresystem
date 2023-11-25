@@ -1,6 +1,8 @@
 package net.haraxx.coresystem;
 
 import net.haraxx.coresystem.api.command.CommandGroup;
+import net.haraxx.coresystem.api.services.Haraxx;
+import net.haraxx.coresystem.api.services.HaraxxImpl;
 import net.haraxx.coresystem.api.util.Try;
 import net.haraxx.coresystem.commands.essentials.PlayerGamemode;
 import net.haraxx.coresystem.commands.essentials.Spawn;
@@ -14,6 +16,8 @@ import net.haraxx.coresystem.plugins.rpg.player.RPGPlayerConfig;
 import net.haraxx.coresystem.plugins.zoll.LocationConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
@@ -24,6 +28,7 @@ public final class CoreSystem extends JavaPlugin
 
     private static CoreSystem instance;
 
+    private Haraxx haraxxAPI;
     private LocationConfig locationConfig;
     private RPGPlayerConfig rpgPlayerConfig;
     private WorldSpawnConfig worldSpawnConfig;
@@ -33,6 +38,7 @@ public final class CoreSystem extends JavaPlugin
     {
         instance = this;
         Try.silent( () -> this.getLogger().addHandler( new LogTracker().onlyExceptions() ) );
+        Bukkit.getServicesManager().register( Haraxx.class, haraxxAPI = new HaraxxImpl(), this, ServicePriority.Normal );
 
         //TODO load properties for database
         //DatabaseHandler.getInstance().load( properties );
@@ -88,14 +94,22 @@ public final class CoreSystem extends JavaPlugin
     @Override
     public void onDisable()
     {
+        System.out.println( " » disabling [ Core ]" );
         //TODO dont forget to shut it down, once its getting booted up
         //DatabaseHandler.getInstance().shutdown( false );
-        System.out.println( " » disabling [ Core ]" );
+        Bukkit.getServicesManager().unregisterAll( this );
+        HandlerList.unregisterAll( this );
+        Bukkit.getScheduler().cancelTasks( this );
     }
 
     public static CoreSystem getInstance()
     {
         return instance;
+    }
+
+    public Haraxx getHaraxxAPI()
+    {
+        return haraxxAPI;
     }
 
     public LocationConfig getLocationConfig()
