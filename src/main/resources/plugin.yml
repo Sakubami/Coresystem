@@ -8,6 +8,7 @@ website: Haraxx.net
 softdepend:
   - LuckPerms
   - Multiverse-Core
+  - SimpleClans
 
 commands:
   haraxx:

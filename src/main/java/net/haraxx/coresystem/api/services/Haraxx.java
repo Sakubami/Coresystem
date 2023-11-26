@@ -4,7 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Juyas
@@ -41,5 +41,15 @@ public interface Haraxx
     void setPlayerRank( Player player, int rank );
 
     Location getWorldSpawn( World world );
+
+    EnumSet<PluginDependency> loadedDependencies();
+
+    Collection<String> addPermissions( Player player, String... permission );
+
+    Collection<String> removePermissions( Player player, String... permission );
+
+    String getClan( Player player );
+
+    Collection<Player> getOnlineClanMembers( String clan );
 
 }

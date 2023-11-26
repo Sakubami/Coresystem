@@ -35,6 +35,10 @@
             <id>dmulloy2-repo</id>
             <url>https://repo.dmulloy2.net/repository/public/</url>
         </repository>
+        <repository>
+            <id>roinujnosde-repo</id>
+            <url>https://repo.roinujnosde.me/releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -59,6 +63,12 @@
             <groupId>net.luckperms</groupId>
             <artifactId>api</artifactId>
             <version>5.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sacredlabyrinth.phaed.simpleclans</groupId>
+            <artifactId>SimpleClans</artifactId>
+            <version>2.18.1</version> <!-- You can find the latest version at the bottom -->
             <scope>provided</scope>
         </dependency>
         <dependency>
