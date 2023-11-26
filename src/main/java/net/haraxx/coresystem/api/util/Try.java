@@ -89,6 +89,11 @@ public class Try
 
     public static void log( SafeRunnable runnable, Level logLevel, String message )
     {
+        if ( CoreSystem.getInstance() == null )
+        {
+            trace( runnable );
+            return;
+        }
         try
         {
             runnable.run();
@@ -106,6 +111,7 @@ public class Try
 
     public static <T> T log( SafeSupplier<T> supplier, Level logLevel, String message, T defaultValue )
     {
+        if ( CoreSystem.getInstance() == null ) return trace( supplier, defaultValue );
         try
         {
             return supplier.get();
@@ -119,6 +125,11 @@ public class Try
 
     public static void logRaw( SafeRunnable runnable )
     {
+        if ( CoreSystem.getInstance() == null )
+        {
+            trace( runnable );
+            return;
+        }
         try
         {
             runnable.run();
@@ -136,6 +147,7 @@ public class Try
 
     public static <T> T logRaw( SafeSupplier<T> supplier, T defaultValue )
     {
+        if ( CoreSystem.getInstance() == null ) return trace( supplier, defaultValue );
         try
         {
             return supplier.get();

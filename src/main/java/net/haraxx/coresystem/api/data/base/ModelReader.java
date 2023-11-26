@@ -1,6 +1,7 @@
 package net.haraxx.coresystem.api.data.base;
 
 import net.haraxx.coresystem.api.data.model.*;
+import net.haraxx.coresystem.api.util.Try;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -72,7 +73,7 @@ final class ModelReader
             throw new ModelConstraintsDissatisfiedException( SINGLE_PRIMARY_KEY, model.schema() + "." + model.table(),
                     "no field of type \"PrimaryKey\" found" );
         //retrieve the empty class constructor - it will get the compiler default constructor if there is a defined one
-        Constructor<T> constructor = clazz.getConstructor();
+        Constructor<T> constructor = Try.silent( clazz::getDeclaredConstructor, Try.silent( clazz::getConstructor, null ) );
         Objects.requireNonNull( constructor, "No empty constructor for class " + clazz.getSimpleName() );
         constructor.setAccessible( true );
         //construct a new instance of the model

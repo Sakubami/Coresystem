@@ -13,7 +13,7 @@ public class ModelReaderTest
 {
 
     @Model(schema = "demo", table = "model1")
-    private static class DemoModel1 extends ModelBase
+    private static class DemoModel extends ModelBase
     {
 
         @DatabaseColumn(name = "id", sqlType = "INT")
@@ -109,7 +109,7 @@ public class ModelReaderTest
     public void buildModel1() throws Exception
     {
 
-        DemoModel1 model1 = ModelReader.buildModel( DemoModel1.class );
+        DemoModel model1 = ModelReader.buildModel( DemoModel.class );
         Assert.assertNotNull( model1 );
         DataModel model = model1.getModel();
         Assert.assertNotNull( model );
