@@ -176,7 +176,7 @@ public final class CommandGroup implements ICommand
     private MessageBuilder.Messages buildHeader( int page, boolean min, boolean max )
     {
         MessageBuilder msg = MessageBuilder.create();
-        TextComponent headerSpacing = new TextComponent( "==========" );
+        TextComponent headerSpacing = new TextComponent( "===========" );
         headerSpacing.setColor( ChatColor.GRAY );
         msg.extra( headerSpacing.duplicate() )
                 .raw( " " )
@@ -194,7 +194,7 @@ public final class CommandGroup implements ICommand
         else msg.beginElement( "<<" )
                 .color( ChatColor.YELLOW )
                 .hover( HoverEvent.Action.SHOW_TEXT, new Text( TextComponent.fromLegacyText( MessageFormat.format( HELP_PREV_PAGE, ( page - 1 ) ), ChatColor.GRAY ) ) )
-                .click( ClickEvent.Action.RUN_COMMAND, "/" + getCommandSignature() + name + " " + HELP_KEYWORD + " " + ( page - 1 ) )
+                .click( ClickEvent.Action.RUN_COMMAND, "/" + getCommandSignature() + " " + HELP_KEYWORD + " " + ( page - 1 ) )
                 .endElement();
         msg.raw( " " )
                 .beginElement( HELP_PAGE + " " + page )
@@ -205,7 +205,7 @@ public final class CommandGroup implements ICommand
             msg.beginElement( ">>" ).color( ChatColor.DARK_GRAY ).endElement();
         else msg.beginElement( ">>" )
                 .color( ChatColor.YELLOW )
-                .hover( HoverEvent.Action.SHOW_TEXT, new Text( TextComponent.fromLegacyText( MessageFormat.format( HELP_NEXT_PAGE, ( page - 1 ) ), ChatColor.GRAY ) ) )
+                .hover( HoverEvent.Action.SHOW_TEXT, new Text( TextComponent.fromLegacyText( MessageFormat.format( HELP_NEXT_PAGE, ( page + 1 ) ), ChatColor.GRAY ) ) )
                 .click( ClickEvent.Action.RUN_COMMAND, "/" + getCommandSignature() + " " + HELP_KEYWORD + " " + ( page + 1 ) )
                 .endElement();
         msg.raw( " " )
