@@ -325,7 +325,7 @@ public final class CommandGroup implements ICommand
     public TabCompletion tabOptions( CommandSender sender, String[] args, String[] rawArgs )
     {
         if ( args.length == 1 )
-            return () -> new ArrayList<>( commandNames );
+            return ((TabCompletion)() -> new ArrayList<>( commandNames )).include( HELP_KEYWORD );
         else if ( args.length > 1 )
         {
             ICommand command = getCommand( args[0] );
