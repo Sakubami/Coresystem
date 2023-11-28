@@ -1,5 +1,8 @@
 package net.haraxx.coresystem.api.command;
 
+import org.bukkit.Bukkit;
+import org.bukkit.command.*;
+
 import java.util.*;
 
 /**
@@ -7,8 +10,11 @@ import java.util.*;
  * @version 12.11.2023
  * @since 12.11.2023
  */
-public abstract class BukkitCommand implements ICommand
+public abstract class BukkitCommand implements ICommand, CommandExecutor, TabCompleter
 {
+
+    private static final String MESSAGE_MISSING_PERMISSIONS = "§cKeine Berechtigung.";
+    private static final String MESSAGE_INVALID_ARGUMENTS = "§cFalsche Parameter.";
 
     private final String name;
     private final String[] aliases;
@@ -93,6 +99,52 @@ public abstract class BukkitCommand implements ICommand
     public String[] aliases()
     {
         return aliases;
+    }
+
+    @Override
+    public boolean onCommand( CommandSender sender, Command cmd, String s, String[] args )
+    {
+        if ( !range().inRange( args.length ) )
+        {
+            sender.sendMessage( MESSAGE_INVALID_ARGUMENTS );
+            return true;
+        }
+        onCommand( sender, args );
+        return true;
+    }
+
+    @Override
+    public List<String> onTabComplete( CommandSender sender, Command cmd, String s, String[] args )
+    {
+        TabCompletion tabCompletion = tabOptions( sender, args, args );
+        return tabCompletion.tabOptions().stream()
+                .distinct()
+                .filter( option -> option.toLowerCase().startsWith( args[args.length - 1].toLowerCase() ) )
+                .sorted()
+                .toList();
+    }
+
+    public final boolean register()
+    {
+        PluginCommand pluginCommand = Bukkit.getPluginCommand( name );
+        if ( pluginCommand == null ) return false;
+        pluginCommand.setAliases( Arrays.asList( aliases() ) );
+        pluginCommand.setPermission( permission() );
+        pluginCommand.setDescription( String.join( "\n", description() ) );
+        pluginCommand.setPermissionMessage( MESSAGE_MISSING_PERMISSIONS );
+        StringBuilder usage = new StringBuilder();
+        usage.append( "/" ).append( name() );
+        for ( int s = 0; s < signature().size(); s++ )
+        {
+            usage.append( " " );
+            String arg = signature().get( s );
+            if ( range().inRange( s ) ) usage.append( '(' ).append( arg ).append( ')' );
+            else usage.append( '[' ).append( arg ).append( ']' );
+        }
+        pluginCommand.setUsage( usage.toString() );
+        pluginCommand.setExecutor( this );
+        pluginCommand.setTabCompleter( this );
+        return true;
     }
 
 }
