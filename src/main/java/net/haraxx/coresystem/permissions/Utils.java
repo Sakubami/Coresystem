@@ -2,6 +2,7 @@ package net.haraxx.coresystem.permissions;
 
 import org.bukkit.entity.Player;
 
+@Deprecated
 public class Utils {
 
     public static boolean getDefaultPerms(Player p) {

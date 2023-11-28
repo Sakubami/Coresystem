@@ -52,36 +52,57 @@ public class HaraxxImpl implements Haraxx
     @Override
     public boolean isPlayerVerified( Player player )
     {
-        //TODO implement
-        throw new UnsupportedOperationException( "not yet implemented" );
+        return !player.hasPermission( "group.unverified" );
     }
 
     @Override
     public boolean isPlayerSmurf( Player player )
     {
-        //TODO implement
-        throw new UnsupportedOperationException( "not yet implemented" );
+        return player.hasPermission( "group.twink" );
     }
 
     @Override
     public void setPlayerVerified( Player player, boolean verify )
     {
-        //TODO implement
-        throw new UnsupportedOperationException( "not yet implemented" );
+        if ( verify )
+        {
+            removePermissions( player, "group.unverified" );
+            addPermissions( player, "group.default", "group.i" );
+        }
+        else
+        {
+            removePermissions( player, "group.default" );
+            addPermissions( player, "group.unverified" );
+        }
     }
 
     @Override
     public void setPlayerSmurf( Player player, boolean smurf )
     {
-        //TODO implement
-        throw new UnsupportedOperationException( "not yet implemented" );
+        if ( smurf )
+        {
+            removePermissions( player, "group.default", "group.unverified", "group.i" );
+            addPermissions( player, "group.twink" );
+        }
+        else
+        {
+            removePermissions( player, "group.twink" );
+            addPermissions( player, "group.unverified" );
+        }
     }
 
     @Override
     public PlayerRole getPlayerRole( Player player )
     {
-        //TODO implement
-        throw new UnsupportedOperationException( "not yet implemented" );
+        //may break if the enum changes order
+        //TODO maybe try a safe approach
+        PlayerRole highestRole = PlayerRole.UNVERIFIED;
+        for ( PlayerRole role : PlayerRole.values() )
+        {
+            if ( role.has( player ) )
+                highestRole = role;
+        }
+        return highestRole;
     }
 
     @Override
