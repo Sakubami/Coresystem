@@ -1,8 +1,7 @@
 package net.haraxx.coresystem;
 
 import net.haraxx.coresystem.api.command.CommandGroup;
-import net.haraxx.coresystem.api.services.Haraxx;
-import net.haraxx.coresystem.api.services.HaraxxImpl;
+import net.haraxx.coresystem.api.services.*;
 import net.haraxx.coresystem.api.util.Try;
 import net.haraxx.coresystem.commands.essentials.PlayerGamemode;
 import net.haraxx.coresystem.commands.essentials.Spawn;
@@ -58,7 +57,8 @@ public final class CoreSystem extends JavaPlugin
     private void registerListeners()
     {
         Bukkit.getPluginManager().registerEvents( new PlaceStuffIdk(), this );
-        Bukkit.getPluginManager().registerEvents( new PlayerSpawn(), this );
+        if ( PluginDependency.LUCK_PERMS.isLoaded() )
+            Bukkit.getPluginManager().registerEvents( new PlayerSpawn(), this );
         Bukkit.getPluginManager().registerEvents( new UnverifiedListener(), this );
     }
 
@@ -82,10 +82,13 @@ public final class CoreSystem extends JavaPlugin
         mainCommand.addSubCommand( new PlayerGamemode() );
         // - /haraxx spawn
         mainCommand.addSubCommand( new Spawn() );
-        // - /haraxx verify
-        mainCommand.addSubCommand( new VerifyPlayer() );
-        // - /haraxx unverify
-        mainCommand.addSubCommand( new UnverifyPlayer() );
+        if ( PluginDependency.LUCK_PERMS.isLoaded() )
+        {
+            // - /haraxx verify
+            mainCommand.addSubCommand( new VerifyPlayer() );
+            // - /haraxx unverify
+            mainCommand.addSubCommand( new UnverifyPlayer() );
+        }
 
         //register main command group(s)
         Try.logRaw( mainCommand::register );
