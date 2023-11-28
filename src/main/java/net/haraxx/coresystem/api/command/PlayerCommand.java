@@ -16,7 +16,7 @@ import org.bukkit.entity.Player;
 public abstract class PlayerCommand extends BukkitCommand
 {
 
-    private static final String MESSAGE_PLAYERS_ONLY = "&cDieser Befehl ist nur für Spieler.";
+    private static final String MESSAGE_PLAYERS_ONLY = "§cDieser Befehl ist nur für Spieler.";
 
     public PlayerCommand( String name, String... aliases )
     {

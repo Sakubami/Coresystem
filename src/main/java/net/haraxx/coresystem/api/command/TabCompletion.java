@@ -4,6 +4,7 @@ import org.bukkit.*;
 import org.bukkit.command.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.util.*;
 import java.util.function.Function;
@@ -13,7 +14,7 @@ import java.util.function.Function;
  * Will be used to generate results for bukkit's {@link TabCompleter#onTabComplete(CommandSender, Command, String, String[])}
  *
  * @author Juyas
- * @version 24.11.2023
+ * @version 28.11.2023
  * @see ICommand
  * @see BukkitCommand
  * @see CommandGroup
@@ -31,9 +32,13 @@ public interface TabCompletion
      */
     TabCompletion PLAYERS = () -> Bukkit.getOnlinePlayers().stream().map( Player::getName ).toList();
     /**
+     * All {@link OfflinePlayer}s as their names
+     */
+    TabCompletion OFFLINE_PLAYERS = () -> Arrays.stream( Bukkit.getOfflinePlayers() ).map( OfflinePlayer::getName ).toList();
+    /**
      * All {@link Material}s as their enum names. e.g.: OAK_BOAT
      */
-    TabCompletion MATERIAL = () -> Arrays.stream( Material.values() ).map( Material::name ).toList();
+    TabCompletion MATERIAL = TabCompletion.of( Material.class );
     /**
      * All {@link Material}s as their minecraft namespaced tags. e.g.: minecraft:oak_boat
      */
@@ -49,11 +54,19 @@ public interface TabCompletion
     /**
      * All {@link GameMode}s as their names
      */
-    TabCompletion GAMEMODE = () -> Arrays.stream( GameMode.values() ).map( GameMode::name ).toList();
+    TabCompletion GAMEMODE = TabCompletion.of( GameMode.class );
     /**
      * All {@link GameMode}s as their numeric values
      */
     TabCompletion GAMEMODE_VALUES = () -> Arrays.stream( GameMode.values() ).map( GameMode::getValue ).map( String::valueOf ).toList();
+    /**
+     * All {@link World}s as their names
+     */
+    TabCompletion WORLDS = () -> Bukkit.getWorlds().stream().map( World::getName ).toList();
+    /**
+     * All {@link Plugin}s as their names
+     */
+    TabCompletion LOADED_PLUGINS = () -> Arrays.stream( Bukkit.getPluginManager().getPlugins() ).map( Plugin::getName ).toList();
 
     /**
      * Generate a completion for any enum
@@ -62,7 +75,7 @@ public interface TabCompletion
      *
      * @return a {@link TabCompletion} containing all constants of the given enum
      */
-    static TabCompletion of( Class<Enum<?>> enumClass )
+    static <T extends Enum<T>> TabCompletion of( Class<T> enumClass )
     {
         return () -> Arrays.stream( enumClass.getEnumConstants() ).map( Enum::name ).toList();
     }
@@ -118,8 +131,8 @@ public interface TabCompletion
         return () ->
         {
             List<String> options = new ArrayList<>( this.tabOptions() );
-            options.addAll( Arrays.stream( additionalOptions ).distinct().toList() );
-            return options;
+            options.addAll( Arrays.asList( additionalOptions ) );
+            return options.stream().distinct().toList();
         };
     }
 
