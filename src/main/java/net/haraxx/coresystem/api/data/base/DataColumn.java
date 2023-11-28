@@ -18,7 +18,7 @@ final class DataColumn<T> implements Column<T>
     {
         this.javaType = javaType;
         this.settings = settings;
-        this.cachedValue = new DatabaseCachedValue<>( javaType, settings.columnName(), model, primaryKey );
+        this.cachedValue = new DatabaseCachedValue<>( javaType, settings.columnName(), model, primaryKey, settings.unicodePrefixed() );
     }
 
     @Override

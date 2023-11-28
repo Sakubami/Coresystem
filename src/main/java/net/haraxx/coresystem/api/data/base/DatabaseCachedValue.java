@@ -24,14 +24,16 @@ final class DatabaseCachedValue<T> implements CachedValue<T>
     private volatile T value;
     private long lastUpdated;
     private boolean changedSinceLastUpdate;
+    private boolean unicodeField;
 
-    DatabaseCachedValue( Class<T> type, String fieldName, Model model, PrimaryKey modelPrimaryKey )
+    DatabaseCachedValue( Class<T> type, String fieldName, Model model, PrimaryKey modelPrimaryKey, boolean unicodeField )
     {
         this.modelName = model.table();
         this.modelSchema = model.schema();
         this.modelPrimaryKey = modelPrimaryKey;
         this.fieldName = fieldName;
         this.type = type;
+        this.unicodeField = unicodeField;
         this.value = null;
         lastUpdated = 0;
     }
@@ -52,7 +54,7 @@ final class DatabaseCachedValue<T> implements CachedValue<T>
     public void update()
     {
         if ( !this.changedSinceLastUpdate ) return;
-        DatabaseHandler.getInstance().updateField( modelPrimaryKey, modelSchema, modelName, fieldName, this );
+        DatabaseHandler.getInstance().updateField( modelPrimaryKey, modelSchema, modelName, fieldName, this, unicodeField );
     }
 
     @Override

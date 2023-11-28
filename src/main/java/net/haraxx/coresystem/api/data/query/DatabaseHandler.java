@@ -98,9 +98,9 @@ public final class DatabaseHandler
         this.sqlQueryHandler.queryUpdate( statement );
     }
 
-    public void updateField( PrimaryKey key, String modelSchema, String model, String fieldName, CachedValue<?> value )
+    public void updateField( PrimaryKey key, String modelSchema, String model, String fieldName, CachedValue<?> value, boolean unicodeField )
     {
-        String statement = this.statementGenerator.update( fieldName, value, modelSchema, model, key );
+        String statement = this.statementGenerator.update( fieldName, value, modelSchema, model, key, unicodeField );
         this.sqlQueryHandler.queryUpdate( statement );
     }
 

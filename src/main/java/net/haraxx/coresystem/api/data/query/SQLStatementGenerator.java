@@ -25,9 +25,9 @@ class SQLStatementGenerator
     private static final String UPDATE = "UPDATE {0} SET {1} WHERE {2};";
     private static final String INSERT = "INSERT INTO {0} ({1}) VALUES ({2});";
 
-    private String quote( String val )
+    private String quote( String val, boolean prefix )
     {
-        return "N'" + val + "'";
+        return ( prefix ? 'N' : "" ) + "'" + val + "'";
     }
 
     private String list( List<String> elements, String delim )
@@ -71,13 +71,13 @@ class SQLStatementGenerator
 
     private String quoteConditional( Column<?> value )
     {
-        return quoteConditional( value.value() );
+        return quoteConditional( value.value(), value.settings().unicodePrefixed() );
     }
 
-    private String quoteConditional( Value<?> value )
+    private String quoteConditional( Value<?> value, boolean prefix )
     {
         if ( String.class.isAssignableFrom( value.type() ) )
-            return quote( value.getAsString() );
+            return quote( value.getAsString(), prefix );
         else return value.getAsString();
     }
 
@@ -88,7 +88,7 @@ class SQLStatementGenerator
 
     String createSchema( String modelSchema )
     {
-        return MessageFormat.format( CREATE_SCHEMA, quote( modelSchema ), modelSchema );
+        return MessageFormat.format( CREATE_SCHEMA, quote( modelSchema, false ), modelSchema );
     }
 
     String createTable( String modelSchema, String model, PrimaryKey key, ColumnSettings... properties )
@@ -96,7 +96,7 @@ class SQLStatementGenerator
         String primKey = key.settings().columnName() + " " + key.settings().sqlType() + " " + PRIMARY_KEY_FLAGS;
         List<String> list = new ArrayList<>( listNamesAndTypes( properties ) );
         list.add( 0, primKey );
-        return MessageFormat.format( CREATE_TABLE, quote( modelSchema ), quote( model ), modelSchema + "." + model, list( list, "," ) );
+        return MessageFormat.format( CREATE_TABLE, quote( modelSchema, false ), quote( model, false ), modelSchema + "." + model, list( list, "," ) );
     }
 
     String delete( String modelSchema, String model, PrimaryKey key )
@@ -124,9 +124,9 @@ class SQLStatementGenerator
         return MessageFormat.format( SELECT, key.settings().columnName(), modelSchema + "." + model, list( listValues( properties ), " AND " ) );
     }
 
-    String update( String fieldName, CachedValue<?> value, String modelSchema, String model, PrimaryKey key )
+    String update( String fieldName, CachedValue<?> value, String modelSchema, String model, PrimaryKey key, boolean unicodeField )
     {
-        return MessageFormat.format( UPDATE, modelSchema + "." + model, fieldName + "=" + quoteConditional( value ), keyCondition( key ) );
+        return MessageFormat.format( UPDATE, modelSchema + "." + model, fieldName + "=" + quoteConditional( value, unicodeField ), keyCondition( key ) );
     }
 
     String put( String modelSchema, String model, Column<?>... values )

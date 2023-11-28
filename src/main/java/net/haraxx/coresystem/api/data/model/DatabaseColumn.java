@@ -50,4 +50,12 @@ public @interface DatabaseColumn
      */
     boolean unique() default ColumnSettings.DEFAULT_UNIQUE;
 
+    /**
+     * Whether the field describes a unicode field string.
+     * If this column isn't a string in the first place, it does not affect anything.
+     *
+     * @return the unicode string prefix requirement
+     */
+    boolean unicode() default ColumnSettings.DEFAULT_UNICODE_PREFIXED;
+
 }
